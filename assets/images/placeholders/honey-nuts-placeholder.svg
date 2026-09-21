@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="honeyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <linearGradient id="jarGlass" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7"/>
+      <stop offset="20%" stop-color="#fef3c7" stop-opacity="0.3"/>
+      <stop offset="80%" stop-color="#fef3c7" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="lidGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#78350f" />
+      <stop offset="50%" stop-color="#92400e" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+    <linearGradient id="nutGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b45309" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="600" fill="#fffbeb"/>
+  <rect x="20" y="20" width="560" height="560" rx="24" fill="#ffffff" stroke="#fde68a" stroke-width="2"/>
+  <circle cx="300" cy="300" r="230" fill="#fef3c7" opacity="0.6"/>
+
+  <!-- Honey Jar Body Base / Honey fill -->
+  <path d="M 210 210 L 390 210 C 430 210 430 460 390 470 L 210 470 C 170 460 170 210 210 210 Z" fill="url(#honeyGrad)" filter="drop-shadow(0 20px 25px rgba(217, 119, 6, 0.25))"/>
+
+  <!-- Floating Dry Fruits / Nuts inside Honey -->
+  <!-- Almonds -->
+  <ellipse cx="260" cy="270" rx="22" ry="13" transform="rotate(-30 260 270)" fill="url(#nutGrad)" stroke="#fde68a" stroke-width="1.5"/>
+  <ellipse cx="340" cy="290" rx="24" ry="14" transform="rotate(40 340 290)" fill="url(#nutGrad)" stroke="#fde68a" stroke-width="1.5"/>
+  <!-- Walnuts -->
+  <circle cx="280" cy="340" r="20" fill="#9a3412" stroke="#fef3c7" stroke-width="2"/>
+  <path d="M 270 330 Q 280 345 275 355 M 285 330 Q 280 340 290 355" stroke="#fde68a" stroke-width="2" fill="none"/>
+  <!-- Cashew -->
+  <path d="M 320 370 C 340 365 355 385 340 400 C 330 410 315 400 325 385 Z" fill="#d97706" stroke="#fef3c7" stroke-width="1.5"/>
+  <!-- Pistachio -->
+  <ellipse cx="250" cy="415" rx="16" ry="10" transform="rotate(15 250 415)" fill="#65a30d" stroke="#fef3c7" stroke-width="1.5"/>
+  <ellipse cx="350" cy="425" rx="18" ry="11" transform="rotate(-20 350 425)" fill="url(#nutGrad)" stroke="#fde68a" stroke-width="1.5"/>
+
+  <!-- Honey Drops / Drips -->
+  <circle cx="300" cy="240" r="8" fill="#fef08a" opacity="0.8"/>
+  <circle cx="270" cy="380" r="5" fill="#fef08a" opacity="0.8"/>
+  <circle cx="330" cy="330" r="6" fill="#fef08a" opacity="0.8"/>
+
+  <!-- Glass Jar Overlay & Highlights -->
+  <path d="M 210 210 L 390 210 C 430 210 430 460 390 470 L 210 470 C 170 460 170 210 210 210 Z" fill="url(#jarGlass)" stroke="#f59e0b" stroke-width="2"/>
+  <!-- Glass Reflection Line -->
+  <path d="M 230 230 L 230 450" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Wooden / Metallic Jar Lid -->
+  <rect x="220" y="160" width="160" height="42" rx="8" fill="url(#lidGrad)" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.2))"/>
+  <rect x="205" y="195" width="190" height="15" rx="4" fill="#581c87" opacity="0.1"/>
+  <!-- Rope / Twine around Lid -->
+  <line x1="210" y1="202" x2="390" y2="202" stroke="#d97706" stroke-width="4"/>
+  <circle cx="300" cy="202" r="5" fill="#92400e"/>
+
+  <!-- Premium Label on Jar -->
+  <rect x="225" y="275" width="150" height="90" rx="8" fill="#ffffff" stroke="#b45309" stroke-width="2" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.1))"/>
+  <rect x="230" y="280" width="140" height="80" rx="6" fill="#fffbeb" stroke="#d97706" stroke-dasharray="3,3"/>
+  <text x="300" y="305" font-family="'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" fill="#78350f" text-anchor="middle" letter-spacing="1">100% PURE &amp; NATURAL</text>
+  <text x="300" y="328" font-family="'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="800" fill="#b45309" text-anchor="middle" letter-spacing="1">HONEY NUTS</text>
+  <text x="300" y="348" font-family="'Segoe UI', Roboto, sans-serif" font-size="8" font-weight="600" fill="#92400e" text-anchor="middle" letter-spacing="0.5">ALMONDS • WALNUTS • PISTACHIO</text>
+
+  <!-- Bottom Badge -->
+  <g transform="translate(160, 535)">
+    <rect width="280" height="34" rx="17" fill="#78350f"/>
+    <text x="140" y="22" font-family="'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#fbbf24" text-anchor="middle" letter-spacing="1">PREMIUM HONEY WITH DRY FRUITS</text>
+  </g>
+</svg>

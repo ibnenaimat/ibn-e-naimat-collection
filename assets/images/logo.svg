@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <defs>
+    <linearGradient id="logoGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d97706"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Monogram Crest -->
+  <g transform="translate(10, 10)">
+    <!-- Hexagonal Crest Frame -->
+    <polygon points="30,0 60,17 60,52 30,69 0,52 0,17" fill="#0f172a" stroke="url(#logoGold)" stroke-width="2.5"/>
+    <polygon points="30,4 56,19 56,50 30,65 4,50 4,19" fill="none" stroke="url(#logoGold)" stroke-width="1" stroke-dasharray="3,2" opacity="0.7"/>
+    
+    <!-- Monogram letters 'IN' / Islamic geometric elegance -->
+    <text x="30" y="44" font-family="'Cinzel', 'Times New Roman', serif" font-size="24" font-weight="700" fill="url(#logoGold)" text-anchor="middle" letter-spacing="1">IN</text>
+    
+    <!-- Crown / Gem Top accent -->
+    <circle cx="30" cy="14" r="2.5" fill="#f59e0b"/>
+  </g>
+
+  <!-- Brand Typography -->
+  <g transform="translate(85, 20)">
+    <!-- Primary Name -->
+    <text x="0" y="24" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="21" font-weight="700" fill="#0f172a" letter-spacing="1.5">
+      IBN E NAIMAT
+    </text>
+    <!-- Subtitle / Tagline -->
+    <text x="1" y="44" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-size="10.5" font-weight="600" fill="#c59b27" letter-spacing="4">
+      COLLECTION
+    </text>
+  </g>
+</svg>

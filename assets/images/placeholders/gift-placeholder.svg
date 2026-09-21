@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="50%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="600" fill="#faf5ff"/>
+  <rect x="20" y="20" width="560" height="560" rx="24" fill="#ffffff" stroke="#e9d5ff" stroke-width="2"/>
+  <circle cx="300" cy="300" r="230" fill="#f3e8ff" opacity="0.6"/>
+
+  <!-- Gift Box Body -->
+  <rect x="180" y="260" width="240" height="200" rx="12" fill="url(#boxGrad)" filter="drop-shadow(0 20px 25px rgba(15, 23, 42, 0.3))"/>
+
+  <!-- Box Lid -->
+  <rect x="165" y="220" width="270" height="50" rx="10" fill="#312e81" stroke="#4338ca" stroke-width="1.5" filter="drop-shadow(0 4px 8px rgba(0,0,0,0.25))"/>
+
+  <!-- Vertical Ribbon -->
+  <rect x="275" y="220" width="50" height="240" fill="url(#ribbonGrad)"/>
+  <!-- Ribbon highlights -->
+  <line x1="285" y1="220" x2="285" y2="460" stroke="#fef3c7" stroke-width="1.5" opacity="0.6"/>
+  <line x1="315" y1="220" x2="315" y2="460" stroke="#b45309" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Horizontal Ribbon on Lid -->
+  <rect x="165" y="235" width="270" height="20" fill="url(#ribbonGrad)"/>
+
+  <!-- Luxury Ribbon Bow -->
+  <!-- Left Bow Loop -->
+  <path d="M 300 220 C 240 140 170 170 230 220 C 260 240 290 225 300 220 Z" fill="url(#ribbonGrad)" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.2))"/>
+  <!-- Right Bow Loop -->
+  <path d="M 300 220 C 360 140 430 170 370 220 C 340 240 310 225 300 220 Z" fill="url(#ribbonGrad)" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.2))"/>
+  <!-- Center Knot -->
+  <circle cx="300" cy="220" r="18" fill="#d97706" stroke="#fbbf24" stroke-width="2"/>
+
+  <!-- Hanging Ribbon Tails -->
+  <path d="M 292 230 Q 260 270 250 320 Q 265 315 285 305 Q 295 260 298 230 Z" fill="url(#ribbonGrad)"/>
+  <path d="M 308 230 Q 340 270 350 320 Q 335 315 315 305 Q 305 260 302 230 Z" fill="url(#ribbonGrad)"/>
+
+  <!-- Star sparkles -->
+  <g fill="#fbbf24">
+    <path d="M 170 160 L 175 175 L 190 180 L 175 185 L 170 200 L 165 185 L 150 180 L 165 175 Z" opacity="0.8"/>
+    <path d="M 430 150 L 433 162 L 445 165 L 433 168 L 430 180 L 427 168 L 415 165 L 427 162 Z" opacity="0.8"/>
+    <path d="M 410 420 L 413 430 L 423 433 L 413 436 L 410 445 L 407 436 L 397 433 L 407 430 Z" opacity="0.7"/>
+  </g>
+
+  <!-- Tag on box -->
+  <g transform="translate(340, 310) rotate(15)">
+    <polygon points="0,0 60,0 75,25 60,50 0,50" fill="#fef3c7" stroke="#d97706" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.15))"/>
+    <circle cx="15" cy="25" r="4" fill="#92400e"/>
+    <text x="45" y="30" font-family="'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">PREMIUM</text>
+  </g>
+
+  <!-- Bottom Badge -->
+  <g transform="translate(180, 535)">
+    <rect width="240" height="34" rx="17" fill="#4c1d95"/>
+    <text x="120" y="22" font-family="'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#fbbf24" text-anchor="middle" letter-spacing="1">LUXURY GIFT ITEMS</text>
+  </g>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <defs>
+    <linearGradient id="logoGoldWhite" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Monogram Crest -->
+  <g transform="translate(10, 10)">
+    <polygon points="30,0 60,17 60,52 30,69 0,52 0,17" fill="#1e293b" stroke="url(#logoGoldWhite)" stroke-width="2.5"/>
+    <polygon points="30,4 56,19 56,50 30,65 4,50 4,19" fill="none" stroke="url(#logoGoldWhite)" stroke-width="1" stroke-dasharray="3,2" opacity="0.7"/>
+    <text x="30" y="44" font-family="'Cinzel', 'Times New Roman', serif" font-size="24" font-weight="700" fill="url(#logoGoldWhite)" text-anchor="middle" letter-spacing="1">IN</text>
+    <circle cx="30" cy="14" r="2.5" fill="#fbbf24"/>
+  </g>
+
+  <!-- Brand Typography -->
+  <g transform="translate(85, 20)">
+    <text x="0" y="24" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="21" font-weight="700" fill="#ffffff" letter-spacing="1.5">
+      IBN E NAIMAT
+    </text>
+    <text x="1" y="44" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-size="10.5" font-weight="600" fill="#fbbf24" letter-spacing="4">
+      COLLECTION
+    </text>
+  </g>
+</svg>

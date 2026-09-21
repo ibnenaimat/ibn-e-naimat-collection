@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <!-- Primary SEO Meta Tags -->
+  <title>Ibn e Naimat Collection | Original Branded Watches, Pure Honey Nuts & Gadgets Pakistan</title>
+  <meta name="title" content="Ibn e Naimat Collection | Original Branded Watches, Pure Honey Nuts & Gadgets">
+  <meta name="description" content="Shop authentic branded watches, pure natural honey with dry fruits, mobile accessories, gadgets, and luxury gift items at Ibn e Naimat Collection. Nationwide delivery across Pakistan with easy WhatsApp ordering.">
+  <meta name="keywords" content="Ibn e Naimat Collection, branded watches Pakistan, honey nuts Pakistan, mobile accessories, gadgets, gift items, luxury watches, dry fruits in honey, WhatsApp shopping Pakistan">
+  <meta name="author" content="Ibn e Naimat Collection">
+  <meta name="theme-color" content="#0b0f19">
+
+  <!-- Open Graph / Social Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ibn e Naimat Collection | Authentic Watches, Honey Nuts & Gadgets">
+  <meta property="og:description" content="Curated original branded watches, organic honey nuts, mobile gadgets, and gift sets. Convenient ordering on WhatsApp with nationwide delivery.">
+  <meta property="og:image" content="assets/images/logo.svg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Main Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. TOP ANNOUNCEMENT BAR
+       ========================================================================= -->
+  <aside class="top-bar" aria-label="Store Announcement">
+    <div class="container top-bar-inner">
+      <div class="top-bar-notice">
+        <span class="top-bar-badge">Nationwide</span>
+        <span>Delivery Across All Pakistan • Orders Confirmed on WhatsApp</span>
+      </div>
+
+      <div class="top-bar-contact">
+        <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="top-bar-link wa-accent">
+          <i class="bi bi-whatsapp"></i> WhatsApp: 0330-2241340
+        </a>
+        <span class="top-bar-link">
+          <i class="bi bi-clock"></i> 10:00 AM – 11:00 PM
+        </span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       2. MAIN HEADER & NAVIGATION
+       ========================================================================= -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <!-- Brand Logo -->
+      <a href="#home" class="brand-logo" aria-label="Ibn e Naimat Collection Home">
+        <img src="assets/images/logo.svg" alt="Ibn e Naimat Collection Logo">
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="#home" class="nav-link active">Home</a></li>
+          <li class="nav-item"><a href="#shop" class="nav-link">Shop</a></li>
+          <li class="nav-item"><a href="#shop" class="nav-link" data-category-target="watches">Watches</a></li>
+          <li class="nav-item"><a href="#shop" class="nav-link" data-category-target="honey-nuts">Honey Nuts</a></li>
+          <li class="nav-item"><a href="#shop" class="nav-link" data-category-target="gadgets">Gadgets</a></li>
+          <li class="nav-item"><a href="#shop" class="nav-link" data-category-target="gifts">Gift Items</a></li>
+          <li class="nav-item"><a href="#how-to-order" class="nav-link">How to Order</a></li>
+          <li class="nav-item"><a href="#about" class="nav-link">About Us</a></li>
+          <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="nav-actions">
+        <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-wa header-wa-btn" title="Chat on WhatsApp">
+          <i class="bi bi-whatsapp"></i>
+          <span>Order: 03302241340</span>
+        </a>
+
+        <!-- Mobile Drawer Toggle Button -->
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Open Navigation Menu">
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MOBILE DRAWER MENU
+       ========================================================================= -->
+  <div class="mobile-drawer-overlay" id="drawerOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-header">
+      <img src="assets/images/logo.svg" alt="Ibn e Naimat Collection" style="height: 38px;">
+      <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <ul class="drawer-menu">
+      <li><a href="#home" class="drawer-link"><i class="bi bi-house-door"></i> Home</a></li>
+      <li><a href="#shop" class="drawer-link" data-category="all"><i class="bi bi-grid"></i> All Products</a></li>
+      <li><a href="#shop" class="drawer-link" data-category="watches"><i class="bi bi-watch"></i> Original Watches</a></li>
+      <li><a href="#shop" class="drawer-link" data-category="honey-nuts"><i class="bi bi-droplet-half"></i> Honey Nuts</a></li>
+      <li><a href="#shop" class="drawer-link" data-category="gadgets"><i class="bi bi-phone"></i> Mobile Accessories &amp; Gadgets</a></li>
+      <li><a href="#shop" class="drawer-link" data-category="gifts"><i class="bi bi-gift"></i> Luxury Gift Items</a></li>
+      <li><a href="#how-to-order" class="drawer-link"><i class="bi bi-info-circle"></i> How to Order</a></li>
+      <li><a href="#about" class="drawer-link"><i class="bi bi-building"></i> About Us</a></li>
+      <li><a href="#contact" class="drawer-link"><i class="bi bi-telephone"></i> Contact</a></li>
+    </ul>
+
+    <div class="drawer-footer">
+      <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-wa" style="width: 100%;">
+        <i class="bi bi-whatsapp"></i> Chat on WhatsApp
+      </a>
+      <p style="font-size: 0.75rem; color: #64748b; text-align: center; margin-top: 0.75rem;">
+        WhatsApp: 0330-2241340
+      </p>
+    </div>
+  </div>
+
+  <main>
+    <!-- =======================================================================
+         3. HERO SECTION
+         ======================================================================= -->
+    <section class="hero-section" id="home">
+      <div class="hero-pattern"></div>
+      <div class="container hero-grid">
+        <!-- Hero Left Column: Copy & CTAs -->
+        <div class="hero-content">
+          <div class="hero-tag">
+            <i class="bi bi-gem"></i> Curated Premium Collection
+          </div>
+          
+          <h1 class="hero-title">
+            Authentic Elegance, <span>Pure Quality</span> &amp; Modern Lifestyle.
+          </h1>
+
+          <p class="hero-desc">
+            Welcome to <strong>Ibn e Naimat Collection</strong>. Discover original branded watches, pure natural honey with rich dry fruits, high-grade mobile gadgets, and memorable gift items crafted for discerning tastes.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#shop" class="btn btn-gold">
+              <i class="bi bi-bag-check"></i> Explore Collection
+            </a>
+            <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-wa">
+              <i class="bi bi-whatsapp"></i> Chat on WhatsApp (03302241340)
+            </a>
+          </div>
+
+          <!-- Hero Trust Pillars (Strictly Honest Claims) -->
+          <div class="hero-badges">
+            <div class="hero-badge-item">
+              <div class="hero-badge-icon"><i class="bi bi-patch-check"></i></div>
+              <div class="hero-badge-text">
+                <h4>Inspected Items</h4>
+                <p>100% Genuine Quality</p>
+              </div>
+            </div>
+
+            <div class="hero-badge-item">
+              <div class="hero-badge-icon"><i class="bi bi-box-seam"></i></div>
+              <div class="hero-badge-text">
+                <h4>Secure Packaging</h4>
+                <p>Delivered Safe &amp; Sound</p>
+              </div>
+            </div>
+
+            <div class="hero-badge-item">
+              <div class="hero-badge-icon"><i class="bi bi-truck"></i></div>
+              <div class="hero-badge-text">
+                <h4>All Pakistan</h4>
+                <p>Courier with Tracking</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Right Column: Showcase Card -->
+        <div class="hero-visual">
+          <div class="hero-card-stack">
+            <img src="assets/images/placeholders/watch-placeholder.svg" alt="Ibn e Naimat Featured Watch" class="hero-showcase-img">
+            
+            <div class="hero-floating-card">
+              <div class="hero-floating-icon">
+                <i class="bi bi-whatsapp"></i>
+              </div>
+              <div>
+                <div class="hero-floating-title">Quick WhatsApp Ordering</div>
+                <div class="hero-floating-sub">Send item code to 03302241340</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         4. CATEGORIES SECTION
+         ======================================================================= -->
+    <section class="categories-section" id="categories">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag"><i class="bi bi-collection"></i> Product Categories</div>
+          <h2 class="section-title">Explore Our Core Niches</h2>
+          <p class="section-subtitle">
+            Choose from our specialized selections, each maintained with the highest standards of authenticity and customer satisfaction.
+          </p>
+        </div>
+
+        <!-- Dynamic Category Cards Rendered via app.js -->
+        <div class="categories-grid" id="categoriesGrid">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         5. SHOP / FEATURED PRODUCTS SECTION
+         ======================================================================= -->
+    <section class="shop-section" id="shop">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag"><i class="bi bi-shop"></i> Store Catalog</div>
+          <h2 class="section-title">Featured Products</h2>
+          <p class="section-subtitle">
+            Browse our current catalog. Each product can be ordered instantly on WhatsApp with transparent advance payment confirmation.
+          </p>
+        </div>
+
+        <!-- Catalog Controls (Category Tabs + Instant Search) -->
+        <div class="catalog-controls">
+          <div class="category-tabs" id="categoryTabs">
+            <!-- Rendered by app.js -->
+          </div>
+
+          <div class="search-box">
+            <i class="bi bi-search search-icon"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by name or code..." aria-label="Search products">
+          </div>
+        </div>
+
+        <!-- Products Grid Rendered via app.js -->
+        <div class="products-grid" id="productsGrid">
+          <!-- Populated dynamically from products.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         6. HOW TO ORDER SECTION (TRANSPARENT ADVANCE PAYMENT FLOW)
+         ======================================================================= -->
+    <section class="how-to-order-section" id="how-to-order">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag"><i class="bi bi-lightning-charge"></i> Ordering Process</div>
+          <h2 class="section-title">How To Place Your Order</h2>
+          <p class="section-subtitle">
+            Simple, honest, and direct. Here is exactly how your order is processed from selection to your doorstep.
+          </p>
+        </div>
+
+        <div class="order-steps-grid">
+          <!-- Step 1 -->
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="step-icon-wrap"><i class="bi bi-search"></i></div>
+            <h3 class="step-title">Select Item</h3>
+            <p class="step-desc">
+              Browse our collection of branded watches, honey nuts, gadgets, or gift items and choose what you like.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="step-icon-wrap"><i class="bi bi-whatsapp"></i></div>
+            <h3 class="step-title">Order on WhatsApp</h3>
+            <p class="step-desc">
+              Click the green <strong>"Order on WhatsApp"</strong> button. The item code, name, and price will automatically populate.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="step-icon-wrap"><i class="bi bi-credit-card-2-front"></i></div>
+            <h3 class="step-title">Confirm &amp; Advance Payment</h3>
+            <p class="step-desc">
+              Our team confirms stock availability and shares advance payment details (Bank Transfer, JazzCash, or Easypaisa).
+            </p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <div class="step-icon-wrap"><i class="bi bi-box2-heart"></i></div>
+            <h3 class="step-title">Nationwide Delivery</h3>
+            <p class="step-desc">
+              Your parcel is carefully packed with protective cushioning and dispatched via reliable courier with tracking.
+            </p>
+          </div>
+        </div>
+
+        <!-- Advance Payment Notice Box -->
+        <div class="advance-payment-notice">
+          <div class="advance-notice-icon">
+            <i class="bi bi-shield-lock"></i>
+          </div>
+          <div class="advance-notice-content">
+            <h4>Payment &amp; Dispatch Transparency</h4>
+            <p>
+              To ensure genuine order fulfillment and eliminate parcel returns, orders are confirmed with advance payment. You will receive a direct WhatsApp receipt and continuous parcel tracking updates until safe arrival at your home or office anywhere in Pakistan.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         7. ABOUT US SECTION
+         ======================================================================= -->
+    <section class="about-section" id="about">
+      <div class="container about-grid">
+        <div class="about-content">
+          <div class="section-tag"><i class="bi bi-award"></i> Who We Are</div>
+          <h2>Building Trust Through Genuine Products &amp; Honest Care</h2>
+          <p class="about-lead">
+            Ibn e Naimat Collection was founded with a straightforward philosophy: delivering real value, authentic goods, and genuine customer respect.
+          </p>
+          <p class="about-text">
+            In an online market often clouded by misleading photos and exaggerated promises, we take pride in offering exactly what is presented. Whether you are investing in an original branded watch, nourishing your family with pure honey and dry fruits, or selecting a meaningful gift for a loved one, we personally inspect every single product before it leaves our hands.
+          </p>
+
+          <div class="about-features">
+            <div class="about-feature-item">
+              <i class="bi bi-check-circle-fill about-feature-icon"></i>
+              <div>
+                <div class="about-feature-title">Guaranteed Originality</div>
+                <div class="about-feature-desc">All watches &amp; gadgets are 100% genuine.</div>
+              </div>
+            </div>
+
+            <div class="about-feature-item">
+              <i class="bi bi-check-circle-fill about-feature-icon"></i>
+              <div>
+                <div class="about-feature-title">100% Pure Honey</div>
+                <div class="about-feature-desc">Natural honey infused with premium dry fruits.</div>
+              </div>
+            </div>
+
+            <div class="about-feature-item">
+              <i class="bi bi-check-circle-fill about-feature-icon"></i>
+              <div>
+                <div class="about-feature-title">Personal Attention</div>
+                <div class="about-feature-desc">Direct WhatsApp communication with real humans.</div>
+              </div>
+            </div>
+
+            <div class="about-feature-item">
+              <i class="bi bi-check-circle-fill about-feature-icon"></i>
+              <div>
+                <div class="about-feature-title">Protective Packaging</div>
+                <div class="about-feature-desc">Bubble-wrapped and safely sealed for shipment.</div>
+              </div>
+            </div>
+          </div>
+
+          <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-primary">
+            <i class="bi bi-chat-dots"></i> Speak With Us on WhatsApp
+          </a>
+        </div>
+
+        <div class="about-card-banner">
+          <div class="about-quote">
+            "Honesty in trade brings enduring blessing. We believe in building lasting relationships with our customers across Pakistan."
+          </div>
+          
+          <div class="about-promise-box">
+            <h4><i class="bi bi-patch-check-fill" style="color: #fbbf24;"></i> Our Sincere Promise</h4>
+            <p>
+              We do not use inflated artificial discounts or fabricated statistics. If you ever have questions about product sizing, specifications, or packaging, just message us on WhatsApp and we will gladly share live photos or videos of the actual item prior to dispatch.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         8. CONTACT & INQUIRY SECTION
+         ======================================================================= -->
+    <section class="contact-section" id="contact">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag"><i class="bi bi-headset"></i> Get In Touch</div>
+          <h2 class="section-title">We Are Here To Assist You</h2>
+          <p class="section-subtitle">
+            Have an inquiry about product availability, bulk gift orders, or delivery timing? Reach out to us directly.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <!-- Left: Contact Details Card -->
+          <div class="contact-info-card">
+            <div class="contact-header">
+              <h3>Ibn e Naimat Collection</h3>
+              <p>Direct contact and support for all inquiries and order confirmations.</p>
+            </div>
+
+            <div class="contact-detail-list">
+              <!-- WhatsApp -->
+              <div class="contact-detail-item">
+                <div class="contact-icon wa"><i class="bi bi-whatsapp"></i></div>
+                <div class="contact-meta">
+                  <h5>Official WhatsApp (Primary)</h5>
+                  <a href="https://wa.me/923302241340" target="_blank" rel="noopener">0330-2241340</a>
+                  <div style="font-size: 0.75rem; color: #16a34a; font-weight: 600; margin-top: 2px;">
+                    Active for Instant Order Confirmation
+                  </div>
+                </div>
+              </div>
+
+              <!-- Phone Call -->
+              <div class="contact-detail-item">
+                <div class="contact-icon"><i class="bi bi-telephone"></i></div>
+                <div class="contact-meta">
+                  <h5>Direct Phone</h5>
+                  <a href="tel:03302241340">0330 2241340</a>
+                </div>
+              </div>
+
+              <!-- Delivery Coverage -->
+              <div class="contact-detail-item">
+                <div class="contact-icon"><i class="bi bi-geo-alt"></i></div>
+                <div class="contact-meta">
+                  <h5>Delivery Service Area</h5>
+                  <p>All Major &amp; Sub-Cities Across Pakistan</p>
+                  <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">
+                    Karachi, Lahore, Islamabad, Rawalpindi, Faisalabad, Multan, Peshawar, Quetta &amp; Nationwide
+                  </div>
+                </div>
+              </div>
+
+              <!-- Working Hours -->
+              <div class="contact-detail-item">
+                <div class="contact-icon"><i class="bi bi-clock"></i></div>
+                <div class="contact-meta">
+                  <h5>Response Hours</h5>
+                  <p>Monday – Sunday: 10:00 AM – 11:00 PM</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-wa" style="width: 100%;">
+              <i class="bi bi-whatsapp"></i> Message 03302241340 Directly
+            </a>
+          </div>
+
+          <!-- Right: WhatsApp Direct Inquiry Form -->
+          <div class="contact-form-card">
+            <h3 class="form-title">Send a Quick Inquiry</h3>
+            <p class="form-desc">Fill out your details below and your message will open directly in WhatsApp for quick conversation.</p>
+
+            <form id="inquiryForm">
+              <div class="form-group">
+                <label for="inquiryName" class="form-label">Your Full Name</label>
+                <input type="text" id="inquiryName" class="form-input" placeholder="e.g. Muhammad Ali" required>
+              </div>
+
+              <div class="form-group">
+                <label for="inquiryCity" class="form-label">City / Location in Pakistan</label>
+                <input type="text" id="inquiryCity" class="form-input" placeholder="e.g. Lahore, Karachi, Islamabad" required>
+              </div>
+
+              <div class="form-group">
+                <label for="inquiryMessage" class="form-label">Your Message or Question</label>
+                <textarea id="inquiryMessage" class="form-textarea" placeholder="Ask about product availability, custom gift packaging, or delivery details..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-wa" style="width: 100%;">
+                <i class="bi bi-whatsapp"></i> Send Inquiry via WhatsApp
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       9. FOOTER SECTION
+       ========================================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Bio -->
+        <div class="footer-brand">
+          <img src="assets/images/logo-white.svg" alt="Ibn e Naimat Collection">
+          <p class="footer-bio">
+            Ibn e Naimat Collection provides original branded watches, pure honey nuts, mobile gadgets, and curated luxury gift sets with personal customer care across Pakistan.
+          </p>
+          <div class="footer-trust-pill">
+            <i class="bi bi-shield-check"></i> Authentic &amp; Inspected Products
+          </div>
+        </div>
+
+        <!-- Quick Navigation -->
+        <div>
+          <h4 class="footer-title">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#home" class="footer-link">Home</a></li>
+            <li><a href="#shop" class="footer-link">Shop All Products</a></li>
+            <li><a href="#how-to-order" class="footer-link">How to Order</a></li>
+            <li><a href="#about" class="footer-link">About Us</a></li>
+            <li><a href="#contact" class="footer-link">Contact &amp; Location</a></li>
+          </ul>
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <h4 class="footer-title">Product Categories</h4>
+          <ul class="footer-links">
+            <li><a href="#shop" class="footer-link" data-category-target="watches">Original Branded Watches</a></li>
+            <li><a href="#shop" class="footer-link" data-category-target="honey-nuts">Premium Honey Nuts</a></li>
+            <li><a href="#shop" class="footer-link" data-category-target="gadgets">Mobile Accessories &amp; Gadgets</a></li>
+            <li><a href="#shop" class="footer-link" data-category-target="gifts">Luxury Gift Items</a></li>
+          </ul>
+        </div>
+
+        <!-- Direct Contact -->
+        <div>
+          <h4 class="footer-title">Order &amp; Support</h4>
+          <div class="footer-contact-item">
+            <i class="bi bi-whatsapp"></i>
+            <div>
+              <strong>WhatsApp Orders:</strong><br>
+              <a href="https://wa.me/923302241340" target="_blank" rel="noopener" style="color: var(--wa-green); font-weight: 700;">
+                0330 2241340
+              </a>
+            </div>
+          </div>
+          <div class="footer-contact-item">
+            <i class="bi bi-truck"></i>
+            <div>
+              <strong>Delivery:</strong><br>
+              All Major Cities Across Pakistan
+            </div>
+          </div>
+          <div class="footer-contact-item">
+            <i class="bi bi-credit-card"></i>
+            <div>
+              <strong>Order Confirmation:</strong><br>
+              WhatsApp &amp; Advance Payment
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <div>
+          &copy; <span id="currentYear">2026</span> <strong>Ibn e Naimat Collection</strong>. All Rights Reserved.
+        </div>
+        <div>
+          Designed for Pakistani E-Commerce with Integrity &amp; Quality.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       10. QUICK VIEW MODAL
+       ========================================================================= -->
+  <div class="modal-overlay" id="quickViewModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-container">
+      <button class="modal-close-btn" id="modalClose" aria-label="Close product details">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      <div class="modal-body" id="modalContent">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       11. PERSISTENT FLOATING WHATSAPP BUTTON
+       ========================================================================= -->
+  <aside class="floating-wa-btn" id="floatingWaBtn" role="button" aria-label="Order on WhatsApp">
+    <i class="bi bi-whatsapp"></i>
+    <span class="floating-wa-tooltip">Order on WhatsApp: 03302241340</span>
+  </aside>
+
+  <!-- =========================================================================
+       12. SCRIPTS
+       ========================================================================= -->
+  <script src="js/config.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Keep copyright year current
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

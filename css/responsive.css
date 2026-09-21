@@ -1,0 +1,264 @@
+/* ==========================================================================
+   IBN E NAIMAT COLLECTION - RESPONSIVE STYLESHEET
+   Mobile-First & Cross-Device Optimization (Mobile, Tablet, Desktop)
+   ========================================================================== */
+
+/* --- 1. TABLET & MEDIUM DESKTOP (Max width: 1024px) --- */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-desc {
+    margin: 0 auto 2rem auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-badges {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .hero-visual {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .order-steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+/* --- 2. TABLET PORTRAIT (Max width: 768px) --- */
+@media (max-width: 768px) {
+  .top-bar-inner {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .top-bar-contact {
+    display: none; /* Keep announcement bar slim on mobile */
+  }
+
+  .nav-menu {
+    display: none; /* Replaced by mobile drawer */
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
+  .header-wa-btn span {
+    display: none; /* Show only WhatsApp icon to save header space */
+  }
+
+  .header-wa-btn {
+    padding: 0.55rem 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  .hero-section {
+    padding: 3.5rem 0 3rem 0;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-badges {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .section-title {
+    font-size: 1.85rem;
+  }
+
+  .catalog-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .category-tabs {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .product-image-box {
+    height: 200px;
+    padding: 0.75rem;
+  }
+
+  .product-content {
+    padding: 1rem;
+  }
+
+  .product-title {
+    font-size: 1rem;
+    min-height: 2.4rem;
+  }
+
+  .product-price {
+    font-size: 1.1rem;
+  }
+
+  .product-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .product-wa-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.65rem;
+  }
+
+  .advance-payment-notice {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .advance-notice-icon {
+    margin: 0 auto;
+  }
+
+  /* Modal on Mobile */
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-img-col {
+    padding: 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .modal-img-col img {
+    max-height: 200px;
+  }
+
+  .modal-info-col {
+    padding: 1.5rem;
+  }
+
+  .modal-title {
+    font-size: 1.25rem;
+  }
+
+  .modal-price {
+    font-size: 1.5rem;
+  }
+
+  .about-features {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .floating-wa-btn {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 52px;
+    height: 52px;
+    font-size: 1.5rem;
+  }
+
+  .floating-wa-tooltip {
+    display: none; /* Hide tooltip on touch devices */
+  }
+}
+
+/* --- 3. SMALL MOBILE PHONES (Max width: 480px) --- */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .hero-floating-card {
+    position: static;
+    margin-top: 1rem;
+  }
+
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr; /* Single column on compact screens for full clarity */
+  }
+
+  .order-steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-logo img {
+    height: 38px;
+  }
+
+  .nav-container {
+    height: 68px;
+  }
+}
