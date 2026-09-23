@@ -1,14 +1,31 @@
 /**
- * Ibn e Naimat Collection - Homepage Application Logic
- * Pure, fast, modular Vanilla JavaScript
+ * Ibn e Naimat Collection - Dedicated Shop / Catalog Application Logic
+ * Pure Vanilla JavaScript with dynamic URL routing and sorting
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM Elements
-  const featuredGrid = document.getElementById('featuredGrid');
+  // State
+  let activeCategory = 'all';
+  let activeSort = 'featured';
+  let searchQuery = '';
+
+  // DOM References
+  const shopCategoryPills = document.getElementById('shopCategoryPills');
+  const shopProductsGrid = document.getElementById('shopProductsGrid');
+  const shopSearchInput = document.getElementById('shopSearchInput');
+  const shopSortSelect = document.getElementById('shopSortSelect');
+  const shopHeroTag = document.getElementById('shopHeroTag');
+  const shopHeroTitle = document.getElementById('shopHeroTitle');
+  const shopHeroDesc = document.getElementById('shopHeroDesc');
+  const shopCountText = document.getElementById('shopCountText');
+  const breadcrumbCategory = document.getElementById('breadcrumbCategory');
+
+  // Modal References
   const quickViewModal = document.getElementById('quickViewModal');
   const modalScrollArea = document.getElementById('modalScrollArea');
   const modalClose = document.getElementById('modalClose');
+
+  // Mobile Drawer
   const mobileToggle = document.getElementById('mobileToggle');
   const mobileDrawer = document.getElementById('mobileDrawer');
   const drawerOverlay = document.getElementById('drawerOverlay');
@@ -16,15 +33,128 @@ document.addEventListener('DOMContentLoaded', () => {
   const siteHeader = document.querySelector('.site-header');
   const floatingWaBtn = document.getElementById('floatingWaBtn');
 
-  // --- 1. RENDER STRICTLY 4-6 FEATURED PRODUCTS ON HOMEPAGE ---
-  function renderFeaturedProducts() {
-    if (!featuredGrid || !window.PRODUCTS) return;
+  // --- 1. DETERMINE INITIAL CATEGORY FROM URL ---
+  function getCategoryFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const catQuery = urlParams.get('category');
+    if (catQuery && window.CATEGORIES && window.CATEGORIES.some(c => c.id === catQuery)) {
+      return catQuery;
+    }
+    const hash = window.location.hash.replace('#', '').trim();
+    if (hash && window.CATEGORIES && window.CATEGORIES.some(c => c.id === hash)) {
+      return hash;
+    }
+    return 'all';
+  }
 
-    // Pick strictly the featured items (max 6)
-    const featuredItems = window.PRODUCTS.filter(p => p.featured).slice(0, 6);
+  // --- 2. RENDER CATEGORY PILLS ---
+  function renderCategoryPills() {
+    if (!shopCategoryPills || !window.CATEGORIES) return;
 
-    featuredGrid.innerHTML = featuredItems.map((product, idx) => `
-      <div class="editorial-card reveal-on-scroll stagger-${(idx % 6) + 1}" data-id="${product.id}">
+    shopCategoryPills.innerHTML = window.CATEGORIES.map(cat => {
+      const count = cat.id === 'all' 
+        ? window.PRODUCTS.length 
+        : window.PRODUCTS.filter(p => p.category === cat.id).length;
+
+      return `
+        <button class="collection-pill ${cat.id === activeCategory ? 'active' : ''}" data-category="${cat.id}">
+          ${cat.name} <span class="pill-count">(${count})</span>
+        </button>
+      `;
+    }).join('');
+
+    shopCategoryPills.querySelectorAll('.collection-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const catId = btn.getAttribute('data-category');
+        selectCategory(catId, true);
+      });
+    });
+  }
+
+  // --- 3. UPDATE HEADER HERO DETAILS ---
+  function updateShopHeader() {
+    const currentCatObj = window.CATEGORIES.find(c => c.id === activeCategory);
+
+    if (activeCategory === 'all') {
+      if (shopHeroTag) shopHeroTag.textContent = 'Curated Luxury Catalog';
+      if (shopHeroTitle) shopHeroTitle.innerHTML = 'The Complete <em>Collection</em>';
+      if (shopHeroDesc) shopHeroDesc.textContent = 'Explore our verified original branded timepieces, museum-grade Islamic calligraphy frames, high-speed mobile accessories, and pure honey nuts.';
+      if (breadcrumbCategory) breadcrumbCategory.textContent = 'All Collections';
+    } else if (currentCatObj) {
+      if (shopHeroTag) shopHeroTag.textContent = currentCatObj.badge || 'Curated Collection';
+      if (shopHeroTitle) shopHeroTitle.innerHTML = `${currentCatObj.name} <em>Showcase</em>`;
+      if (shopHeroDesc) shopHeroDesc.textContent = currentCatObj.description || currentCatObj.tagline || '';
+      if (breadcrumbCategory) breadcrumbCategory.textContent = currentCatObj.name;
+    }
+  }
+
+  // --- 4. FILTER, SORT & RENDER PRODUCTS ---
+  function renderCatalog() {
+    if (!shopProductsGrid || !window.PRODUCTS) return;
+
+    let items = [...window.PRODUCTS];
+
+    // Filter by category
+    if (activeCategory !== 'all') {
+      items = items.filter(p => p.category === activeCategory);
+    }
+
+    // Filter by search query
+    if (searchQuery.trim() !== '') {
+      const q = searchQuery.toLowerCase().trim();
+      items = items.filter(p => 
+        p.name.toLowerCase().includes(q) ||
+        p.categoryName.toLowerCase().includes(q) ||
+        p.shortDesc.toLowerCase().includes(q) ||
+        (p.id && p.id.toLowerCase().includes(q))
+      );
+    }
+
+    // Apply sorting
+    if (activeSort === 'price-asc') {
+      items.sort((a, b) => a.price - b.price);
+    } else if (activeSort === 'price-desc') {
+      items.sort((a, b) => b.price - a.price);
+    } else if (activeSort === 'name-asc') {
+      items.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      // 'featured': featured items first, then original array order
+      items.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+    }
+
+    // Update count badge
+    if (shopCountText) {
+      shopCountText.textContent = `Showing ${items.length} ${items.length === 1 ? 'item' : 'items'}`;
+    }
+
+    // Empty state
+    if (items.length === 0) {
+      shopProductsGrid.innerHTML = `
+        <div class="editorial-empty-state" style="grid-column: 1 / -1;">
+          <i class="bi bi-search"></i>
+          <h3 style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 0.5rem; color: #ffffff;">No Products Found</h3>
+          <p class="text-muted" style="color: #a1a1aa; max-width: 480px; margin: 0 auto 1.5rem auto;">
+            We could not find any items matching your selected criteria. Try resetting the filters or searching for something else.
+          </p>
+          <button class="btn btn-gold-action" id="resetCatalogFiltersBtn">
+            Reset All Filters
+          </button>
+        </div>
+      `;
+
+      document.getElementById('resetCatalogFiltersBtn')?.addEventListener('click', () => {
+        if (shopSearchInput) shopSearchInput.value = '';
+        searchQuery = '';
+        if (shopSortSelect) shopSortSelect.value = 'featured';
+        activeSort = 'featured';
+        selectCategory('all', true);
+      });
+      return;
+    }
+
+    // Render cards with smooth staggered animation
+    shopProductsGrid.innerHTML = items.map((product, idx) => `
+      <div class="editorial-card card-entry-anim" style="animation-delay: ${(idx % 9) * 0.045}s;" data-id="${product.id}">
         <div class="editorial-card-media">
           ${product.badge ? `<span class="editorial-card-badge">${product.badge}</span>` : ''}
           <img src="${product.image}" alt="${product.name}" loading="lazy">
@@ -43,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <div class="editorial-card-footer">
             <div class="editorial-price-box">
-              <span class="editorial-price-label">Price in Pakistan</span>
+              <span class="editorial-price-label">Price</span>
               <span class="editorial-price">${window.CONFIG.currency.format(product.price)}</span>
             </div>
 
@@ -56,21 +186,21 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
 
     // Attach card event listeners
-    featuredGrid.querySelectorAll('.order-wa-action').forEach(btn => {
+    shopProductsGrid.querySelectorAll('.order-wa-action').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         orderOnWhatsApp(btn.getAttribute('data-id'));
       });
     });
 
-    featuredGrid.querySelectorAll('.view-detail-action').forEach(btn => {
+    shopProductsGrid.querySelectorAll('.view-detail-action').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         openQuickView(btn.getAttribute('data-id'));
       });
     });
 
-    featuredGrid.querySelectorAll('.editorial-card').forEach(card => {
+    shopProductsGrid.querySelectorAll('.editorial-card').forEach(card => {
       card.addEventListener('click', (e) => {
         if (e.target.closest('.order-wa-action')) return;
         openQuickView(card.getAttribute('data-id'));
@@ -78,7 +208,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 2. WHATSAPP ORDER AUTOMATION ---
+  // --- 5. SELECT CATEGORY HANDLER ---
+  function selectCategory(catId, updateUrl = true) {
+    activeCategory = catId;
+
+    if (shopCategoryPills) {
+      shopCategoryPills.querySelectorAll('.collection-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-category') === catId);
+      });
+    }
+
+    if (updateUrl && window.history && window.history.pushState) {
+      const newUrl = catId === 'all' 
+        ? window.location.pathname 
+        : `${window.location.pathname}?category=${catId}`;
+      window.history.pushState({ category: catId }, '', newUrl);
+    }
+
+    updateShopHeader();
+    renderCatalog();
+  }
+
+  // --- 6. WHATSAPP ORDER AUTOMATION ---
   function orderOnWhatsApp(productId) {
     const product = window.PRODUCTS.find(p => p.id === productId);
     if (!product) return;
@@ -88,14 +239,14 @@ document.addEventListener('DOMContentLoaded', () => {
     window.open(waUrl, '_blank');
   }
 
-  // --- 3. LUXURY PRODUCT DETAIL EXPERIENCE (MODAL & RELATED ITEMS) ---
+  // --- 7. LUXURY QUICK VIEW MODAL ---
   function openQuickView(productId) {
     const product = window.PRODUCTS.find(p => p.id === productId);
     if (!product || !quickViewModal || !modalScrollArea) return;
 
-    // Find 3 related items in same category or watches
+    // Find related items
     const related = window.PRODUCTS
-      .filter(p => p.id !== product.id && (p.category === product.category || p.category === 'watches'))
+      .filter(p => p.id !== product.id && (p.category === product.category || p.featured))
       .slice(0, 3);
 
     const specsListHtml = product.specs && product.specs.length > 0 
@@ -202,7 +353,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- 4. MOBILE DRAWER NAVIGATION ---
+  // --- 8. SEARCH & SORT LISTENERS ---
+  if (shopSearchInput) {
+    shopSearchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderCatalog();
+    });
+  }
+
+  if (shopSortSelect) {
+    shopSortSelect.addEventListener('change', (e) => {
+      activeSort = e.target.value;
+      renderCatalog();
+    });
+  }
+
+  // Popstate for browser back/forward navigation
+  window.addEventListener('popstate', () => {
+    activeCategory = getCategoryFromUrl();
+    renderCategoryPills();
+    updateShopHeader();
+    renderCatalog();
+  });
+
+  // --- 9. MOBILE DRAWER NAVIGATION ---
   function openDrawer() {
     mobileDrawer?.classList.add('active');
     drawerOverlay?.classList.add('active');
@@ -219,26 +393,20 @@ document.addEventListener('DOMContentLoaded', () => {
   drawerClose?.addEventListener('click', closeDrawer);
   drawerOverlay?.addEventListener('click', closeDrawer);
 
-  document.querySelectorAll('.drawer-link').forEach(link => {
-    link.addEventListener('click', () => {
-      closeDrawer();
-    });
-  });
-
-  // --- 5. SCROLL HEADER EFFECT ---
+  // --- 10. SCROLL HEADER EFFECT ---
   window.addEventListener('scroll', () => {
     if (!siteHeader) return;
     siteHeader.classList.toggle('scrolled', window.scrollY > 40);
   });
 
-  // --- 6. FLOATING WHATSAPP BUTTON ---
+  // --- 11. FLOATING WHATSAPP BUTTON ---
   floatingWaBtn?.addEventListener('click', () => {
     const waText = window.CONFIG.whatsapp.defaultInquiryMessage();
     const waUrl = `https://wa.me/${window.CONFIG.whatsapp.international}?text=${encodeURIComponent(waText)}`;
     window.open(waUrl, '_blank');
   });
 
-  // --- 7. REFINED SCROLL REVEAL (INTERSECTION OBSERVER) ---
+  // --- 12. REFINED SCROLL REVEAL (INTERSECTION OBSERVER) ---
   function initScrollReveal() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-visible'));
@@ -266,6 +434,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Initialize
-  renderFeaturedProducts();
+  activeCategory = getCategoryFromUrl();
+  renderCategoryPills();
+  updateShopHeader();
+  renderCatalog();
   initScrollReveal();
 });

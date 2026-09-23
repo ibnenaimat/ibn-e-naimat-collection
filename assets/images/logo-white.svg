@@ -1,27 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 70" width="340" height="70">
   <defs>
-    <linearGradient id="logoGoldWhite" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fbbf24"/>
-      <stop offset="50%" stop-color="#f59e0b"/>
-      <stop offset="100%" stop-color="#d97706"/>
+    <linearGradient id="logoChampagneWhite" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4af37"/>
+      <stop offset="50%" stop-color="#f3e5ab"/>
+      <stop offset="100%" stop-color="#b39772"/>
     </linearGradient>
   </defs>
 
-  <!-- Monogram Crest -->
-  <g transform="translate(10, 10)">
-    <polygon points="30,0 60,17 60,52 30,69 0,52 0,17" fill="#1e293b" stroke="url(#logoGoldWhite)" stroke-width="2.5"/>
-    <polygon points="30,4 56,19 56,50 30,65 4,50 4,19" fill="none" stroke="url(#logoGoldWhite)" stroke-width="1" stroke-dasharray="3,2" opacity="0.7"/>
-    <text x="30" y="44" font-family="'Cinzel', 'Times New Roman', serif" font-size="24" font-weight="700" fill="url(#logoGoldWhite)" text-anchor="middle" letter-spacing="1">IN</text>
-    <circle cx="30" cy="14" r="2.5" fill="#fbbf24"/>
+  <!-- Crest Monogram Emblem -->
+  <g transform="translate(6, 6)">
+    <path d="M 28 2 L 54 18 L 54 44 L 28 58 L 2 44 L 2 18 Z" fill="#171719" stroke="url(#logoChampagneWhite)" stroke-width="1.5"/>
+    <path d="M 28 7 L 49 20 L 49 41 L 28 52 L 7 41 L 7 20 Z" fill="none" stroke="url(#logoChampagneWhite)" stroke-width="0.75" stroke-dasharray="2,2" opacity="0.7"/>
+    <text x="28" y="37" font-family="'Cinzel', Georgia, serif" font-size="20" font-weight="700" fill="url(#logoChampagneWhite)" text-anchor="middle" letter-spacing="1">IN</text>
+    <circle cx="28" cy="13" r="1.5" fill="#f3e5ab"/>
   </g>
 
-  <!-- Brand Typography -->
-  <g transform="translate(85, 20)">
-    <text x="0" y="24" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="21" font-weight="700" fill="#ffffff" letter-spacing="1.5">
+  <!-- Typographic Wordmark -->
+  <g transform="translate(74, 15)">
+    <text x="0" y="24" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="19" font-weight="700" fill="#ffffff" letter-spacing="2">
       IBN E NAIMAT
     </text>
-    <text x="1" y="44" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-size="10.5" font-weight="600" fill="#fbbf24" letter-spacing="4">
-      COLLECTION
+    <text x="1" y="42" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="600" fill="#d4af37" letter-spacing="5">
+      COLLECTION • LUXURY
     </text>
   </g>
 </svg>

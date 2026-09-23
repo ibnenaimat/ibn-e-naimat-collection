@@ -1,231 +1,407 @@
 /* ==========================================================================
-   IBN E NAIMAT COLLECTION - RESPONSIVE STYLESHEET
-   Mobile-First & Cross-Device Optimization (Mobile, Tablet, Desktop)
+   IBN E NAIMAT COLLECTION - LUXURY RESPONSIVE STYLESHEET
+   Bespoke Mobile, Tablet, and Desktop Experience
    ========================================================================== */
 
-/* --- 1. TABLET & MEDIUM DESKTOP (Max width: 1024px) --- */
+/* --- 1. LARGE DESKTOP & WIDE SCREENS (Min width: 1440px) --- */
+@media (min-width: 1440px) {
+  .hero-title {
+    font-size: 4rem;
+  }
+
+  .hero-watch-display {
+    max-width: 620px;
+  }
+
+  .editorial-card-media {
+    height: 360px;
+  }
+}
+
+/* --- 2. TABLET LANDSCAPE & MEDIUM LAPTOPS (Max width: 1024px) --- */
 @media (max-width: 1024px) {
   .hero-grid {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 3.5rem;
     text-align: center;
   }
 
+  .hero-overline {
+    justify-content: center;
+  }
+
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 3rem;
   }
 
   .hero-desc {
-    margin: 0 auto 2rem auto;
+    margin: 0 auto 2.5rem auto;
   }
 
   .hero-actions {
     justify-content: center;
   }
 
-  .hero-badges {
-    max-width: 600px;
+  .hero-pillars {
+    max-width: 650px;
     margin: 0 auto;
   }
 
-  .hero-visual {
-    max-width: 480px;
+  .hero-visual-frame {
+    max-width: 500px;
     margin: 0 auto;
+  }
+
+  .spotlight-box {
+    grid-template-columns: 1fr;
+  }
+
+  .spotlight-image-col {
+    border-right: none;
+    border-bottom: 1px solid var(--border-hairline);
+    padding: 2.5rem 1.5rem;
+  }
+
+  .spotlight-info-col {
+    padding: 2.5rem 2rem;
+  }
+
+  .editorial-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
   }
 
   .categories-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
+    gap: 1.5rem;
   }
 
-  .products-grid {
+  .why-us-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
 
-  .order-steps-grid {
+  .reviews-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
 
-  .about-grid {
+  .secondary-showcase-row {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
   }
 
-  .contact-grid {
+  .honey-nuts-banner {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    text-align: center;
+    gap: 2rem;
   }
 
-  .footer-grid {
+  .honey-nuts-highlights {
+    justify-content: center;
+  }
+
+  .brand-story-grid {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  .roadmap-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 2.5rem;
+    gap: 1.5rem;
+  }
+
+  .concierge-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .footer-top-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
   }
 }
 
-/* --- 2. TABLET PORTRAIT (Max width: 768px) --- */
+/* --- 3. TABLET PORTRAIT (Max width: 768px) --- */
 @media (max-width: 768px) {
-  .top-bar-inner {
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .top-concierge-actions {
+    display: none; /* Keep announcement bar minimal on mobile */
+  }
+
+  .top-concierge-inner {
     justify-content: center;
     text-align: center;
+    font-size: 0.6875rem;
+    line-height: 1.4;
   }
 
-  .top-bar-contact {
-    display: none; /* Keep announcement bar slim on mobile */
+  .top-concierge-notice {
+    text-align: center;
+    justify-content: center;
   }
 
+  nav[aria-label="Primary Navigation"],
   .nav-menu {
-    display: none; /* Replaced by mobile drawer */
+    display: none;
   }
 
-  .mobile-toggle {
-    display: block;
+  .nav-container {
+    height: 64px;
+    gap: 0.5rem;
+    justify-content: space-between;
   }
 
-  .header-wa-btn span {
-    display: none; /* Show only WhatsApp icon to save header space */
+  .brand-logo {
+    padding: 4px 10px;
+    flex-shrink: 1;
+    max-width: 175px;
+  }
+
+  .brand-logo img {
+    height: 28px;
+    width: auto;
+    max-width: 145px;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .header-search-trigger {
+    width: 36px;
+    height: 36px;
+    font-size: 0.875rem;
+    flex-shrink: 0;
   }
 
   .header-wa-btn {
-    padding: 0.55rem 0.75rem;
-    font-size: 1.1rem;
+    display: none; /* Clean luxury header on mobile; WhatsApp is in drawer, floating button, and every card */
+  }
+
+  .mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    font-size: 1.55rem;
+    padding: 0;
+    color: #ffffff;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
   }
 
   .hero-section {
-    padding: 3.5rem 0 3rem 0;
+    padding: 2.5rem 0 3.5rem 0;
+  }
+
+  .hero-overline {
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 1rem;
   }
 
   .hero-title {
-    font-size: 2rem;
+    font-size: clamp(1.85rem, 6vw, 2.35rem);
+    word-break: break-word;
+    margin-bottom: 1rem;
   }
 
-  .hero-badges {
+  .hero-desc {
+    font-size: 0.9375rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-pillars {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.25rem;
     text-align: left;
   }
 
-  .section-title {
-    font-size: 1.85rem;
+  .floating-feature-tag {
+    display: none;
   }
 
-  .catalog-controls {
+  .hero-spec-pill {
+    position: static;
+    margin-top: 1.5rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .editorial-title {
+    font-size: clamp(1.6rem, 5vw, 2rem);
+  }
+
+  .collection-toolbar {
     flex-direction: column;
     align-items: stretch;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
   }
 
-  .category-tabs {
+  .collection-nav-pills {
     overflow-x: auto;
     padding-bottom: 0.5rem;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     flex-wrap: nowrap;
   }
 
-  .search-box {
+  .search-field-wrapper {
     width: 100%;
+    min-width: 0;
   }
 
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  .product-image-box {
-    height: 200px;
-    padding: 0.75rem;
-  }
-
-  .product-content {
-    padding: 1rem;
-  }
-
-  .product-title {
-    font-size: 1rem;
-    min-height: 2.4rem;
-  }
-
-  .product-price {
-    font-size: 1.1rem;
-  }
-
-  .product-footer {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-  }
-
-  .product-wa-btn {
-    width: 100%;
-    justify-content: center;
-    padding: 0.65rem;
-  }
-
-  .advance-payment-notice {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-  }
-
-  .advance-notice-icon {
-    margin: 0 auto;
-  }
-
-  /* Modal on Mobile */
-  .modal-body {
-    grid-template-columns: 1fr;
-  }
-
-  .modal-img-col {
-    padding: 1.5rem;
-    border-right: none;
-    border-bottom: 1px solid var(--border-subtle);
-  }
-
-  .modal-img-col img {
-    max-height: 200px;
-  }
-
-  .modal-info-col {
-    padding: 1.5rem;
-  }
-
-  .modal-title {
-    font-size: 1.25rem;
-  }
-
-  .modal-price {
-    font-size: 1.5rem;
-  }
-
-  .about-features {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-grid {
+  .editorial-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
 
-  .floating-wa-btn {
-    bottom: 1.25rem;
-    right: 1.25rem;
-    width: 52px;
-    height: 52px;
-    font-size: 1.5rem;
+  .categories-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
-  .floating-wa-tooltip {
-    display: none; /* Hide tooltip on touch devices */
+  .why-us-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .reviews-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .shop-controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+
+  .shop-pills-scroll {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .shop-search-sort-group {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .shop-search-box,
+  .shop-search-box input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .shop-sort-box {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .shop-sort-box select {
+    flex-grow: 1;
+  }
+
+  .concierge-cta-card {
+    padding: 2.75rem 1.5rem;
+  }
+
+  .cta-action-row .btn {
+    width: 100%;
+  }
+
+  .editorial-card-media {
+    height: 300px;
+  }
+
+  /* Modal on Mobile */
+  .modal-overlay {
+    padding: 1rem;
+  }
+
+  .modal-top-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-img-col {
+    border-right: none;
+    border-bottom: 1px solid var(--border-hairline);
+    padding: 2rem 1.5rem;
+  }
+
+  .modal-img-col img {
+    max-height: 250px;
+  }
+
+  .modal-info-col {
+    padding: 2rem 1.5rem;
+  }
+
+  .modal-title {
+    font-size: 1.45rem;
+  }
+
+  .modal-related-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .story-promises-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .roadmap-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .roadmap-clarity-callout {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.25rem;
+  }
+
+  .footer-top-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .floating-wa-concierge .floating-wa-label {
+    display: none; /* Icon-only floating button on mobile for optimal thumb reach */
+  }
+
+  .floating-wa-concierge {
+    padding: 0.85rem;
+    width: 52px;
+    height: 52px;
+    justify-content: center;
+    bottom: 1.25rem;
+    right: 1.25rem;
   }
 }
 
-/* --- 3. SMALL MOBILE PHONES (Max width: 480px) --- */
+/* --- 4. SMALL SMARTPHONES (Max width: 480px) --- */
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 1.75rem;
+    font-size: 1.95rem;
   }
 
   .hero-actions {
@@ -237,28 +413,50 @@
     width: 100%;
   }
 
-  .hero-floating-card {
+  .hero-spec-pill {
     position: static;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+    width: 100%;
   }
 
-  .categories-grid {
-    grid-template-columns: 1fr;
+  .secondary-category-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 1.5rem;
   }
 
-  .products-grid {
-    grid-template-columns: 1fr; /* Single column on compact screens for full clarity */
+  .secondary-card-img {
+    margin: 0 auto;
   }
 
-  .order-steps-grid {
-    grid-template-columns: 1fr;
+  .spotlight-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
   }
 
-  .brand-logo img {
-    height: 38px;
+  .spotlight-actions {
+    flex-direction: column;
+    width: 100%;
   }
 
-  .nav-container {
-    height: 68px;
+  .spotlight-actions .btn {
+    width: 100%;
+  }
+
+  .editorial-card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .editorial-order-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .concierge-info-card,
+  .concierge-form-card {
+    padding: 1.75rem 1.25rem;
   }
 }

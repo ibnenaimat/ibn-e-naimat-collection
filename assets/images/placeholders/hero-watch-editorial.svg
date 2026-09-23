@@ -1,0 +1,280 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="100%" height="100%">
+  <defs>
+    <!-- Dramatic Ambient Rim Glow -->
+    <radialGradient id="ambientGoldGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.35"/>
+      <stop offset="45%" stop-color="#b39772" stop-opacity="0.15"/>
+      <stop offset="70%" stop-color="#1a1c24" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Bezel Polished Steel / Platinum Gradient -->
+    <linearGradient id="bezelBrushed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#64748b" />
+      <stop offset="20%" stop-color="#f8fafc" />
+      <stop offset="40%" stop-color="#1e293b" />
+      <stop offset="60%" stop-color="#e2e8f0" />
+      <stop offset="80%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+
+    <!-- 18K Yellow Gold / Champagne Gold Gradient -->
+    <linearGradient id="goldLuxury" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fffbeb" />
+      <stop offset="25%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#d4af37" />
+      <stop offset="75%" stop-color="#b45309" />
+      <stop offset="100%" stop-color="#fef08a" />
+    </linearGradient>
+
+    <!-- Deep Sunburst Obsidian Dial -->
+    <radialGradient id="sunburstDial" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e222d"/>
+      <stop offset="50%" stop-color="#0e1017"/>
+      <stop offset="85%" stop-color="#06070a"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+
+    <!-- Sub-dial Concentric Grooves Gradient -->
+    <radialGradient id="subDialGrooves" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1c1f29"/>
+      <stop offset="70%" stop-color="#101218"/>
+      <stop offset="100%" stop-color="#06070a"/>
+    </radialGradient>
+
+    <!-- Italian Alligator Leather Strap Gradient -->
+    <linearGradient id="leatherTexture" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#090a0d" />
+      <stop offset="15%" stop-color="#181a20" />
+      <stop offset="35%" stop-color="#2a2d37" />
+      <stop offset="50%" stop-color="#383c49" />
+      <stop offset="65%" stop-color="#2a2d37" />
+      <stop offset="85%" stop-color="#181a20" />
+      <stop offset="100%" stop-color="#090a0d" />
+    </linearGradient>
+
+    <!-- Deep 3D Drop Shadows -->
+    <filter id="watchCase3D" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="35" stdDeviation="40" flood-color="#000000" flood-opacity="0.8"/>
+      <feDropShadow dx="0" dy="15" stdDeviation="15" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+
+    <filter id="goldGlowFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Atmospheric Gold Lighting Backdrop Halo -->
+  <circle cx="500" cy="500" r="480" fill="url(#ambientGoldGlow)"/>
+  <circle cx="500" cy="500" r="390" fill="none" stroke="#d4af37" stroke-width="1" stroke-dasharray="3,6" opacity="0.3"/>
+  <circle cx="500" cy="500" r="430" fill="none" stroke="#b39772" stroke-width="0.75" opacity="0.2"/>
+
+  <!-- TOP STRAP -->
+  <g filter="url(#watchCase3D)">
+    <path d="M 370 70 L 630 70 L 610 270 L 390 270 Z" fill="url(#leatherTexture)"/>
+    <!-- Realistic Alligator Scales / Grain -->
+    <path d="M 405 100 Q 500 105 595 100" stroke="#060709" stroke-width="2.5" opacity="0.6"/>
+    <path d="M 400 150 Q 500 156 600 150" stroke="#060709" stroke-width="2.5" opacity="0.6"/>
+    <path d="M 395 200 Q 500 206 605 200" stroke="#060709" stroke-width="2.5" opacity="0.6"/>
+    <!-- Contrast Hand-Stitching -->
+    <line x1="395" y1="80" x2="410" y2="265" stroke="#a1a1aa" stroke-width="2" stroke-dasharray="6,4" opacity="0.7"/>
+    <line x1="605" y1="80" x2="590" y2="265" stroke="#a1a1aa" stroke-width="2" stroke-dasharray="6,4" opacity="0.7"/>
+  </g>
+
+  <!-- BOTTOM STRAP -->
+  <g filter="url(#watchCase3D)">
+    <path d="M 390 730 L 610 730 L 630 930 L 370 930 Z" fill="url(#leatherTexture)"/>
+    <path d="M 395 780 Q 500 786 605 780" stroke="#060709" stroke-width="2.5" opacity="0.6"/>
+    <path d="M 400 830 Q 500 836 600 830" stroke="#060709" stroke-width="2.5" opacity="0.6"/>
+    <path d="M 405 880 Q 500 886 595 880" stroke="#060709" stroke-width="2.5" opacity="0.6"/>
+    <!-- Stitching -->
+    <line x1="410" y1="735" x2="395" y2="920" stroke="#a1a1aa" stroke-width="2" stroke-dasharray="6,4" opacity="0.7"/>
+    <line x1="590" y1="735" x2="605" y2="920" stroke="#a1a1aa" stroke-width="2" stroke-dasharray="6,4" opacity="0.7"/>
+    <!-- Floating Strap Keeper Loop -->
+    <rect x="375" y="770" width="250" height="42" rx="6" fill="#181a20" stroke="#383c49" stroke-width="1.5" filter="drop-shadow(0 4px 8px rgba(0,0,0,0.5))"/>
+  </g>
+
+  <!-- WATCH CASE & LUGS -->
+  <g fill="url(#bezelBrushed)">
+    <!-- Top Left Lug -->
+    <path d="M 370 270 C 355 210 380 180 410 260 Z"/>
+    <!-- Top Right Lug -->
+    <path d="M 630 270 C 645 210 620 180 590 260 Z"/>
+    <!-- Bottom Left Lug -->
+    <path d="M 370 730 C 355 790 380 820 410 740 Z"/>
+    <!-- Bottom Right Lug -->
+    <path d="M 630 730 C 645 790 620 820 590 740 Z"/>
+  </g>
+
+  <!-- PUSHERS & CROWN -->
+  <!-- Chrono Top Pusher (2 o'clock) -->
+  <g transform="rotate(32 500 500)">
+    <rect x="765" y="482" width="34" height="36" rx="5" fill="url(#bezelBrushed)" stroke="#090a0d" stroke-width="1.5" filter="drop-shadow(2px 5px 8px rgba(0,0,0,0.6))"/>
+    <rect x="752" y="488" width="16" height="24" rx="3" fill="#cbd5e1"/>
+  </g>
+  <!-- Fluted Master Crown (3 o'clock) -->
+  <g>
+    <rect x="772" y="468" width="42" height="64" rx="8" fill="url(#bezelBrushed)" stroke="#090a0d" stroke-width="2" filter="drop-shadow(4px 6px 12px rgba(0,0,0,0.8))"/>
+    <!-- Fluting notches on crown -->
+    <line x1="780" y1="472" x2="780" y2="528" stroke="#f8fafc" stroke-width="2"/>
+    <line x1="790" y1="472" x2="790" y2="528" stroke="#f8fafc" stroke-width="2"/>
+    <line x1="800" y1="472" x2="800" y2="528" stroke="#f8fafc" stroke-width="2"/>
+    <circle cx="810" cy="500" r="4.5" fill="url(#goldLuxury)"/>
+  </g>
+  <!-- Chrono Bottom Pusher (4 o'clock) -->
+  <g transform="rotate(-32 500 500)">
+    <rect x="765" y="482" width="34" height="36" rx="5" fill="url(#bezelBrushed)" stroke="#090a0d" stroke-width="1.5" filter="drop-shadow(2px 5px 8px rgba(0,0,0,0.6))"/>
+    <rect x="752" y="488" width="16" height="24" rx="3" fill="#cbd5e1"/>
+  </g>
+
+  <!-- WATCH CASE & BEZEL -->
+  <!-- Outer Solid Steel Ring -->
+  <circle cx="500" cy="500" r="285" fill="url(#bezelBrushed)" filter="url(#watchCase3D)"/>
+  <!-- Polished 18K Gold Inlay Bezel Ring -->
+  <circle cx="500" cy="500" r="275" fill="none" stroke="url(#goldLuxury)" stroke-width="5" filter="drop-shadow(0 0 8px rgba(212, 175, 55, 0.5))"/>
+  <!-- Ceramic Tachymetre Chapter Ring -->
+  <circle cx="500" cy="500" r="268" fill="#0d0e13" stroke="#232733" stroke-width="2"/>
+
+  <!-- Tachymeter Scale Numbers & Ticks -->
+  <g stroke="#94a3b8" stroke-width="1.2" opacity="0.75">
+    <line x1="500" y1="233" x2="500" y2="241"/>
+    <line x1="500" y1="759" x2="500" y2="767"/>
+    <line x1="233" y1="500" x2="241" y2="500"/>
+    <line x1="759" y1="500" x2="767" y2="500"/>
+  </g>
+  <text x="500" y="248" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="800" fill="url(#goldLuxury)" text-anchor="middle" letter-spacing="3">TACHYMÈTRE 500</text>
+
+  <!-- WATCH DIAL (Sunburst Deep Obsidian) -->
+  <circle cx="500" cy="500" r="248" fill="url(#sunburstDial)" stroke="#1a1d26" stroke-width="2"/>
+
+  <!-- Subtle Sunray Lines -->
+  <g stroke="#ffffff" stroke-width="0.5" opacity="0.08">
+    <line x1="500" y1="255" x2="500" y2="745"/>
+    <line x1="255" y1="500" x2="745" y2="500"/>
+    <line x1="325" y1="325" x2="675" y2="675"/>
+    <line x1="325" y1="675" x2="675" y2="325"/>
+  </g>
+
+  <!-- CHRONOGRAPH SUB-DIALS (Triple Register) -->
+  <!-- 1. Left Sub-dial (9 o'clock) -->
+  <g transform="translate(400, 500)">
+    <circle cx="0" cy="0" r="54" fill="url(#subDialGrooves)" stroke="#2d3240" stroke-width="2" filter="drop-shadow(inset 0 3px 5px rgba(0,0,0,0.8))"/>
+    <circle cx="0" cy="0" r="50" fill="none" stroke="url(#goldLuxury)" stroke-width="0.8" opacity="0.6"/>
+    <!-- Sub-dial ticks -->
+    <line x1="0" y1="-50" x2="0" y2="-43" stroke="#f8fafc" stroke-width="1.8"/>
+    <line x1="0" y1="50" x2="0" y2="43" stroke="#f8fafc" stroke-width="1.8"/>
+    <line x1="-50" y1="0" x2="-43" y2="0" stroke="#f8fafc" stroke-width="1.8"/>
+    <line x1="50" y1="0" x2="43" y2="0" stroke="#f8fafc" stroke-width="1.8"/>
+    <text x="0" y="-30" font-family="'Plus Jakarta Sans', sans-serif" font-size="8" font-weight="700" fill="#cbd5e1" text-anchor="middle">30</text>
+    <text x="0" y="37" font-family="'Plus Jakarta Sans', sans-serif" font-size="8" font-weight="700" fill="#cbd5e1" text-anchor="middle">15</text>
+    <line x1="0" y1="0" x2="25" y2="-15" stroke="url(#goldLuxury)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="0" cy="0" r="4" fill="#ffffff"/>
+  </g>
+
+  <!-- 2. Right Sub-dial (3 o'clock) -->
+  <g transform="translate(600, 500)">
+    <circle cx="0" cy="0" r="54" fill="url(#subDialGrooves)" stroke="#2d3240" stroke-width="2" filter="drop-shadow(inset 0 3px 5px rgba(0,0,0,0.8))"/>
+    <circle cx="0" cy="0" r="50" fill="none" stroke="url(#goldLuxury)" stroke-width="0.8" opacity="0.6"/>
+    <line x1="0" y1="-50" x2="0" y2="-43" stroke="#f8fafc" stroke-width="1.8"/>
+    <line x1="0" y1="50" x2="0" y2="43" stroke="#f8fafc" stroke-width="1.8"/>
+    <line x1="-50" y1="0" x2="-43" y2="0" stroke="#f8fafc" stroke-width="1.8"/>
+    <line x1="50" y1="0" x2="43" y2="0" stroke="#f8fafc" stroke-width="1.8"/>
+    <text x="0" y="-30" font-family="'Plus Jakarta Sans', sans-serif" font-size="8" font-weight="700" fill="#cbd5e1" text-anchor="middle">24</text>
+    <text x="0" y="37" font-family="'Plus Jakarta Sans', sans-serif" font-size="8" font-weight="700" fill="#cbd5e1" text-anchor="middle">12</text>
+    <line x1="0" y1="0" x2="-18" y2="-24" stroke="url(#goldLuxury)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="0" cy="0" r="4" fill="#ffffff"/>
+  </g>
+
+  <!-- 3. Bottom Sub-dial (6 o'clock) -->
+  <g transform="translate(500, 585)">
+    <circle cx="0" cy="0" r="54" fill="url(#subDialGrooves)" stroke="#2d3240" stroke-width="2" filter="drop-shadow(inset 0 3px 5px rgba(0,0,0,0.8))"/>
+    <circle cx="0" cy="0" r="50" fill="none" stroke="url(#goldLuxury)" stroke-width="0.8" opacity="0.6"/>
+    <line x1="0" y1="-50" x2="0" y2="-43" stroke="#f8fafc" stroke-width="1.8"/>
+    <line x1="0" y1="50" x2="0" y2="43" stroke="#f8fafc" stroke-width="1.8"/>
+    <line x1="-50" y1="0" x2="-43" y2="0" stroke="#f8fafc" stroke-width="1.8"/>
+    <line x1="50" y1="0" x2="43" y2="0" stroke="#f8fafc" stroke-width="1.8"/>
+    <text x="0" y="-30" font-family="'Plus Jakarta Sans', sans-serif" font-size="8" font-weight="700" fill="#cbd5e1" text-anchor="middle">60</text>
+    <line x1="0" y1="0" x2="0" y2="-32" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="0" cy="0" r="4" fill="#ef4444"/>
+  </g>
+
+  <!-- DATE APERTURE WINDOW -->
+  <g transform="translate(580, 575)">
+    <rect x="0" y="0" width="32" height="24" rx="4" fill="#ffffff" stroke="url(#goldLuxury)" stroke-width="1.8" filter="drop-shadow(0 3px 5px rgba(0,0,0,0.7))"/>
+    <text x="16" y="17" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="800" fill="#0f172a" text-anchor="middle">24</text>
+  </g>
+
+  <!-- BRAND CREST & WORDMARK ON DIAL -->
+  <g transform="translate(500, 365)">
+    <path d="M 0 -16 L 14 -7 L 14 9 L 0 18 L -14 9 L -14 -7 Z" fill="#0d0e13" stroke="url(#goldLuxury)" stroke-width="1.8"/>
+    <text x="0" y="5" font-family="'Cinzel', serif" font-size="11" font-weight="700" fill="url(#goldLuxury)" text-anchor="middle">IN</text>
+    <text x="0" y="35" font-family="'Cinzel', 'Playfair Display', serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="3.5">IBN E NAIMAT</text>
+    <text x="0" y="50" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="600" fill="url(#goldLuxury)" text-anchor="middle" letter-spacing="4">CHRONOMETER</text>
+  </g>
+
+  <!-- 3D APPLIED FACETED HOUR MARKERS -->
+  <g fill="#ffffff" stroke="url(#goldLuxury)" stroke-width="1.2" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.6))">
+    <!-- 12 o'clock double marker -->
+    <rect x="492" y="270" width="6" height="30" rx="2"/>
+    <rect x="502" y="270" width="6" height="30" rx="2"/>
+    <!-- 1 o'clock -->
+    <rect x="605" y="298" width="6" height="26" rx="2" transform="rotate(30 608 311)"/>
+    <!-- 2 o'clock -->
+    <rect x="680" y="375" width="6" height="26" rx="2" transform="rotate(60 683 388)"/>
+    <!-- 3 o'clock -->
+    <rect x="705" y="496" width="26" height="8" rx="2"/>
+    <!-- 4 o'clock -->
+    <rect x="680" y="600" width="6" height="26" rx="2" transform="rotate(120 683 613)"/>
+    <!-- 5 o'clock -->
+    <rect x="605" y="675" width="6" height="26" rx="2" transform="rotate(150 608 688)"/>
+    <!-- 6 o'clock -->
+    <rect x="497" y="695" width="6" height="26" rx="2"/>
+    <!-- 7 o'clock -->
+    <rect x="390" y="675" width="6" height="26" rx="2" transform="rotate(210 393 688)"/>
+    <!-- 8 o'clock -->
+    <rect x="315" y="600" width="6" height="26" rx="2" transform="rotate(240 318 613)"/>
+    <!-- 9 o'clock -->
+    <rect x="270" y="496" width="26" height="8" rx="2"/>
+    <!-- 10 o'clock -->
+    <rect x="315" y="375" width="6" height="26" rx="2" transform="rotate(300 318 388)"/>
+    <!-- 11 o'clock -->
+    <rect x="390" y="298" width="6" height="26" rx="2" transform="rotate(330 393 311)"/>
+  </g>
+
+  <!-- 3D FACETED DAUPHINE HANDS (Classic 10:10 horology pose) -->
+  <!-- Hour Hand -->
+  <g transform="rotate(-58 500 500)" filter="drop-shadow(3px 12px 10px rgba(0,0,0,0.7))">
+    <polygon points="500,500 488,475 495,335 500,320 505,335 512,475" fill="url(#goldLuxury)" stroke="#d4af37" stroke-width="0.8"/>
+    <polygon points="500,500 500,320 505,335 512,475" fill="#fef9c3" opacity="0.85"/>
+    <!-- Luminous Inlay -->
+    <line x1="500" y1="455" x2="500" y2="355" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Minute Hand -->
+  <g transform="rotate(64 500 500)" filter="drop-shadow(3px 14px 12px rgba(0,0,0,0.75))">
+    <polygon points="500,500 490,470 496,285 500,265 504,285 510,470" fill="url(#goldLuxury)" stroke="#d4af37" stroke-width="0.8"/>
+    <polygon points="500,500 500,265 504,285 510,470" fill="#fef9c3" opacity="0.85"/>
+    <line x1="500" y1="460" x2="500" y2="295" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Center Pinion -->
+  <circle cx="500" cy="500" r="12" fill="url(#bezelBrushed)" stroke="url(#goldLuxury)" stroke-width="2.5" filter="drop-shadow(0 3px 6px rgba(0,0,0,0.8))"/>
+  <circle cx="500" cy="500" r="5" fill="#090a0d"/>
+
+  <!-- Sweep Seconds Chrono Needle Hand (Red + Gold counterbalance) -->
+  <g transform="rotate(18 500 500)" filter="drop-shadow(2px 5px 6px rgba(0,0,0,0.6))">
+    <line x1="500" y1="575" x2="500" y2="255" stroke="#ef4444" stroke-width="2"/>
+    <circle cx="500" cy="555" r="6" fill="#ef4444"/>
+    <line x1="500" y1="255" x2="500" y2="238" stroke="#ef4444" stroke-width="3"/>
+    <circle cx="500" cy="500" r="4.5" fill="#ef4444"/>
+  </g>
+
+  <!-- CURVED SAPPHIRE CRYSTAL MULTI-LAYER GLARE & HIGHLIGHTS -->
+  <path d="M 300 320 Q 500 230 700 320 Q 620 420 300 320 Z" fill="#ffffff" opacity="0.08" filter="url(#goldGlowFilter)"/>
+  <path d="M 280 460 Q 400 300 530 270" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" opacity="0.22"/>
+  <path d="M 315 490 Q 400 370 500 350" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.12"/>
+
+  <!-- Bottom Inscription -->
+  <text x="500" y="735" font-family="'Plus Jakarta Sans', sans-serif" font-size="7.5" font-weight="700" fill="#94a3b8" text-anchor="middle" letter-spacing="2.5">ORIGINAL BRANDED • 100M WATER RESISTANT</text>
+</svg>

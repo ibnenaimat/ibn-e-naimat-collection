@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141722"/>
+      <stop offset="50%" stop-color="#0d0f15"/>
+      <stop offset="100%" stop-color="#08090d"/>
+    </linearGradient>
+    <linearGradient id="goldLuxury" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff9db"/>
+      <stop offset="35%" stop-color="#d4af37"/>
+      <stop offset="70%" stop-color="#f3e5ab"/>
+      <stop offset="100%" stop-color="#aa7c11"/>
+    </linearGradient>
+    <radialGradient id="haloGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#d4af37" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Frame Background -->
+  <rect width="600" height="600" fill="#07080b"/>
+  
+  <!-- Outer Ornate Luxury Wooden Frame -->
+  <rect x="30" y="30" width="540" height="540" rx="16" fill="url(#bgGrad)" stroke="url(#goldLuxury)" stroke-width="2.5" filter="drop-shadow(0 20px 35px rgba(0,0,0,0.8))"/>
+  
+  <!-- Inner Border with Geometric Inset -->
+  <rect x="52" y="52" width="496" height="496" rx="8" fill="none" stroke="url(#goldLuxury)" stroke-width="1" stroke-dasharray="8,4" opacity="0.6"/>
+  <rect x="64" y="64" width="472" height="472" fill="#0b0d13"/>
+
+  <!-- Radial Golden Aura Behind Calligraphy -->
+  <circle cx="300" cy="300" r="190" fill="url(#haloGlow)"/>
+
+  <!-- Islamic 8-Point Star Geometric Medallion Behind Art -->
+  <g transform="translate(300, 300)" stroke="url(#goldLuxury)" stroke-width="1.2" fill="none" opacity="0.35">
+    <rect x="-140" y="-140" width="280" height="280"/>
+    <rect x="-140" y="-140" width="280" height="280" transform="rotate(45)"/>
+    <circle cx="0" cy="0" r="150"/>
+    <circle cx="0" cy="0" r="130" stroke-dasharray="4,4"/>
+  </g>
+
+  <!-- Calligraphic Motif Composition (Bismillah / Surah Elegance Art) -->
+  <g transform="translate(300, 290) scale(1.15)" filter="url(#softGlow)">
+    <!-- Crescent Swash Base -->
+    <path d="M -160 80 Q 0 160 160 80 Q 80 145 -10 135 Q -100 120 -160 80 Z" fill="url(#goldLuxury)"/>
+    
+    <!-- Central Flowing Calligraphy Strokes (Thuluth / Diwani Inspired) -->
+    <!-- Vertical Ascenders (Alif & Lam) -->
+    <path d="M -110 50 Q -105 -70 -115 -120 Q -100 -120 -95 -60 Q -90 20 -105 50 Z" fill="url(#goldLuxury)"/>
+    <path d="M -75 60 Q -70 -60 -80 -115 Q -65 -115 -60 -50 Q -55 30 -70 60 Z" fill="url(#goldLuxury)"/>
+    <path d="M -40 70 Q -35 -40 -45 -100 Q -30 -100 -25 -30 Q -20 40 -35 70 Z" fill="url(#goldLuxury)"/>
+    
+    <!-- Central Sweeping Ha & Meem Curves -->
+    <path d="M -20 60 Q 30 -40 80 40 Q 110 -20 135 -60 Q 145 -60 140 -20 Q 115 30 75 75 Q 35 60 -20 60 Z" fill="url(#goldLuxury)"/>
+    <path d="M 10 30 C 50 10 80 80 40 85 C 10 90 -10 45 10 30 Z" fill="none" stroke="url(#goldLuxury)" stroke-width="6"/>
+
+    <!-- Flourishes, Diacritics & Calligraphy Nuqtas (Dots) -->
+    <polygon points="-120,-130 -112,-138 -104,-130 -112,-122" fill="url(#goldLuxury)"/>
+    <polygon points="-85,-125 -77,-133 -69,-125 -77,-117" fill="url(#goldLuxury)"/>
+    <polygon points="135,-75 143,-83 151,-75 143,-67" fill="url(#goldLuxury)"/>
+    <polygon points="0,15 8,7 16,15 8,23" fill="url(#goldLuxury)"/>
+    <polygon points="25,5 33,-3 41,5 33,13" fill="url(#goldLuxury)"/>
+  </g>
+
+  <!-- Title Plaque / Description at Bottom -->
+  <g transform="translate(300, 505)">
+    <rect x="-140" y="-18" width="280" height="34" rx="6" fill="#131620" stroke="url(#goldLuxury)" stroke-width="1.2"/>
+    <text x="0" y="4" font-family="'Cinzel', 'Playfair Display', serif" font-size="12" font-weight="700" fill="url(#goldLuxury)" text-anchor="middle" letter-spacing="3.5">ISLAMIC CALLIGRAPHY</text>
+  </g>
+</svg>

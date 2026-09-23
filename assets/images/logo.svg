@@ -1,34 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 70" width="340" height="70">
   <defs>
-    <linearGradient id="logoGold" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#d97706"/>
-      <stop offset="50%" stop-color="#f59e0b"/>
-      <stop offset="100%" stop-color="#b45309"/>
+    <linearGradient id="logoChampagne" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b39772"/>
+      <stop offset="50%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#9a7b56"/>
     </linearGradient>
   </defs>
 
-  <!-- Monogram Crest -->
-  <g transform="translate(10, 10)">
-    <!-- Hexagonal Crest Frame -->
-    <polygon points="30,0 60,17 60,52 30,69 0,52 0,17" fill="#0f172a" stroke="url(#logoGold)" stroke-width="2.5"/>
-    <polygon points="30,4 56,19 56,50 30,65 4,50 4,19" fill="none" stroke="url(#logoGold)" stroke-width="1" stroke-dasharray="3,2" opacity="0.7"/>
+  <!-- Crest Monogram Emblem -->
+  <g transform="translate(6, 6)">
+    <!-- Outer Shield / Diamond Frame -->
+    <path d="M 28 2 L 54 18 L 54 44 L 28 58 L 2 44 L 2 18 Z" fill="#0d0d0f" stroke="url(#logoChampagne)" stroke-width="1.5"/>
+    <path d="M 28 7 L 49 20 L 49 41 L 28 52 L 7 41 L 7 20 Z" fill="none" stroke="url(#logoChampagne)" stroke-width="0.75" stroke-dasharray="2,2" opacity="0.7"/>
     
-    <!-- Monogram letters 'IN' / Islamic geometric elegance -->
-    <text x="30" y="44" font-family="'Cinzel', 'Times New Roman', serif" font-size="24" font-weight="700" fill="url(#logoGold)" text-anchor="middle" letter-spacing="1">IN</text>
-    
-    <!-- Crown / Gem Top accent -->
-    <circle cx="30" cy="14" r="2.5" fill="#f59e0b"/>
+    <!-- Monogram letters 'IN' -->
+    <text x="28" y="37" font-family="'Cinzel', Georgia, serif" font-size="20" font-weight="700" fill="url(#logoChampagne)" text-anchor="middle" letter-spacing="1">IN</text>
+    <circle cx="28" cy="13" r="1.5" fill="#d4af37"/>
   </g>
 
-  <!-- Brand Typography -->
-  <g transform="translate(85, 20)">
-    <!-- Primary Name -->
-    <text x="0" y="24" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="21" font-weight="700" fill="#0f172a" letter-spacing="1.5">
+  <!-- Typographic Wordmark -->
+  <g transform="translate(74, 15)">
+    <text x="0" y="24" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="19" font-weight="700" fill="#0d0d0f" letter-spacing="2">
       IBN E NAIMAT
     </text>
-    <!-- Subtitle / Tagline -->
-    <text x="1" y="44" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-size="10.5" font-weight="600" fill="#c59b27" letter-spacing="4">
-      COLLECTION
+    <text x="1" y="42" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="600" fill="#9a7b56" letter-spacing="5">
+      COLLECTION • LUXURY
     </text>
   </g>
 </svg>
