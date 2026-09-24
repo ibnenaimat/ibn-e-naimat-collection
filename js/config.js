@@ -17,11 +17,11 @@ const CONFIG = {
     // Default greeting messages
     defaultOrderMessage: function(product) {
       return `Assalam-o-Alaikum Ibn e Naimat Collection!\n\n` +
-             `I want to order this item:\n` +
-             `• *Product:* ${product.name}\n` +
-             `• *Code:* ${product.id}\n` +
-             `• *Category:* ${product.categoryName}\n` +
-             `• *Price:* Rs. ${product.price.toLocaleString()}\n\n` +
+             `I want to order this item:\n\n` +
+             `Product: ${product.name}\n` +
+             `Code: ${product.id}\n` +
+             `Category: ${product.categoryName}\n` +
+             `Price: Rs. ${product.price.toLocaleString('en-PK')}\n\n` +
              `Please share order confirmation and advance payment details.`;
     },
     

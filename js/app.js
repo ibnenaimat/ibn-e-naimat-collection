@@ -81,9 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update section header copy
     const currentCatObj = window.CATEGORIES ? window.CATEGORIES.find(c => c.id === activeCategory) : null;
     if (activeCategory === 'all') {
-      if (homeCatalogTag) homeCatalogTag.textContent = 'Curated Luxury Catalog';
-      if (homeCatalogTitle) homeCatalogTitle.innerHTML = 'The Curated <em>Catalog</em>';
-      if (homeCatalogDesc) homeCatalogDesc.textContent = 'Explore 100% verified original branded timepieces, museum-grade calligraphy frames, high-speed mobile accessories, and pure organic honey nuts.';
+      if (homeCatalogTag) homeCatalogTag.textContent = 'Signature Collection';
+      if (homeCatalogTitle) homeCatalogTitle.innerHTML = 'Our Top <em>Picks</em>';
+      if (homeCatalogDesc) homeCatalogDesc.textContent = 'Original watches. Modern style. Unmatched quality. Explore our hand-inspected luxury watches and curated lifestyle items.';
     } else if (currentCatObj) {
       if (homeCatalogTag) homeCatalogTag.textContent = currentCatObj.badge || 'Curated Department';
       if (homeCatalogTitle) homeCatalogTitle.innerHTML = `${currentCatObj.name} <em>Showcase</em>`;
@@ -142,13 +142,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Empty state
     if (items.length === 0) {
       featuredGrid.innerHTML = `
-        <div class="editorial-empty-state" style="grid-column: 1 / -1; text-align: center; padding: 4rem 1.5rem; background: rgba(255, 255, 255, 0.02); border: 1px dashed rgba(255, 255, 255, 0.12); border-radius: var(--radius-md);">
-          <i class="bi bi-search" style="font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 1rem; display: inline-block;"></i>
-          <h3 style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 0.5rem; color: #ffffff;">No Products Found</h3>
-          <p class="text-muted" style="color: #a1a1aa; max-width: 460px; margin: 0 auto 1.5rem auto; line-height: 1.6;">
+        <div class="editorial-empty-state" style="grid-column: 1 / -1; text-align: center; padding: 4rem 1.5rem; background: var(--bg-white); border: 1px dashed var(--border); border-radius: var(--radius-md);">
+          <i class="bi bi-search" style="font-size: 2.25rem; color: var(--gold-champagne); margin-bottom: 1rem; display: inline-block;"></i>
+          <h3 style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">No Products Found</h3>
+          <p class="text-muted" style="color: var(--text-secondary); max-width: 460px; margin: 0 auto 1.5rem auto; line-height: 1.6;">
             We could not find any items matching your selected criteria. Try adjusting your search term or select another category.
           </p>
-          <button class="btn btn-gold-action" id="resetHomeFiltersBtn">
+          <button class="btn btn-charcoal" id="resetHomeFiltersBtn">
             Reset All Filters
           </button>
         </div>
@@ -406,11 +406,11 @@ document.addEventListener('DOMContentLoaded', () => {
           ${specsListHtml}
 
           <div class="modal-actions-box">
-            <button class="btn btn-wa-luxury modal-order-btn" style="width: 100%; font-size: 0.9375rem;" data-id="${product.id}">
-              <i class="bi bi-whatsapp"></i> Order on WhatsApp (03302241340)
+            <button class="btn btn-charcoal modal-order-btn" style="width: 100%; font-size: 0.9375rem; justify-content: center;" data-id="${product.id}">
+              <i class="bi bi-whatsapp" style="color: var(--wa-green);"></i> Order on WhatsApp (03302241340)
             </button>
-            <p style="font-size: 0.75rem; color: #71717a; text-align: center; margin-top: 0.85rem;">
-              <i class="bi bi-shield-check"></i> 100% Inspected Genuine Item • Advance Payment Confirmation • Tracked Courier
+            <p style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 0.85rem;">
+              <i class="bi bi-shield-check" style="color: var(--gold-champagne);"></i> 100% Inspected Genuine Item &bull; Advance Payment Confirmation &bull; Tracked Courier
             </p>
           </div>
         </div>
