@@ -519,9 +519,155 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
   }
 
-  // --- 11. INITIALIZATION ---
+  // --- 11. LUXURY HERO IMAGE SLIDER / CAROUSEL ---
+  function initHeroSlider() {
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const heroDots = document.querySelectorAll('.hero-dot');
+    const heroPrevBtn = document.getElementById('heroPrevBtn');
+    const heroNextBtn = document.getElementById('heroNextBtn');
+    const heroIndicatorIndex = document.getElementById('heroIndicatorIndex');
+    const heroIndicatorLabel = document.getElementById('heroIndicatorLabel');
+    const heroSliderSection = document.querySelector('.hero-slider-section');
+
+    if (!heroSlides.length) return;
+
+    let currentHeroSlide = 0;
+    const existingActiveIdx = Array.from(heroSlides).findIndex(s => s.classList.contains('active'));
+    if (existingActiveIdx !== -1) {
+      currentHeroSlide = existingActiveIdx;
+    }
+    const totalSlides = heroSlides.length;
+    const slideDuration = 5500; // 5.5s autoplay
+    let autoplayTimer = null;
+
+    function updateHeroSlide(index, force = false) {
+      if (!force && index === currentHeroSlide && heroSlides[index].classList.contains('active')) return;
+
+      currentHeroSlide = (index + totalSlides) % totalSlides;
+
+      // Update slide active classes
+      heroSlides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentHeroSlide);
+      });
+
+      // Update dots active classes
+      heroDots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentHeroSlide);
+      });
+
+      // Update slide indicator counter and category title
+      if (heroIndicatorIndex) {
+        heroIndicatorIndex.textContent = String(currentHeroSlide + 1).padStart(2, '0');
+      }
+
+      if (heroIndicatorLabel) {
+        const catTitle = heroSlides[currentHeroSlide].getAttribute('data-category-title') || '';
+        heroIndicatorLabel.textContent = catTitle;
+      }
+    }
+
+    function startHeroAutoplay() {
+      stopHeroAutoplay();
+      autoplayTimer = setInterval(() => {
+        updateHeroSlide(currentHeroSlide + 1);
+      }, slideDuration);
+    }
+
+    function stopHeroAutoplay() {
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    }
+
+    function resetHeroAutoplay() {
+      startHeroAutoplay();
+    }
+
+    // Arrow navigation
+    heroPrevBtn?.addEventListener('click', () => {
+      updateHeroSlide(currentHeroSlide - 1);
+      resetHeroAutoplay();
+    });
+
+    heroNextBtn?.addEventListener('click', () => {
+      updateHeroSlide(currentHeroSlide + 1);
+      resetHeroAutoplay();
+    });
+
+    // Dot navigation
+    heroDots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        updateHeroSlide(idx);
+        resetHeroAutoplay();
+      });
+    });
+
+    // Pause on desktop hover
+    if (heroSliderSection) {
+      heroSliderSection.addEventListener('mouseenter', stopHeroAutoplay);
+      heroSliderSection.addEventListener('mouseleave', startHeroAutoplay);
+
+      // Touch swipe gestures for mobile & tablet
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      heroSliderSection.addEventListener('touchstart', (e) => {
+        if (!e.touches || e.touches.length === 0) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+
+      heroSliderSection.addEventListener('touchend', (e) => {
+        if (!e.changedTouches || e.changedTouches.length === 0) return;
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+
+        // Ensure horizontal swipe is dominant and above 35px threshold
+        if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+          if (diffX < 0) {
+            updateHeroSlide(currentHeroSlide + 1);
+          } else {
+            updateHeroSlide(currentHeroSlide - 1);
+          }
+          resetHeroAutoplay();
+        }
+      }, { passive: true });
+    }
+
+    // Category button trigger integration
+    document.querySelectorAll('.hero-category-trigger').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const catTarget = btn.getAttribute('data-target-category');
+        if (catTarget && typeof selectCategory === 'function') {
+          e.preventDefault();
+          selectCategory(catTarget, true);
+        }
+      });
+    });
+
+    // Pause autoplay when tab is inactive
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stopHeroAutoplay();
+      } else {
+        startHeroAutoplay();
+      }
+    });
+
+    // Initialize indicator & dots matching the active slide
+    updateHeroSlide(currentHeroSlide, true);
+
+    // Start initial autoplay
+    startHeroAutoplay();
+  }
+
+  // --- 12. INITIALIZATION ---
   renderCategoryShowcase('all');
   renderCategoryPills();
   renderCatalog();
   initScrollReveal();
+  initHeroSlider();
 });

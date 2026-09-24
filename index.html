@@ -135,71 +135,155 @@
 
   <main>
     <!-- =======================================================================
-         1. CINEMATIC LUXURY HERO SECTION
+         1. CINEMATIC LUXURY HERO IMAGE SLIDER / CAROUSEL
          ======================================================================= -->
-    <section class="hero-section" id="home">
-      <div class="container hero-grid">
-        <!-- Hero Left Column: Editorial Headline & Copy -->
-        <div class="hero-content">
-          <div class="hero-overline">
-            <i class="bi bi-gem"></i> Haute Horlogerie &amp; Curated Lifestyle
-          </div>
-          
-          <h1 class="hero-title">
-            Premium Watches for <span class="gold-accent">Every Moment</span>.
-          </h1>
+    <section class="hero-slider-section" id="home" aria-label="Curated Luxury Showcase">
+      <!-- Slides Container -->
+      <div class="hero-slides-wrapper" id="heroSlidesWrapper">
 
-          <p class="hero-desc">
-            Original watches. Modern style. Unmatched quality. Welcome to <strong>Ibn e Naimat Collection</strong> &mdash; curated luxury timepieces, pure wildflower honey nuts, and refined accessories inspected before dispatch across Pakistan.
-          </p>
-
-          <div class="hero-actions">
-            <a href="#catalog" class="btn btn-charcoal">
-              Explore Collection <i class="bi bi-arrow-right"></i>
-            </a>
-            <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-secondary">
-              <i class="bi bi-whatsapp" style="color: var(--wa-green-dark);"></i> Order on WhatsApp
-            </a>
-          </div>
-
-          <!-- Hero Value Indicators -->
-          <div class="hero-pillars">
-            <div class="hero-pillar-item">
-              <span class="hero-pillar-tag"><i class="bi bi-check2-circle"></i> 100% Genuine</span>
-              <span class="hero-pillar-sub">Guaranteed Authenticity</span>
-            </div>
-
-            <div class="hero-pillar-item">
-              <span class="hero-pillar-tag"><i class="bi bi-camera-video"></i> Hand Inspected</span>
-              <span class="hero-pillar-sub">Pre-Dispatch Live Video</span>
-            </div>
-
-            <div class="hero-pillar-item">
-              <span class="hero-pillar-tag"><i class="bi bi-truck"></i> All Pakistan</span>
-              <span class="hero-pillar-sub">Tracked Express Courier</span>
+        <!-- Slide 1: Watches -->
+        <div class="hero-slide active" data-slide-index="0" data-category-title="WATCHES">
+          <div class="hero-slide-bg" style="background-image: url('assets/images/hero/hero-watches.jpg');"></div>
+          <div class="hero-slide-overlay"></div>
+          <div class="container hero-slide-container">
+            <div class="hero-slide-content">
+              <div class="hero-slide-badge">
+                <i class="bi bi-gem"></i> Curated Collection &bull; Haute Horlogerie
+              </div>
+              <h1 class="hero-slide-title">
+                Premium Watches for <span class="gold-accent">Every Moment</span>.
+              </h1>
+              <p class="hero-slide-desc">
+                Original watches. Modern style. Refined quality. Discover timepieces selected for your everyday moments.
+              </p>
+              <div class="hero-slide-actions">
+                <a href="#catalog" class="btn btn-hero-primary hero-category-trigger" data-target-category="watches">
+                  <span>Explore Watches</span> <i class="bi bi-arrow-right"></i>
+                </a>
+                <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-hero-secondary">
+                  <i class="bi bi-whatsapp"></i> <span>Order on WhatsApp</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Hero Right Column: Large Cinematic Watch Display -->
-        <div class="hero-visual-frame">
-          <img src="assets/images/placeholders/hero-watch-editorial.svg" alt="Ibn e Naimat Signature Watch" class="hero-watch-display">
-          
-          <!-- Floating Feature Badges -->
-          <div class="floating-feature-tag tag-top-right">
-            <div class="feature-tag-icon"><i class="bi bi-shield-check"></i></div>
-            <div>
-              <div class="feature-tag-title">Sapphire Crystal</div>
-              <div class="feature-tag-sub">Scratch-Resistant Glass</div>
+        <!-- Slide 2: Honey Nuts -->
+        <div class="hero-slide" data-slide-index="1" data-category-title="HONEY NUTS">
+          <div class="hero-slide-bg" style="background-image: url('assets/images/hero/hero-honey-nuts.jpg');"></div>
+          <div class="hero-slide-overlay"></div>
+          <div class="container hero-slide-container">
+            <div class="hero-slide-content">
+              <div class="hero-slide-badge">
+                <i class="bi bi-flower1"></i> 100% Pure &bull; Gourmet Wellness
+              </div>
+              <h2 class="hero-slide-title">
+                Nature&rsquo;s Finest, <span class="gold-accent">Naturally Sweet</span>.
+              </h2>
+              <p class="hero-slide-desc">
+                Pure honey blended with carefully selected nuts, dried fruits and seeds for a delicious premium experience.
+              </p>
+              <div class="hero-slide-actions">
+                <a href="#honey-nuts-section" class="btn btn-hero-primary">
+                  <span>Explore Honey Nuts</span> <i class="bi bi-arrow-right"></i>
+                </a>
+                <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-hero-secondary">
+                  <i class="bi bi-whatsapp"></i> <span>Order on WhatsApp</span>
+                </a>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div class="floating-feature-tag tag-bottom-left">
-            <div class="feature-tag-icon"><i class="bi bi-stopwatch"></i></div>
-            <div>
-              <div class="feature-tag-title">Precision Chrono</div>
-              <div class="feature-tag-sub">Calibre Movement</div>
+        <!-- Slide 3: Gadgets -->
+        <div class="hero-slide" data-slide-index="2" data-category-title="GADGETS">
+          <div class="hero-slide-bg" style="background-image: url('assets/images/hero/hero-gadgets.jpg');"></div>
+          <div class="hero-slide-overlay"></div>
+          <div class="container hero-slide-container">
+            <div class="hero-slide-content">
+              <div class="hero-slide-badge">
+                <i class="bi bi-cpu"></i> Smart Tech &bull; Everyday Essentials
+              </div>
+              <h2 class="hero-slide-title">
+                Smart Gadgets. <span class="gold-accent">Modern Lifestyle</span>.
+              </h2>
+              <p class="hero-slide-desc">
+                Useful, stylish and carefully selected gadgets designed for modern everyday life.
+              </p>
+              <div class="hero-slide-actions">
+                <a href="#catalog" class="btn btn-hero-primary hero-category-trigger" data-target-category="gadgets">
+                  <span>Explore Gadgets</span> <i class="bi bi-arrow-right"></i>
+                </a>
+                <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-hero-secondary">
+                  <i class="bi bi-whatsapp"></i> <span>Order on WhatsApp</span>
+                </a>
+              </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Slide 4: Gift Items -->
+        <div class="hero-slide" data-slide-index="3" data-category-title="GIFT ITEMS">
+          <div class="hero-slide-bg" style="background-image: url('assets/images/hero/hero-gifts.jpg');"></div>
+          <div class="hero-slide-overlay"></div>
+          <div class="container hero-slide-container">
+            <div class="hero-slide-content">
+              <div class="hero-slide-badge">
+                <i class="bi bi-gift"></i> Executive Suites &bull; Bespoke Packaging
+              </div>
+              <h2 class="hero-slide-title">
+                Gifts Made to Be <span class="gold-accent">Remembered</span>.
+              </h2>
+              <p class="hero-slide-desc">
+                Thoughtful and elegant gift items for special moments and meaningful occasions.
+              </p>
+              <div class="hero-slide-actions">
+                <a href="#promotions" class="btn btn-hero-primary">
+                  <span>Explore Gifts</span> <i class="bi bi-arrow-right"></i>
+                </a>
+                <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-hero-secondary">
+                  <i class="bi bi-whatsapp"></i> <span>Order on WhatsApp</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Navigation Arrows -->
+      <button class="hero-nav-arrow hero-nav-prev" id="heroPrevBtn" aria-label="Previous Slide">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      <button class="hero-nav-arrow hero-nav-next" id="heroNextBtn" aria-label="Next Slide">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+
+      <!-- Bottom Slider Controls Bar -->
+      <div class="hero-slider-footer">
+        <div class="container hero-footer-container">
+          <!-- Slide Counter Indicator -->
+          <div class="hero-slide-indicator" id="heroSlideIndicator">
+            <span class="indicator-index" id="heroIndicatorIndex">01</span>
+            <span class="indicator-sep">/</span>
+            <span class="indicator-total">04</span>
+            <span class="indicator-bullet">&bull;</span>
+            <span class="indicator-label" id="heroIndicatorLabel">WATCHES</span>
+          </div>
+
+          <!-- Pagination Progress Dots -->
+          <div class="hero-pagination-dots" id="heroPaginationDots" role="tablist" aria-label="Slide Selection">
+            <button class="hero-dot active" data-slide-to="0" aria-label="Slide 1: Watches"><span class="dot-progress"></span></button>
+            <button class="hero-dot" data-slide-to="1" aria-label="Slide 2: Honey Nuts"><span class="dot-progress"></span></button>
+            <button class="hero-dot" data-slide-to="2" aria-label="Slide 3: Gadgets"><span class="dot-progress"></span></button>
+            <button class="hero-dot" data-slide-to="3" aria-label="Slide 4: Gift Items"><span class="dot-progress"></span></button>
+          </div>
+
+          <!-- Reassurance Pillars (Compact Glass Bar) -->
+          <div class="hero-trust-pills">
+            <span class="trust-pill"><i class="bi bi-shield-check"></i> 100% Genuine</span>
+            <span class="trust-pill"><i class="bi bi-camera-video"></i> Video Inspection</span>
+            <span class="trust-pill"><i class="bi bi-truck"></i> Express Courier</span>
           </div>
         </div>
       </div>
