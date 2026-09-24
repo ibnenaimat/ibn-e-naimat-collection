@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const homeCatalogDesc = document.getElementById('homeCatalogDesc');
   const headerSearchTrigger = document.getElementById('headerSearchTrigger');
 
+  // DOM Elements - Circular Category Showcase
+  const categoryShowcaseTrack = document.getElementById('categoryShowcaseTrack');
+  const catCarouselPrev = document.getElementById('catCarouselPrev');
+  const catCarouselNext = document.getElementById('catCarouselNext');
+  const showcaseDeptTabs = document.getElementById('showcaseDeptTabs');
+
   // DOM Elements - Modal & Navigation
   const quickViewModal = document.getElementById('quickViewModal');
   const modalScrollArea = document.getElementById('modalScrollArea');
@@ -51,6 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
     homeCategoryPills.querySelectorAll('.collection-pill').forEach(btn => {
       btn.addEventListener('click', () => {
         const catId = btn.getAttribute('data-category');
+        if (homeSearchInput) homeSearchInput.value = '';
+        searchQuery = '';
+        if (categoryShowcaseTrack) {
+          categoryShowcaseTrack.querySelectorAll('.showcase-category-item').forEach(el => el.classList.remove('selected-circle'));
+        }
         selectCategory(catId);
       });
     });
@@ -238,16 +249,88 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Category Cards in Section 2 trigger in-place filtering
-  document.querySelectorAll('.category-card, .category-card-link').forEach(elem => {
-    elem.addEventListener('click', (e) => {
-      const catId = elem.getAttribute('data-category') || elem.closest('.category-card')?.getAttribute('data-category');
-      if (catId) {
+  // --- 4.5 CIRCULAR CATEGORY SHOWCASE LOGIC ---
+  function renderCategoryShowcase(activeDept = 'all') {
+    if (!categoryShowcaseTrack || !window.SHOWCASE_CATEGORIES) return;
+
+    const categories = activeDept === 'all'
+      ? window.SHOWCASE_CATEGORIES
+      : window.SHOWCASE_CATEGORIES.filter(cat => cat.deptId === activeDept);
+
+    categoryShowcaseTrack.innerHTML = categories.map(cat => `
+      <div class="showcase-category-item ${cat.isPrimary ? 'primary-watch-cat' : ''}" 
+           data-cat-id="${cat.id}"
+           data-dept="${cat.deptId}"
+           role="button"
+           tabindex="0"
+           aria-label="${cat.name}">
+        <div class="category-circle-frame">
+          ${cat.isPrimary ? '<span class="primary-crown-badge" title="Signature Horology"><i class="bi bi-star-fill"></i></span>' : ''}
+          <img src="${cat.image}" alt="${cat.name}" loading="lazy">
+        </div>
+        <span class="category-circle-label">${cat.name}</span>
+        <span class="category-circle-dept">${cat.deptName}</span>
+      </div>
+    `).join('');
+
+    // Attach click and keyboard events
+    categoryShowcaseTrack.querySelectorAll('.showcase-category-item').forEach(item => {
+      const catId = item.getAttribute('data-cat-id');
+      const catData = window.SHOWCASE_CATEGORIES.find(c => c.id === catId);
+
+      const handleSelect = (e) => {
         e.preventDefault();
-        selectCategory(catId, true);
-      }
+        if (!catData) return;
+
+        // Apply filter query and category
+        searchQuery = catData.filterQuery || '';
+        if (homeSearchInput) {
+          homeSearchInput.value = searchQuery;
+        }
+
+        // Highlight selected circle
+        categoryShowcaseTrack.querySelectorAll('.showcase-category-item').forEach(el => el.classList.remove('selected-circle'));
+        item.classList.add('selected-circle');
+
+        selectCategory(catData.filterCategory || 'all', true);
+      };
+
+      item.addEventListener('click', handleSelect);
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleSelect(e);
+        }
+      });
     });
-  });
+  }
+
+  // Department quick-filter tabs
+  if (showcaseDeptTabs) {
+    showcaseDeptTabs.querySelectorAll('.dept-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        showcaseDeptTabs.querySelectorAll('.dept-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const dept = tab.getAttribute('data-dept') || 'all';
+        renderCategoryShowcase(dept);
+        if (categoryShowcaseTrack) {
+          categoryShowcaseTrack.scrollTo({ left: 0, behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
+  // Carousel arrow controls
+  if (catCarouselPrev && categoryShowcaseTrack) {
+    catCarouselPrev.addEventListener('click', () => {
+      categoryShowcaseTrack.scrollBy({ left: -320, behavior: 'smooth' });
+    });
+  }
+
+  if (catCarouselNext && categoryShowcaseTrack) {
+    catCarouselNext.addEventListener('click', () => {
+      categoryShowcaseTrack.scrollBy({ left: 320, behavior: 'smooth' });
+    });
+  }
 
   // --- 5. WHATSAPP ORDER AUTOMATION ---
   function orderOnWhatsApp(productId) {
@@ -437,6 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- 11. INITIALIZATION ---
+  renderCategoryShowcase('all');
   renderCategoryPills();
   renderCatalog();
   initScrollReveal();

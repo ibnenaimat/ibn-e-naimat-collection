@@ -43,7 +43,7 @@
     <div class="container top-concierge-inner">
       <div class="top-concierge-notice">
         <span class="top-concierge-dot"></span>
-        <span>Nationwide Insured Delivery Across Pakistan • Official WhatsApp Concierge</span>
+        <span>Nationwide Insured Delivery Across Pakistan &bull; Official WhatsApp Concierge</span>
       </div>
 
       <div class="top-concierge-actions">
@@ -51,7 +51,7 @@
           <i class="bi bi-whatsapp"></i> WhatsApp: 0330-2241340
         </a>
         <span class="top-concierge-link">
-          <i class="bi bi-clock"></i> 10:00 AM – 11:00 PM PKT
+          <i class="bi bi-clock"></i> 10:00 AM &ndash; 11:00 PM PKT
         </span>
       </div>
     </div>
@@ -161,7 +161,7 @@
           </p>
 
           <div class="hero-actions">
-            <a href="#catalog" class="btn btn-gold-action">
+            <a href="#categories" class="btn btn-gold-action">
               Explore Catalog <i class="bi bi-arrow-right"></i>
             </a>
             <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-wa-action">
@@ -224,145 +224,40 @@
     </section>
 
     <!-- =======================================================================
-         2. FEATURED CATEGORIES SECTION
+         2. CIRCULAR CATEGORY SHOWCASE (CLEAN WHITE BACKGROUND, LUXURY MINIMAL)
          ======================================================================= -->
-    <section class="categories-section" id="categories">
+    <section class="circular-category-showcase-section" id="categories">
       <div class="container">
-        <div class="editorial-header reveal-on-scroll">
-          <span class="editorial-tag">Curated Collections</span>
-          <h2 class="editorial-title">Explore by <em>Category</em></h2>
-          <p class="editorial-desc">
-            Discover our specialized departments, each curated with genuine quality, guaranteed authenticity, and direct WhatsApp concierge support.
+        <div class="category-showcase-header reveal-on-scroll">
+          <div class="category-showcase-badge">Curated Collections</div>
+          <h2 class="category-showcase-title">Explore by <em>Category</em></h2>
+          <p class="category-showcase-desc">
+            Discover our verified authentic luxury timepieces, pure wildflower honey nuts, high-grade tech gadgets, and prestige executive gifts.
           </p>
+          
+          <!-- Department Quick Filter Tabs -->
+          <div class="showcase-dept-tabs" id="showcaseDeptTabs">
+            <button class="dept-tab active" data-dept="all">All Departments</button>
+            <button class="dept-tab primary-dept" data-dept="watches"><i class="bi bi-watch"></i> Watches <span class="dept-star"><i class="bi bi-star-fill"></i> Primary</span></button>
+            <button class="dept-tab" data-dept="honey-nuts">Honey Nuts</button>
+            <button class="dept-tab" data-dept="gadgets">Gadgets</button>
+            <button class="dept-tab" data-dept="gifts">Gift Items</button>
+          </div>
         </div>
 
-        <!-- Category Cards Grid -->
-        <div class="categories-grid">
-          <!-- 1. Watches -->
-          <div class="category-card reveal-on-scroll stagger-1" data-category="watches">
-            <div class="category-card-media">
-              <span class="category-badge-pill">Signature Horology</span>
-              <img src="assets/images/placeholders/watch-placeholder.svg" alt="Original Branded Watches" loading="lazy">
-            </div>
-            <div class="category-card-body">
-              <span class="category-card-subtitle">Authentic Timepieces</span>
-              <h3 class="category-card-title">Original Watches</h3>
-              <p class="category-card-desc">
-                Curated collection of 100% original branded watches for men and women with precision movements and presentation packaging.
-              </p>
-              <div class="category-card-footer">
-                <span class="category-item-count">4 Models Available</span>
-                <a href="#catalog" data-category="watches" class="category-card-link">
-                  Explore Watches <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
+        <!-- Carousel Container with Desktop Arrow Controls -->
+        <div class="showcase-carousel-wrapper reveal-on-scroll">
+          <button class="carousel-nav-btn prev-btn" id="catCarouselPrev" aria-label="Previous categories">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+
+          <div class="showcase-carousel-track" id="categoryShowcaseTrack">
+            <!-- Rendered dynamically by js/app.js from SHOWCASE_CATEGORIES -->
           </div>
 
-          <!-- 2. Islamic Calligraphy -->
-          <div class="category-card reveal-on-scroll stagger-2" data-category="calligraphy">
-            <div class="category-card-media">
-              <span class="category-badge-pill">Spiritual Luxury</span>
-              <img src="assets/images/placeholders/calligraphy-placeholder.svg" alt="Islamic Calligraphy Frames" loading="lazy">
-            </div>
-            <div class="category-card-body">
-              <span class="category-card-subtitle">Handcrafted Canvas</span>
-              <h3 class="category-card-title">Islamic Calligraphy</h3>
-              <p class="category-card-desc">
-                Exquisite Arabic calligraphy artwork featuring Ayatul Kursi, 4 Qul, and Surah Ar-Rahman on framed luxury canvas.
-              </p>
-              <div class="category-card-footer">
-                <span class="category-item-count">3 Artworks Available</span>
-                <a href="#catalog" data-category="calligraphy" class="category-card-link">
-                  Explore Calligraphy <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. Mobile Accessories -->
-          <div class="category-card reveal-on-scroll stagger-3" data-category="mobile-accessories">
-            <div class="category-card-media">
-              <span class="category-badge-pill">Daily Essentials</span>
-              <img src="assets/images/placeholders/mobile-accessories-placeholder.svg" alt="Mobile Accessories" loading="lazy">
-            </div>
-            <div class="category-card-body">
-              <span class="category-card-subtitle">Power &amp; Connectivity</span>
-              <h3 class="category-card-title">Mobile Accessories</h3>
-              <p class="category-card-desc">
-                65W GaN fast chargers, heavy-duty braided cables, magnetic car mounts, and desktop MagSafe charging stands.
-              </p>
-              <div class="category-card-footer">
-                <span class="category-item-count">4 Essentials Available</span>
-                <a href="#catalog" data-category="mobile-accessories" class="category-card-link">
-                  Explore Accessories <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- 4. Tech Gadgets -->
-          <div class="category-card reveal-on-scroll stagger-4" data-category="gadgets">
-            <div class="category-card-media">
-              <span class="category-badge-pill">Smart Lifestyle</span>
-              <img src="assets/images/placeholders/gadgets-placeholder.svg" alt="Tech Gadgets" loading="lazy">
-            </div>
-            <div class="category-card-body">
-              <span class="category-card-subtitle">High-Fidelity Audio</span>
-              <h3 class="category-card-title">Tech Gadgets</h3>
-              <p class="category-card-desc">
-                Pro ANC wireless earbuds, open-ear titanium sports headphones, and multi-port aluminum USB-C hubs.
-              </p>
-              <div class="category-card-footer">
-                <span class="category-item-count">3 Gadgets Available</span>
-                <a href="#catalog" data-category="gadgets" class="category-card-link">
-                  Explore Gadgets <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- 5. Luxury Gifts -->
-          <div class="category-card reveal-on-scroll stagger-5" data-category="gifts">
-            <div class="category-card-media">
-              <span class="category-badge-pill">Special Moments</span>
-              <img src="assets/images/placeholders/gift-placeholder.svg" alt="Luxury Gift Sets" loading="lazy">
-            </div>
-            <div class="category-card-body">
-              <span class="category-card-subtitle">Curated Hampers</span>
-              <h3 class="category-card-title">Luxury Gift Boxes</h3>
-              <p class="category-card-desc">
-                Royal gentleman gift sets, his &amp; hers couple watch boxes, and wellness dry fruit hampers ready for gifting.
-              </p>
-              <div class="category-card-footer">
-                <span class="category-item-count">3 Hampers Available</span>
-                <a href="#catalog" data-category="gifts" class="category-card-link">
-                  Explore Gifts <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- 6. Honey Nuts -->
-          <div class="category-card reveal-on-scroll stagger-6" data-category="honey-nuts">
-            <div class="category-card-media">
-              <span class="category-badge-pill">100% Pure &amp; Raw</span>
-              <img src="assets/images/placeholders/honey-nuts-placeholder.svg" alt="Honey Nuts Collection" loading="lazy">
-            </div>
-            <div class="category-card-body">
-              <span class="category-card-subtitle">Raw Honey &amp; Dry Fruits</span>
-              <h3 class="category-card-title">Honey Nuts Collection</h3>
-              <p class="category-card-desc">
-                Unheated natural flower honey infused with hand-selected almonds, Kashmiri walnuts, cashews, and pistachios.
-              </p>
-              <div class="category-card-footer">
-                <span class="category-item-count">3 Jars Available</span>
-                <a href="#catalog" data-category="honey-nuts" class="category-card-link">
-                  Explore Honey Nuts <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
+          <button class="carousel-nav-btn next-btn" id="catCarouselNext" aria-label="Next categories">
+            <i class="bi bi-chevron-right"></i>
+          </button>
         </div>
       </div>
     </section>

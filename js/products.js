@@ -65,6 +65,155 @@ const CATEGORIES = [
   }
 ];
 
+/**
+ * ============================================================================
+ * CIRCULAR SHOWCASE CATEGORIES (AS PER HORIZONTAL SHOWCASE SPECIFICATION)
+ * 12 dedicated categories organized under Watches, Honey Nuts, Gadgets & Gifts.
+ * Watches are marked as isPrimary: true for visual luxury prominence.
+ * ============================================================================
+ */
+const SHOWCASE_CATEGORIES = [
+  // --- 1. WATCHES (PRIMARY VISUAL FOCUS) ---
+  {
+    id: "mens-formal-watches",
+    name: "Men's Formal Watches",
+    deptId: "watches",
+    deptName: "Watches",
+    image: "assets/images/categories/cat-mens-formal.svg",
+    isPrimary: true,
+    badge: "Formal Horology",
+    filterCategory: "watches",
+    filterQuery: "chronograph"
+  },
+  {
+    id: "mens-sports-watches",
+    name: "Men's Sports Watches",
+    deptId: "watches",
+    deptName: "Watches",
+    image: "assets/images/categories/cat-mens-sports.svg",
+    isPrimary: true,
+    badge: "Sports Tachymeter",
+    filterCategory: "watches",
+    filterQuery: "sports"
+  },
+  {
+    id: "womens-watches",
+    name: "Women's Watches",
+    deptId: "watches",
+    deptName: "Watches",
+    image: "assets/images/categories/cat-womens-watches.svg",
+    isPrimary: true,
+    badge: "Delicate Elegance",
+    filterCategory: "watches",
+    filterQuery: "women"
+  },
+  {
+    id: "couple-watches",
+    name: "Couple Watches",
+    deptId: "watches",
+    deptName: "Watches",
+    image: "assets/images/categories/cat-couple-watches.svg",
+    isPrimary: true,
+    badge: "His & Hers Set",
+    filterCategory: "gifts",
+    filterQuery: "couple"
+  },
+  {
+    id: "smart-watches",
+    name: "Smart Watches",
+    deptId: "watches",
+    deptName: "Watches",
+    image: "assets/images/categories/cat-smart-watches.svg",
+    isPrimary: true,
+    badge: "Connected AMOLED",
+    filterCategory: "watches",
+    filterQuery: "watch"
+  },
+
+  // --- 2. HONEY NUTS ---
+  {
+    id: "honey-nuts",
+    name: "Honey Nuts",
+    deptId: "honey-nuts",
+    deptName: "Honey Nuts",
+    image: "assets/images/categories/cat-honey-nuts.svg",
+    isPrimary: false,
+    badge: "Raw Wildflower",
+    filterCategory: "honey-nuts",
+    filterQuery: "honey"
+  },
+  {
+    id: "premium-dry-fruits",
+    name: "Premium Dry Fruits",
+    deptId: "honey-nuts",
+    deptName: "Honey Nuts",
+    image: "assets/images/categories/cat-dry-fruits.svg",
+    isPrimary: false,
+    badge: "Roasted & Raw",
+    filterCategory: "honey-nuts",
+    filterQuery: "dry fruits"
+  },
+
+  // --- 3. GADGETS ---
+  {
+    id: "earbuds",
+    name: "Earbuds",
+    deptId: "gadgets",
+    deptName: "Gadgets",
+    image: "assets/images/categories/cat-earbuds.svg",
+    isPrimary: false,
+    badge: "Pro ANC Audio",
+    filterCategory: "gadgets",
+    filterQuery: "earbuds"
+  },
+  {
+    id: "chargers-accessories",
+    name: "Chargers & Accessories",
+    deptId: "gadgets",
+    deptName: "Gadgets",
+    image: "assets/images/categories/cat-chargers.svg",
+    isPrimary: false,
+    badge: "65W GaN Fast Charge",
+    filterCategory: "mobile-accessories",
+    filterQuery: "charger"
+  },
+  {
+    id: "mobile-gadgets",
+    name: "Mobile Gadgets",
+    deptId: "gadgets",
+    deptName: "Gadgets",
+    image: "assets/images/categories/cat-mobile-gadgets.svg",
+    isPrimary: false,
+    badge: "MagSafe & Smart Hubs",
+    filterCategory: "gadgets",
+    filterQuery: "gadgets"
+  },
+
+  // --- 4. GIFT ITEMS ---
+  {
+    id: "gift-sets",
+    name: "Gift Sets",
+    deptId: "gifts",
+    deptName: "Gift Items",
+    image: "assets/images/categories/cat-gift-sets.svg",
+    isPrimary: false,
+    badge: "Presentation Boxes",
+    filterCategory: "gifts",
+    filterQuery: "gift"
+  },
+  {
+    id: "premium-gifts",
+    name: "Premium Gifts",
+    deptId: "gifts",
+    deptName: "Gift Items",
+    image: "assets/images/categories/cat-premium-gifts.svg",
+    isPrimary: false,
+    badge: "Executive Hampers",
+    filterCategory: "gifts",
+    filterQuery: "hampers"
+  }
+];
+
 const PRODUCTS = [
   // ==========================================
   // 1. ORIGINAL BRANDED WATCHES
@@ -451,4 +600,5 @@ const PRODUCTS = [
 
 // Export to window
 window.CATEGORIES = CATEGORIES;
+window.SHOWCASE_CATEGORIES = SHOWCASE_CATEGORIES;
 window.PRODUCTS = PRODUCTS;
