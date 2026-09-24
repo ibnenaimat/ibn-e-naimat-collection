@@ -1,11 +1,27 @@
 /**
  * Ibn e Naimat Collection - Homepage Application Logic
- * Pure, fast, modular Vanilla JavaScript
+ * Interactive Catalog with Category Filter Pills, Live Search, Multi-Criteria Sorting,
+ * Quick View Luxury Modal, and Staggered Animations
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM Elements
+  // State
+  let activeCategory = 'all';
+  let activeSort = 'featured';
+  let searchQuery = '';
+
+  // DOM Elements - Catalog
+  const homeCategoryPills = document.getElementById('homeCategoryPills');
   const featuredGrid = document.getElementById('featuredGrid');
+  const homeSearchInput = document.getElementById('homeSearchInput');
+  const homeSortSelect = document.getElementById('homeSortSelect');
+  const homeCountText = document.getElementById('homeCountText');
+  const homeCatalogTag = document.getElementById('homeCatalogTag');
+  const homeCatalogTitle = document.getElementById('homeCatalogTitle');
+  const homeCatalogDesc = document.getElementById('homeCatalogDesc');
+  const headerSearchTrigger = document.getElementById('headerSearchTrigger');
+
+  // DOM Elements - Modal & Navigation
   const quickViewModal = document.getElementById('quickViewModal');
   const modalScrollArea = document.getElementById('modalScrollArea');
   const modalClose = document.getElementById('modalClose');
@@ -16,15 +32,130 @@ document.addEventListener('DOMContentLoaded', () => {
   const siteHeader = document.querySelector('.site-header');
   const floatingWaBtn = document.getElementById('floatingWaBtn');
 
-  // --- 1. RENDER STRICTLY 4-6 FEATURED PRODUCTS ON HOMEPAGE ---
-  function renderFeaturedProducts() {
+  // --- 1. RENDER CATEGORY PILLS ---
+  function renderCategoryPills() {
+    if (!homeCategoryPills || !window.CATEGORIES || !window.PRODUCTS) return;
+
+    homeCategoryPills.innerHTML = window.CATEGORIES.map(cat => {
+      const count = cat.id === 'all'
+        ? window.PRODUCTS.length
+        : window.PRODUCTS.filter(p => p.category === cat.id).length;
+
+      return `
+        <button class="collection-pill ${cat.id === activeCategory ? 'active' : ''}" data-category="${cat.id}">
+          ${cat.name} <span class="pill-count">(${count})</span>
+        </button>
+      `;
+    }).join('');
+
+    homeCategoryPills.querySelectorAll('.collection-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const catId = btn.getAttribute('data-category');
+        selectCategory(catId);
+      });
+    });
+  }
+
+  // --- 2. SELECT CATEGORY & UPDATE SECTION HEADER ---
+  function selectCategory(catId, shouldScroll = false) {
+    activeCategory = catId;
+
+    // Update active pill state
+    if (homeCategoryPills) {
+      homeCategoryPills.querySelectorAll('.collection-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-category') === catId);
+      });
+    }
+
+    // Update section header copy
+    const currentCatObj = window.CATEGORIES ? window.CATEGORIES.find(c => c.id === activeCategory) : null;
+    if (activeCategory === 'all') {
+      if (homeCatalogTag) homeCatalogTag.textContent = 'Curated Luxury Catalog';
+      if (homeCatalogTitle) homeCatalogTitle.innerHTML = 'The Curated <em>Catalog</em>';
+      if (homeCatalogDesc) homeCatalogDesc.textContent = 'Explore 100% verified original branded timepieces, museum-grade calligraphy frames, high-speed mobile accessories, and pure organic honey nuts.';
+    } else if (currentCatObj) {
+      if (homeCatalogTag) homeCatalogTag.textContent = currentCatObj.badge || 'Curated Department';
+      if (homeCatalogTitle) homeCatalogTitle.innerHTML = `${currentCatObj.name} <em>Showcase</em>`;
+      if (homeCatalogDesc) homeCatalogDesc.textContent = currentCatObj.description || currentCatObj.tagline || '';
+    }
+
+    renderCatalog();
+
+    if (shouldScroll) {
+      const catalogEl = document.getElementById('catalog');
+      if (catalogEl) {
+        catalogEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+
+  // --- 3. FILTER, SORT & RENDER CATALOG PRODUCTS ---
+  function renderCatalog() {
     if (!featuredGrid || !window.PRODUCTS) return;
 
-    // Pick strictly the featured items (max 6)
-    const featuredItems = window.PRODUCTS.filter(p => p.featured).slice(0, 6);
+    let items = [...window.PRODUCTS];
 
-    featuredGrid.innerHTML = featuredItems.map((product, idx) => `
-      <div class="editorial-card reveal-on-scroll stagger-${(idx % 6) + 1}" data-id="${product.id}">
+    // Filter by category
+    if (activeCategory !== 'all') {
+      items = items.filter(p => p.category === activeCategory);
+    }
+
+    // Filter by search query
+    if (searchQuery.trim() !== '') {
+      const q = searchQuery.toLowerCase().trim();
+      items = items.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.categoryName.toLowerCase().includes(q) ||
+        p.shortDesc.toLowerCase().includes(q) ||
+        (p.id && p.id.toLowerCase().includes(q))
+      );
+    }
+
+    // Apply sorting
+    if (activeSort === 'price-asc') {
+      items.sort((a, b) => a.price - b.price);
+    } else if (activeSort === 'price-desc') {
+      items.sort((a, b) => b.price - a.price);
+    } else if (activeSort === 'name-asc') {
+      items.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      // 'featured': featured items first, then preserve base order
+      items.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+    }
+
+    // Update count indicator
+    if (homeCountText) {
+      homeCountText.textContent = `Showing ${items.length} ${items.length === 1 ? 'item' : 'items'}`;
+    }
+
+    // Empty state
+    if (items.length === 0) {
+      featuredGrid.innerHTML = `
+        <div class="editorial-empty-state" style="grid-column: 1 / -1; text-align: center; padding: 4rem 1.5rem; background: rgba(255, 255, 255, 0.02); border: 1px dashed rgba(255, 255, 255, 0.12); border-radius: var(--radius-md);">
+          <i class="bi bi-search" style="font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 1rem; display: inline-block;"></i>
+          <h3 style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 0.5rem; color: #ffffff;">No Products Found</h3>
+          <p class="text-muted" style="color: #a1a1aa; max-width: 460px; margin: 0 auto 1.5rem auto; line-height: 1.6;">
+            We could not find any items matching your selected criteria. Try adjusting your search term or select another category.
+          </p>
+          <button class="btn btn-gold-action" id="resetHomeFiltersBtn">
+            Reset All Filters
+          </button>
+        </div>
+      `;
+
+      document.getElementById('resetHomeFiltersBtn')?.addEventListener('click', () => {
+        if (homeSearchInput) homeSearchInput.value = '';
+        searchQuery = '';
+        if (homeSortSelect) homeSortSelect.value = 'featured';
+        activeSort = 'featured';
+        selectCategory('all');
+      });
+      return;
+    }
+
+    // Render product cards with luxury staggered entrance animation
+    featuredGrid.innerHTML = items.map((product, idx) => `
+      <div class="editorial-card card-entry-anim" style="animation-delay: ${(idx % 9) * 0.045}s;" data-id="${product.id}">
         <div class="editorial-card-media">
           ${product.badge ? `<span class="editorial-card-badge">${product.badge}</span>` : ''}
           <img src="${product.image}" alt="${product.name}" loading="lazy">
@@ -55,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `).join('');
 
-    // Attach card event listeners
+    // Attach card action listeners
     featuredGrid.querySelectorAll('.order-wa-action').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -78,7 +209,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 2. WHATSAPP ORDER AUTOMATION ---
+  // --- 4. SEARCH & SORT EVENT HANDLERS ---
+  if (homeSearchInput) {
+    homeSearchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderCatalog();
+    });
+  }
+
+  if (homeSortSelect) {
+    homeSortSelect.addEventListener('change', (e) => {
+      activeSort = e.target.value;
+      renderCatalog();
+    });
+  }
+
+  // Header search trigger smoothly opens and focuses search bar
+  if (headerSearchTrigger) {
+    headerSearchTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      const catalogEl = document.getElementById('catalog');
+      if (catalogEl) {
+        catalogEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      setTimeout(() => {
+        homeSearchInput?.focus();
+      }, 500);
+    });
+  }
+
+  // Category Cards in Section 2 trigger in-place filtering
+  document.querySelectorAll('.category-card, .category-card-link').forEach(elem => {
+    elem.addEventListener('click', (e) => {
+      const catId = elem.getAttribute('data-category') || elem.closest('.category-card')?.getAttribute('data-category');
+      if (catId) {
+        e.preventDefault();
+        selectCategory(catId, true);
+      }
+    });
+  });
+
+  // --- 5. WHATSAPP ORDER AUTOMATION ---
   function orderOnWhatsApp(productId) {
     const product = window.PRODUCTS.find(p => p.id === productId);
     if (!product) return;
@@ -88,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.open(waUrl, '_blank');
   }
 
-  // --- 3. LUXURY PRODUCT DETAIL EXPERIENCE (MODAL & RELATED ITEMS) ---
+  // --- 6. LUXURY PRODUCT DETAIL EXPERIENCE (MODAL & RELATED ITEMS) ---
   function openQuickView(productId) {
     const product = window.PRODUCTS.find(p => p.id === productId);
     if (!product || !quickViewModal || !modalScrollArea) return;
@@ -202,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- 4. MOBILE DRAWER NAVIGATION ---
+  // --- 7. MOBILE DRAWER NAVIGATION ---
   function openDrawer() {
     mobileDrawer?.classList.add('active');
     drawerOverlay?.classList.add('active');
@@ -225,20 +396,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- 5. SCROLL HEADER EFFECT ---
+  // --- 8. SCROLL HEADER EFFECT ---
   window.addEventListener('scroll', () => {
     if (!siteHeader) return;
     siteHeader.classList.toggle('scrolled', window.scrollY > 40);
   });
 
-  // --- 6. FLOATING WHATSAPP BUTTON ---
+  // --- 9. FLOATING WHATSAPP BUTTON ---
   floatingWaBtn?.addEventListener('click', () => {
     const waText = window.CONFIG.whatsapp.defaultInquiryMessage();
     const waUrl = `https://wa.me/${window.CONFIG.whatsapp.international}?text=${encodeURIComponent(waText)}`;
     window.open(waUrl, '_blank');
   });
 
-  // --- 7. REFINED SCROLL REVEAL (INTERSECTION OBSERVER) ---
+  // --- 10. REFINED SCROLL REVEAL (INTERSECTION OBSERVER) ---
   function initScrollReveal() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-visible'));
@@ -265,7 +436,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
   }
 
-  // Initialize
-  renderFeaturedProducts();
+  // --- 11. INITIALIZATION ---
+  renderCategoryPills();
+  renderCatalog();
   initScrollReveal();
 });

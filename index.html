@@ -72,7 +72,7 @@
         <ul class="nav-menu">
           <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
           <li class="nav-item"><a href="#categories" class="nav-link">Categories</a></li>
-          <li class="nav-item"><a href="#featured" class="nav-link">Featured</a></li>
+          <li class="nav-item"><a href="#catalog" class="nav-link">Catalog</a></li>
           <li class="nav-item"><a href="shop.html" class="nav-link" style="color: var(--gold-primary); font-weight: 700;">Shop All</a></li>
           <li class="nav-item"><a href="#why-us" class="nav-link">Why Choose Us</a></li>
           <li class="nav-item"><a href="#reviews" class="nav-link">Reviews</a></li>
@@ -82,8 +82,8 @@
 
       <!-- Utility Actions -->
       <div class="nav-actions">
-        <!-- Search Trigger Icon -> Opens Shop -->
-        <a href="shop.html" class="header-search-trigger" aria-label="Search Collection" title="Search Timepieces &amp; Catalog">
+        <!-- Search Trigger Icon -> Scrolls to Catalog Search -->
+        <a href="#catalog" class="header-search-trigger" id="headerSearchTrigger" aria-label="Search Collection" title="Search Timepieces &amp; Catalog">
           <i class="bi bi-search"></i>
         </a>
 
@@ -116,7 +116,7 @@
     <ul class="drawer-menu">
       <li><a href="#home" class="drawer-link">Home <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="#categories" class="drawer-link">Product Categories <i class="bi bi-chevron-right"></i></a></li>
-      <li><a href="#featured" class="drawer-link">Featured Highlights <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="#catalog" class="drawer-link">Curated Catalog <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="shop.html" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;">Shop All Collections <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="shop.html?category=watches" class="drawer-link">Original Watches <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="shop.html?category=calligraphy" class="drawer-link">Islamic Calligraphy <i class="bi bi-chevron-right"></i></a></li>
@@ -161,8 +161,8 @@
           </p>
 
           <div class="hero-actions">
-            <a href="shop.html" class="btn btn-gold-action">
-              Shop Collections <i class="bi bi-arrow-right"></i>
+            <a href="#catalog" class="btn btn-gold-action">
+              Explore Catalog <i class="bi bi-arrow-right"></i>
             </a>
             <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-wa-action">
               <i class="bi bi-whatsapp"></i> Order on WhatsApp
@@ -239,7 +239,7 @@
         <!-- Category Cards Grid -->
         <div class="categories-grid">
           <!-- 1. Watches -->
-          <div class="category-card reveal-on-scroll stagger-1">
+          <div class="category-card reveal-on-scroll stagger-1" data-category="watches">
             <div class="category-card-media">
               <span class="category-badge-pill">Signature Horology</span>
               <img src="assets/images/placeholders/watch-placeholder.svg" alt="Original Branded Watches" loading="lazy">
@@ -252,7 +252,7 @@
               </p>
               <div class="category-card-footer">
                 <span class="category-item-count">4 Models Available</span>
-                <a href="shop.html?category=watches" class="category-card-link">
+                <a href="#catalog" data-category="watches" class="category-card-link">
                   Explore Watches <i class="bi bi-arrow-right"></i>
                 </a>
               </div>
@@ -260,7 +260,7 @@
           </div>
 
           <!-- 2. Islamic Calligraphy -->
-          <div class="category-card reveal-on-scroll stagger-2">
+          <div class="category-card reveal-on-scroll stagger-2" data-category="calligraphy">
             <div class="category-card-media">
               <span class="category-badge-pill">Spiritual Luxury</span>
               <img src="assets/images/placeholders/calligraphy-placeholder.svg" alt="Islamic Calligraphy Frames" loading="lazy">
@@ -273,7 +273,7 @@
               </p>
               <div class="category-card-footer">
                 <span class="category-item-count">3 Artworks Available</span>
-                <a href="shop.html?category=calligraphy" class="category-card-link">
+                <a href="#catalog" data-category="calligraphy" class="category-card-link">
                   Explore Calligraphy <i class="bi bi-arrow-right"></i>
                 </a>
               </div>
@@ -281,7 +281,7 @@
           </div>
 
           <!-- 3. Mobile Accessories -->
-          <div class="category-card reveal-on-scroll stagger-3">
+          <div class="category-card reveal-on-scroll stagger-3" data-category="mobile-accessories">
             <div class="category-card-media">
               <span class="category-badge-pill">Daily Essentials</span>
               <img src="assets/images/placeholders/mobile-accessories-placeholder.svg" alt="Mobile Accessories" loading="lazy">
@@ -294,7 +294,7 @@
               </p>
               <div class="category-card-footer">
                 <span class="category-item-count">4 Essentials Available</span>
-                <a href="shop.html?category=mobile-accessories" class="category-card-link">
+                <a href="#catalog" data-category="mobile-accessories" class="category-card-link">
                   Explore Accessories <i class="bi bi-arrow-right"></i>
                 </a>
               </div>
@@ -302,7 +302,7 @@
           </div>
 
           <!-- 4. Tech Gadgets -->
-          <div class="category-card reveal-on-scroll stagger-4">
+          <div class="category-card reveal-on-scroll stagger-4" data-category="gadgets">
             <div class="category-card-media">
               <span class="category-badge-pill">Smart Lifestyle</span>
               <img src="assets/images/placeholders/gadgets-placeholder.svg" alt="Tech Gadgets" loading="lazy">
@@ -315,7 +315,7 @@
               </p>
               <div class="category-card-footer">
                 <span class="category-item-count">3 Gadgets Available</span>
-                <a href="shop.html?category=gadgets" class="category-card-link">
+                <a href="#catalog" data-category="gadgets" class="category-card-link">
                   Explore Gadgets <i class="bi bi-arrow-right"></i>
                 </a>
               </div>
@@ -323,7 +323,7 @@
           </div>
 
           <!-- 5. Luxury Gifts -->
-          <div class="category-card reveal-on-scroll stagger-5">
+          <div class="category-card reveal-on-scroll stagger-5" data-category="gifts">
             <div class="category-card-media">
               <span class="category-badge-pill">Special Moments</span>
               <img src="assets/images/placeholders/gift-placeholder.svg" alt="Luxury Gift Sets" loading="lazy">
@@ -336,7 +336,7 @@
               </p>
               <div class="category-card-footer">
                 <span class="category-item-count">3 Hampers Available</span>
-                <a href="shop.html?category=gifts" class="category-card-link">
+                <a href="#catalog" data-category="gifts" class="category-card-link">
                   Explore Gifts <i class="bi bi-arrow-right"></i>
                 </a>
               </div>
@@ -344,7 +344,7 @@
           </div>
 
           <!-- 6. Honey Nuts -->
-          <div class="category-card reveal-on-scroll stagger-6">
+          <div class="category-card reveal-on-scroll stagger-6" data-category="honey-nuts">
             <div class="category-card-media">
               <span class="category-badge-pill">100% Pure &amp; Raw</span>
               <img src="assets/images/placeholders/honey-nuts-placeholder.svg" alt="Honey Nuts Collection" loading="lazy">
@@ -357,7 +357,7 @@
               </p>
               <div class="category-card-footer">
                 <span class="category-item-count">3 Jars Available</span>
-                <a href="shop.html?category=honey-nuts" class="category-card-link">
+                <a href="#catalog" data-category="honey-nuts" class="category-card-link">
                   Explore Honey Nuts <i class="bi bi-arrow-right"></i>
                 </a>
               </div>
@@ -368,30 +368,61 @@
     </section>
 
     <!-- =======================================================================
-         3. FEATURED PRODUCTS SECTION (STRICTLY 4–6 PRODUCTS ONLY)
+         3. CURATED CATALOG SECTION (INTERACTIVE CATEGORIES, SEARCH & SORT)
          ======================================================================= -->
-    <section class="watches-section" id="featured">
+    <section class="watches-section" id="catalog">
+      <span id="featured" style="position: relative; top: -100px; display: block; visibility: hidden;"></span>
       <div class="container">
         <div class="editorial-header reveal-on-scroll">
-          <span class="editorial-tag">Exclusive Selection</span>
-          <h2 class="editorial-title">Featured <em>Products</em></h2>
-          <p class="editorial-desc">
-            A strictly curated showcase of our most appreciated branded timepieces, calligraphy art, and signature items.
+          <span class="editorial-tag" id="homeCatalogTag">Curated Luxury Catalog</span>
+          <h2 class="editorial-title" id="homeCatalogTitle">The Curated <em>Catalog</em></h2>
+          <p class="editorial-desc" id="homeCatalogDesc">
+            Explore 100% verified original branded timepieces, museum-grade calligraphy frames, high-speed mobile accessories, and pure organic honey nuts.
           </p>
+          <div class="shop-active-count-badge" style="margin-top: 1.25rem;">
+            <span class="active-dot"></span>
+            <span id="homeCountText">Showing 20 items</span>
+          </div>
         </div>
 
-        <!-- Featured Products Grid (Populated dynamically by app.js with exactly 6 items) -->
+        <!-- Interactive Controls Bar (Category Filter Pills + Search + Sort) -->
+        <div class="shop-controls-bar reveal-on-scroll">
+          <!-- Category Filter Pills -->
+          <div class="shop-pills-scroll" id="homeCategoryPills">
+            <!-- Rendered dynamically by js/app.js -->
+          </div>
+
+          <!-- Search & Sort Controls -->
+          <div class="shop-search-sort-group">
+            <div class="shop-search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" id="homeSearchInput" placeholder="Search collection..." aria-label="Search catalog items">
+            </div>
+
+            <div class="shop-sort-box">
+              <label for="homeSortSelect" class="sort-label"><i class="bi bi-sliders"></i> Sort:</label>
+              <select id="homeSortSelect" aria-label="Sort products">
+                <option value="featured">Featured First</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name-asc">Name: A to Z</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products Grid (Populated dynamically by app.js with smooth animations) -->
         <div class="editorial-grid" id="featuredGrid">
-          <!-- Rendered by js/app.js -->
+          <!-- Rendered dynamically by js/app.js -->
         </div>
 
-        <!-- Prominent View All Products CTA Box -->
+        <!-- Dedicated Shop Catalog CTA Box -->
         <div class="featured-view-all-box reveal-on-scroll">
           <a href="shop.html" class="btn btn-gold-action" style="padding: 1rem 2.5rem; font-size: 1rem; border-radius: var(--radius-full);">
-            <i class="bi bi-grid-fill"></i> View All Products &amp; Collections <i class="bi bi-arrow-right"></i>
+            <i class="bi bi-grid-fill"></i> View Standalone Shop Page <i class="bi bi-arrow-right"></i>
           </a>
           <p class="featured-view-all-sub">
-            Discover all 20+ authentic timepieces, tech accessories, calligraphy frames, and gift sets.
+            Prefer a full-screen view? Access our dedicated shop catalog page with deep category links.
           </p>
         </div>
       </div>
@@ -619,7 +650,7 @@
           <ul class="footer-links">
             <li><a href="#home" class="footer-link">Home</a></li>
             <li><a href="#categories" class="footer-link">Categories</a></li>
-            <li><a href="#featured" class="footer-link">Featured Highlights</a></li>
+            <li><a href="#catalog" class="footer-link">Curated Catalog</a></li>
             <li><a href="shop.html" class="footer-link">Shop All Collections</a></li>
             <li><a href="#why-us" class="footer-link">Why Choose Us</a></li>
             <li><a href="#reviews" class="footer-link">Customer Reviews</a></li>

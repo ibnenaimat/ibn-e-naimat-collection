@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="phoneBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e222a"/>
+      <stop offset="100%" stop-color="#0f1115"/>
+    </linearGradient>
+    <linearGradient id="standMetallic" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#adb5bd"/>
+      <stop offset="50%" stop-color="#6c757d"/>
+      <stop offset="100%" stop-color="#495057"/>
+    </linearGradient>
+    <filter id="gadgetShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Aluminum Desktop Stand Base -->
+  <ellipse cx="100" cy="162" rx="42" ry="10" fill="url(#standMetallic)" filter="url(#gadgetShadow)"/>
+  <rect x="96" y="110" width="8" height="52" rx="4" fill="url(#standMetallic)"/>
+
+  <!-- MagSafe Magnetic Charger Head (Disc) -->
+  <circle cx="100" cy="95" r="32" fill="#2b303c" stroke="#d4af37" stroke-width="1.5"/>
+  <circle cx="100" cy="95" r="22" fill="none" stroke="#00f2fe" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="100" cy="95" r="10" fill="#1c2027"/>
+
+  <!-- Smartphone Angled Silhouette hovering on MagSafe -->
+  <rect x="74" y="45" width="52" height="95" rx="10" fill="url(#phoneBody)" stroke="#ffffff" stroke-width="1.2" opacity="0.9" filter="url(#gadgetShadow)" transform="rotate(-6, 100, 95)"/>
+  
+  <!-- Screen Elements -->
+  <!-- Camera notch -->
+  <rect x="94" y="47" width="12" height="3" rx="1.5" fill="#000000" transform="rotate(-6, 100, 95)"/>
+  
+  <!-- Wireless Charging Circle on phone screen -->
+  <circle cx="100" cy="92" r="14" fill="none" stroke="#22c55e" stroke-width="2" opacity="0.85"/>
+  <polygon points="98,86 103,86 101,92 105,92 97,101 99,94 95,94" fill="#22c55e"/>
+
+  <!-- Subtle Bluetooth / Connectivity icon -->
+  <circle cx="140" cy="65" r="8" fill="#1e222a" stroke="#d4af37" stroke-width="1"/>
+  <path d="M 139 60 L 142 63 L 138 67 L 138 57 L 142 61 L 139 64" fill="none" stroke="#d4af37" stroke-width="1.2" stroke-linecap="round"/>
+</svg>
