@@ -20,7 +20,7 @@ const CATEGORIES = [
     name: "Original Watches",
     tagline: "Authentic Branded Timepieces",
     badge: "Signature Collection",
-    image: "assets/images/placeholders/watch-placeholder.svg",
+    image: "assets/images/watches/watch-benyar-chronograph.png",
     description: "Curated collection of 100% original branded watches for men and women with guaranteed authenticity and pre-dispatch inspection."
   },
   {
@@ -79,55 +79,55 @@ const SHOWCASE_CATEGORIES = [
     name: "Men's Formal Watches",
     deptId: "watches",
     deptName: "Watches",
-    image: "assets/images/categories/cat-mens-formal.svg",
+    image: "assets/images/watches/watch-casio-classic.png",
     isPrimary: true,
     badge: "Formal Horology",
     filterCategory: "watches",
-    filterQuery: "chronograph"
+    filterQuery: "casio"
   },
   {
     id: "mens-sports-watches",
     name: "Men's Sports Watches",
     deptId: "watches",
     deptName: "Watches",
-    image: "assets/images/categories/cat-mens-sports.svg",
+    image: "assets/images/watches/watch-benyar-chronograph.png",
     isPrimary: true,
     badge: "Sports Tachymeter",
     filterCategory: "watches",
-    filterQuery: "sports"
+    filterQuery: "benyar"
   },
   {
     id: "womens-watches",
     name: "Women's Watches",
     deptId: "watches",
     deptName: "Watches",
-    image: "assets/images/categories/cat-womens-watches.svg",
+    image: "assets/images/watches/watch-curren-blanche.png",
     isPrimary: true,
     badge: "Delicate Elegance",
     filterCategory: "watches",
-    filterQuery: "women"
+    filterQuery: "curren"
   },
   {
     id: "couple-watches",
-    name: "Couple Watches",
+    name: "Luxury Steel Watches",
     deptId: "watches",
     deptName: "Watches",
-    image: "assets/images/categories/cat-couple-watches.svg",
+    image: "assets/images/watches/watch-seastar-diamond.png",
     isPrimary: true,
-    badge: "His & Hers Set",
-    filterCategory: "gifts",
-    filterQuery: "couple"
+    badge: "Diamond Bezel",
+    filterCategory: "watches",
+    filterQuery: "seastar"
   },
   {
     id: "smart-watches",
-    name: "Smart Watches",
+    name: "Master Chronometer",
     deptId: "watches",
     deptName: "Watches",
-    image: "assets/images/categories/cat-smart-watches.svg",
+    image: "assets/images/watches/watch-omega-chronometer.png",
     isPrimary: true,
-    badge: "Connected AMOLED",
+    badge: "Co-Axial Master",
     filterCategory: "watches",
-    filterQuery: "watch"
+    filterQuery: "chronometer"
   },
 
   // --- 2. HONEY NUTS ---
@@ -220,75 +220,98 @@ const PRODUCTS = [
   // ==========================================
   {
     id: "INC-W101",
-    name: "Classic Chronograph Men's Watch",
+    name: "Benyar Royal Chronograph Watch",
     category: "watches",
     categoryName: "Original Branded Watches",
     price: 9500,
-    badge: "Flagship Choice",
-    image: "assets/images/placeholders/hero-watch-editorial.svg",
-    shortDesc: "Solid stainless steel casing, genuine stitched leather strap, and precision quartz chronograph movement.",
+    badge: "Flagship Chrono",
+    image: "assets/images/watches/watch-benyar-chronograph.png",
+    shortDesc: "Rich sunray blue dial with rose gold tachymeter bezel, genuine stitched tan suede-leather strap, and precision quartz chronograph.",
     specs: [
-      "Strap Material: Genuine Stitched Leather",
-      "Dial Diameter: 42mm Bold Case",
-      "Movement: Precision Quartz Chronograph",
+      "Brand: Benyar Original Horology",
+      "Strap Material: Genuine Stitched Tan Suede-Leather",
+      "Dial Diameter: 43mm Chronograph Case",
+      "Movement: Precision Quartz Chronograph with Date",
       "Water Resistance: 30M Splash Resistant",
-      "Condition: Brand New in Original Box"
+      "Packaging: Luxury Presentation Box & Authenticity Card"
     ],
     featured: true
   },
   {
     id: "INC-W102",
-    name: "Minimalist Executive Slim Watch",
+    name: "Master Chronometer Blue Dial Watch",
     category: "watches",
     categoryName: "Original Branded Watches",
-    price: 7800,
-    badge: "Bestseller",
-    image: "assets/images/placeholders/watch-placeholder.svg",
-    shortDesc: "Ultra-thin stainless steel mesh strap with scratch-resistant sapphire-coated glass.",
+    price: 18500,
+    badge: "Haute Horlogerie",
+    image: "assets/images/watches/watch-omega-chronometer.png",
+    shortDesc: "Deep blue sunburst pie-pan dial with faceted silver hour batons, star emblem, and dark blue alligator-style leather strap.",
     specs: [
-      "Strap: Stainless Steel Mesh",
-      "Dial Diameter: 40mm Slim Profile",
-      "Glass: Sapphire Coated Hardlex",
-      "Dial Color: Sunray Obsidian Black",
-      "Includes: Official Presentation Box & Card"
+      "Strap: Premium Navy Alligator-Embossed Leather",
+      "Dial Diameter: 40mm Polished Stainless Steel",
+      "Glass: Scratch-Resistant Sapphire Crystal",
+      "Movement: Automatic Co-Axial Precision Calibre",
+      "Water Resistance: 50M Pressure Sealed",
+      "Includes: Wooden Collector Box & Warranty Card"
     ],
     featured: true
   },
   {
     id: "INC-W103",
-    name: "Luxury Dual-Tone Sports Watch",
+    name: "Seastar Diamond Luxe Steel Watch",
     category: "watches",
     categoryName: "Original Branded Watches",
     price: 11500,
-    badge: "Premium Edition",
-    image: "assets/images/placeholders/watch-placeholder.svg",
-    shortDesc: "Robust stainless steel two-tone finish with luminous hands and date display window.",
+    badge: "Diamond Accent",
+    image: "assets/images/watches/watch-seastar-diamond.png",
+    shortDesc: "Geometric faceted crystal bezel, obsidian black dial with sparkling crystal indices, and 5-link stainless steel bracelet.",
     specs: [
-      "Material: Dual-Tone Gold & Steel",
-      "Movement: Multi-function Quartz with Date",
-      "Luminous Hands for Low Light",
-      "Clasp: Folding Safety Clasp",
-      "Authenticity Guarantee: 100% Genuine"
+      "Brand: Seastar Original Horology",
+      "Material: Solid 316L Stainless Steel Bracelet",
+      "Dial: Obsidian Black with Diamond Hour Markers",
+      "Calendar: Curved Lower Panoramic Date Display",
+      "Bezel: Faceted Diamond-Cut Geometric Bezel",
+      "Clasp: Push-Button Butterfly Clasp"
     ],
-    featured: false
+    featured: true
   },
   {
     id: "INC-W104",
-    name: "Elegance Rose Gold Women's Watch",
+    name: "Curren Blanche Two-Tone Luxury Watch",
     category: "watches",
     categoryName: "Original Branded Watches",
     price: 8400,
-    badge: "Ladies Special",
-    image: "assets/images/placeholders/watch-placeholder.svg",
-    shortDesc: "Graceful rose gold bezel with subtle crystal hour markers and refined bracelet.",
+    badge: "Gold & Silver",
+    image: "assets/images/watches/watch-curren-blanche.png",
+    shortDesc: "Graceful two-tone 18K gold and silver stainless steel bracelet with radiant white sunray dial and gold baton indices.",
     specs: [
-      "Finish: Rose Gold Plated",
-      "Dial Diameter: 32mm Delicate Bezel",
-      "Strap: Adjustable Link Bracelet",
-      "Jewel Accents: Subtle Crystal Markers",
+      "Brand: Curren Blanche Original",
+      "Finish: Two-Tone 18K Gold & Silver Plated",
+      "Dial Diameter: 36mm Refined Midsize Case",
+      "Strap: Adjustable Solid Link Steel Bracelet",
+      "Glass: Scratch-Resistant Hardlex Crystal",
       "Packaging: Premium Presentation Gift Box"
     ],
-    featured: false
+    featured: true
+  },
+  {
+    id: "INC-W105",
+    name: "Casio Classic Minimalist Blue Watch",
+    category: "watches",
+    categoryName: "Original Branded Watches",
+    price: 7800,
+    badge: "Timeless Classic",
+    image: "assets/images/watches/watch-casio-classic.png",
+    shortDesc: "Clean navy blue dial with rose gold hands and Roman numerals, polished silver case, and dark brown crocodile-embossed leather strap.",
+    specs: [
+      "Brand: Casio Genuine Timepiece",
+      "Strap: Dark Brown Croc-Embossed Leather Strap",
+      "Dial Diameter: 39mm Clean Dress Profile",
+      "Water Resistance: Water Resist Certified",
+      "Movement: Japanese Quartz High Precision Calibre",
+      "Includes: Official Casio Box & User Manual"
+    ],
+    featured: true
   },
 
   // ==========================================
