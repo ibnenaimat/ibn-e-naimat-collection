@@ -242,10 +242,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const catalogEl = document.getElementById('catalog');
       if (catalogEl) {
         catalogEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => {
+          homeSearchInput?.focus();
+        }, 500);
+      } else {
+        window.location.href = 'shop.html';
       }
-      setTimeout(() => {
-        homeSearchInput?.focus();
-      }, 500);
     });
   }
 
@@ -265,7 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
            tabindex="0"
            aria-label="${cat.name}">
         <div class="category-circle-frame">
-          ${cat.isPrimary ? '<span class="primary-crown-badge" title="Signature Horology"><i class="bi bi-star-fill"></i></span>' : ''}
           <img src="${cat.image}" alt="${cat.name}" loading="lazy">
         </div>
         <span class="category-circle-label">${cat.name}</span>
@@ -282,17 +283,18 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         if (!catData) return;
 
-        // Apply filter query and category
-        searchQuery = catData.filterQuery || '';
-        if (homeSearchInput) {
-          homeSearchInput.value = searchQuery;
-        }
+        const dept = catData.deptId;
+        const queryParam = catData.filterQuery ? `?q=${encodeURIComponent(catData.filterQuery)}` : '';
+        const pageMap = {
+          'watches': 'watches.html',
+          'honey-nuts': 'honey-nuts.html',
+          'gadgets': 'gadgets.html',
+          'gifts': 'gifts.html',
+          'calligraphy': 'calligraphy.html'
+        };
 
-        // Highlight selected circle
-        categoryShowcaseTrack.querySelectorAll('.showcase-category-item').forEach(el => el.classList.remove('selected-circle'));
-        item.classList.add('selected-circle');
-
-        selectCategory(catData.filterCategory || 'all', true);
+        const targetPage = pageMap[dept] || `${encodeURIComponent(catData.filterCategory || 'watches')}.html`;
+        window.location.href = `${targetPage}${queryParam}`;
       };
 
       item.addEventListener('click', handleSelect);
@@ -641,6 +643,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.hero-category-trigger').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const catTarget = btn.getAttribute('data-target-category');
+        const catalogEl = document.getElementById('catalog');
+        if (!catalogEl) {
+          if (catTarget) {
+            const pageMap = {
+              'watches': 'watches.html',
+              'honey-nuts': 'honey-nuts.html',
+              'gadgets': 'gadgets.html',
+              'gifts': 'gifts.html',
+              'calligraphy': 'calligraphy.html'
+            };
+            window.location.href = pageMap[catTarget] || `${encodeURIComponent(catTarget)}.html`;
+            e.preventDefault();
+          }
+          return;
+        }
         if (catTarget && typeof selectCategory === 'function') {
           e.preventDefault();
           selectCategory(catTarget, true);
@@ -670,4 +687,80 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCatalog();
   initScrollReveal();
   initHeroSlider();
+
+  // Async dynamic enhancement from database
+  if (window.STORE_CLIENT) {
+    (async () => {
+      try {
+        // 1. Dynamic Hero Slides from Supabase
+        const { data: slides, isLive: slidesLive } = await window.STORE_CLIENT.fetchHeroSlides();
+        if (slidesLive && Array.isArray(slides) && slides.length > 0) {
+          const wrapper = document.getElementById('heroSlidesWrapper');
+          const dotsContainer = document.getElementById('heroPaginationDots');
+          const indicatorTotal = document.querySelector('.indicator-total');
+
+          if (wrapper) {
+            wrapper.innerHTML = slides.map((s, idx) => `
+              <div class="hero-slide ${idx === 0 ? 'active' : ''}" data-slide-index="${idx}" data-category-title="${s.categoryTitle}">
+                <div class="hero-slide-bg" style="background-image: url('${s.bgImageUrl}');"></div>
+                <div class="hero-slide-overlay"></div>
+                <div class="container hero-slide-container">
+                  <div class="hero-slide-content">
+                    ${s.badgeText ? `<div class="hero-slide-badge"><i class="bi bi-gem"></i> ${s.badgeText}</div>` : ''}
+                    <h${idx === 0 ? '1' : '2'} class="hero-slide-title">
+                      ${s.titleHighlight && s.title.includes(s.titleHighlight)
+                        ? s.title.replace(s.titleHighlight, `<span class="gold-accent">${s.titleHighlight}</span>`)
+                        : s.title}
+                    </h${idx === 0 ? '1' : '2'}>
+                    <p class="hero-slide-desc">${s.description}</p>
+                    <div class="hero-slide-actions">
+                      <a href="${s.primaryBtnUrl}" class="btn btn-hero-primary hero-category-trigger" data-target-category="${s.targetCategory || ''}">
+                        <span>${s.primaryBtnText}</span> <i class="bi bi-arrow-right"></i>
+                      </a>
+                      <a href="${s.secondaryBtnUrl}" target="_blank" rel="noopener" class="btn btn-hero-secondary">
+                        <i class="bi bi-whatsapp"></i> <span>${s.secondaryBtnText}</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `).join('');
+          }
+
+          if (dotsContainer) {
+            dotsContainer.innerHTML = slides.map((s, idx) => `
+              <button class="hero-dot ${idx === 0 ? 'active' : ''}" data-slide-to="${idx}" aria-label="Slide ${idx + 1}: ${s.categoryTitle}">
+                <span class="dot-progress"></span>
+              </button>
+            `).join('');
+          }
+
+          if (indicatorTotal) {
+            indicatorTotal.textContent = String(slides.length).padStart(2, '0');
+          }
+
+          // Re-init slider controls with new slides
+          initHeroSlider();
+        }
+
+        // 2. Dynamic Showcase Categories from Supabase
+        const { data: showcaseCats, isLive: showcaseLive } = await window.STORE_CLIENT.fetchShowcaseCategories();
+        if (showcaseLive && Array.isArray(showcaseCats) && showcaseCats.length > 0) {
+          window.SHOWCASE_CATEGORIES = showcaseCats;
+          renderCategoryShowcase('all');
+        }
+
+        // 3. Dynamic Website Settings
+        const { data: settings, isLive: settingsLive } = await window.STORE_CLIENT.fetchWebsiteSettings();
+        if (settingsLive && settings) {
+          if (settings.announcement_bar) {
+            const announcementEl = document.querySelector('.top-bar-announcement');
+            if (announcementEl) announcementEl.textContent = settings.announcement_bar;
+          }
+        }
+      } catch (err) {
+        console.warn('[App] Dynamic data loading error:', err);
+      }
+    })();
+  }
 });

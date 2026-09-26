@@ -439,4 +439,36 @@ document.addEventListener('DOMContentLoaded', () => {
   updateShopHeader();
   renderCatalog();
   initScrollReveal();
+
+  // Async dynamic catalog from Supabase
+  if (window.STORE_CLIENT) {
+    (async () => {
+      try {
+        const [catsRes, prodsRes] = await Promise.all([
+          window.STORE_CLIENT.fetchCategories(),
+          window.STORE_CLIENT.fetchProducts()
+        ]);
+
+        let hasUpdates = false;
+
+        if (catsRes.isLive && Array.isArray(catsRes.data) && catsRes.data.length > 0) {
+          window.CATEGORIES = catsRes.data;
+          hasUpdates = true;
+        }
+
+        if (prodsRes.isLive && Array.isArray(prodsRes.data) && prodsRes.data.length > 0) {
+          window.PRODUCTS = prodsRes.data;
+          hasUpdates = true;
+        }
+
+        if (hasUpdates) {
+          renderCategoryPills();
+          updateShopHeader();
+          renderCatalog();
+        }
+      } catch (err) {
+        console.warn('[Shop] Error loading dynamic catalog from Supabase:', err);
+      }
+    })();
+  }
 });

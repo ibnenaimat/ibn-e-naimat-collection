@@ -63,13 +63,12 @@
       <nav aria-label="Primary Navigation">
         <ul class="nav-menu">
           <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="watches.html" class="nav-link">Watches</a></li>
+          <li class="nav-item"><a href="honey-nuts.html" class="nav-link">Honey Nuts</a></li>
+          <li class="nav-item"><a href="gadgets.html" class="nav-link">Gadgets</a></li>
+          <li class="nav-item"><a href="gifts.html" class="nav-link">Gift Items</a></li>
+          <li class="nav-item"><a href="calligraphy.html" class="nav-link">Calligraphy</a></li>
           <li class="nav-item"><a href="shop.html" class="nav-link active" style="color: var(--gold-primary);">Shop All</a></li>
-          <li class="nav-item"><a href="shop.html?category=watches" class="nav-link">Watches</a></li>
-          <li class="nav-item"><a href="shop.html?category=calligraphy" class="nav-link">Calligraphy</a></li>
-          <li class="nav-item"><a href="shop.html?category=mobile-accessories" class="nav-link">Accessories</a></li>
-          <li class="nav-item"><a href="shop.html?category=gadgets" class="nav-link">Gadgets</a></li>
-          <li class="nav-item"><a href="shop.html?category=gifts" class="nav-link">Gifts</a></li>
-          <li class="nav-item"><a href="shop.html?category=honey-nuts" class="nav-link">Honey Nuts</a></li>
         </ul>
       </nav>
 
@@ -103,13 +102,12 @@
 
     <ul class="drawer-menu">
       <li><a href="index.html" class="drawer-link">Home <i class="bi bi-chevron-right"></i></a></li>
-      <li><a href="shop.html" class="drawer-link">Shop All Collections <i class="bi bi-chevron-right"></i></a></li>
-      <li><a href="shop.html?category=watches" class="drawer-link">Original Watches <i class="bi bi-chevron-right"></i></a></li>
-      <li><a href="shop.html?category=calligraphy" class="drawer-link">Islamic Calligraphy <i class="bi bi-chevron-right"></i></a></li>
-      <li><a href="shop.html?category=mobile-accessories" class="drawer-link">Mobile Accessories <i class="bi bi-chevron-right"></i></a></li>
-      <li><a href="shop.html?category=gadgets" class="drawer-link">Tech Gadgets <i class="bi bi-chevron-right"></i></a></li>
-      <li><a href="shop.html?category=gifts" class="drawer-link">Luxury Gifts <i class="bi bi-chevron-right"></i></a></li>
-      <li><a href="shop.html?category=honey-nuts" class="drawer-link">Pure Honey Nuts <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="watches.html" class="drawer-link">Original Watches <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="honey-nuts.html" class="drawer-link">Pure Honey Nuts <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="gadgets.html" class="drawer-link">Tech Gadgets &amp; Accessories <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="gifts.html" class="drawer-link">Luxury Gifts <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="calligraphy.html" class="drawer-link">Islamic Calligraphy <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="shop.html" class="drawer-link active" style="color: var(--gold-primary); font-weight: 700;">Shop All Collections <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="index.html#why-us" class="drawer-link">Why Choose Us <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="index.html#reviews" class="drawer-link">Customer Reviews <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="index.html#contact" class="drawer-link">Contact Concierge <i class="bi bi-chevron-right"></i></a></li>
@@ -249,12 +247,12 @@
         <div>
           <h4 class="footer-title">Collections</h4>
           <ul class="footer-links">
-            <li><a href="shop.html?category=watches" class="footer-link">Original Watches</a></li>
-            <li><a href="shop.html?category=calligraphy" class="footer-link">Islamic Calligraphy</a></li>
-            <li><a href="shop.html?category=mobile-accessories" class="footer-link">Mobile Accessories</a></li>
-            <li><a href="shop.html?category=gadgets" class="footer-link">Tech Gadgets</a></li>
-            <li><a href="shop.html?category=gifts" class="footer-link">Prestige Gift Boxes</a></li>
-            <li><a href="shop.html?category=honey-nuts" class="footer-link">Honey Nuts &amp; Dry Fruits</a></li>
+            <li><a href="watches.html" class="footer-link">Original Watches</a></li>
+            <li><a href="honey-nuts.html" class="footer-link">Pure Honey Nuts</a></li>
+            <li><a href="gadgets.html" class="footer-link">Tech Gadgets</a></li>
+            <li><a href="gifts.html" class="footer-link">Luxury Gifts</a></li>
+            <li><a href="calligraphy.html" class="footer-link">Islamic Calligraphy</a></li>
+            <li><a href="shop.html" class="footer-link">All Collections</a></li>
           </ul>
         </div>
 
@@ -324,8 +322,11 @@
   <!-- =========================================================================
        CORE CLIENT APPLICATION SCRIPTS
        ========================================================================= -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.env.js"></script>
   <script src="js/config.js"></script>
   <script src="js/products.js"></script>
+  <script src="js/supabase-client.js"></script>
   <script src="js/shop.js"></script>
   <script>
     document.getElementById('currentYear').textContent = new Date().getFullYear();

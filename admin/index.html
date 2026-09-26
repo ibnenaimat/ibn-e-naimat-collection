@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Console &bull; Ibn e Naimat Collection</title>
+  <link rel="icon" type="image/png" href="../assets/images/official-logo.png">
+
+  <!-- Google Fonts & Bootstrap Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Admin Stylesheet -->
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. SIDEBAR (DESKTOP & TABLET)
+       ========================================================================= -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-brand">
+        <div class="sidebar-logo-box">
+          <img src="../assets/images/official-logo.png" alt="Ibn e Naimat Collection">
+        </div>
+        <div class="sidebar-brand-text">IBN E NAIMAT</div>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Core Management</div>
+      <a class="nav-item active" data-tab="dashboard">
+        <i class="bi bi-grid-1x2"></i>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" data-tab="products">
+        <i class="bi bi-watch"></i>
+        <span>Products</span>
+        <span class="nav-badge" id="badgeProductCount">21</span>
+      </a>
+      <a class="nav-item" data-tab="categories">
+        <i class="bi bi-tags"></i>
+        <span>Categories</span>
+      </a>
+
+      <div class="nav-section-title">Storefront Display</div>
+      <a class="nav-item" data-tab="hero">
+        <i class="bi bi-images"></i>
+        <span>Hero Slider</span>
+        <span class="nav-badge" id="badgeSlideCount">4</span>
+      </a>
+      <a class="nav-item" data-tab="homepage">
+        <i class="bi bi-layout-text-window"></i>
+        <span>Homepage Sections</span>
+      </a>
+
+      <div class="nav-section-title">System &amp; Settings</div>
+      <a class="nav-item" data-tab="settings">
+        <i class="bi bi-gear"></i>
+        <span>Website Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-profile">
+        <div class="user-avatar" id="adminUserAvatar">A</div>
+        <div class="user-info">
+          <div class="user-name" id="adminUserEmail">admin@ibnenaimat.com</div>
+          <div class="user-role">Super Administrator</div>
+        </div>
+      </div>
+      <button class="btn-logout" id="logoutBtn" title="Sign Out">
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       2. MAIN CONTENT AREA
+       ========================================================================= -->
+  <main class="admin-main">
+    <!-- Header Bar -->
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="page-title-box">
+          <h1 id="pageTitle">Dashboard Overview</h1>
+          <p id="pageSubtitle">Store performance metrics, stock alerts, and quick actions</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="../index.html" target="_blank" rel="noopener" class="btn-view-store">
+          <i class="bi bi-box-arrow-up-right"></i>
+          <span>View Live Store</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Admin Content Views -->
+    <div class="admin-content">
+
+      <!-- =====================================================================
+           TAB 1: DASHBOARD OVERVIEW
+           ===================================================================== -->
+      <section class="admin-tab active" id="tab-dashboard">
+        <!-- KPI Metrics Grid -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-info">
+              <h3>Total Products</h3>
+              <div class="metric-value" id="metricTotalProducts">21</div>
+            </div>
+            <div class="metric-icon icon-gold">
+              <i class="bi bi-box-seam"></i>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-info">
+              <h3>Active Products</h3>
+              <div class="metric-value" id="metricActiveProducts" style="color: var(--success);">21</div>
+            </div>
+            <div class="metric-icon icon-green">
+              <i class="bi bi-check2-circle"></i>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-info">
+              <h3>Out of Stock</h3>
+              <div class="metric-value" id="metricOutOfStock" style="color: var(--danger);">0</div>
+            </div>
+            <div class="metric-icon icon-red">
+              <i class="bi bi-exclamation-octagon"></i>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-info">
+              <h3>Total Categories</h3>
+              <div class="metric-value" id="metricTotalCategories">18</div>
+            </div>
+            <div class="metric-icon icon-blue">
+              <i class="bi bi-diagram-3"></i>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-info">
+              <h3>Hero Slides</h3>
+              <div class="metric-value" id="metricHeroSlides">4 Active</div>
+            </div>
+            <div class="metric-icon icon-gold">
+              <i class="bi bi-card-image"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Action Bar -->
+        <div class="quick-action-bar">
+          <div class="quick-action-text">
+            <h2>Quick Actions &bull; Store Catalog</h2>
+            <p>Directly add new inventory or update your homepage carousel without touching code.</p>
+          </div>
+          <div class="quick-action-buttons">
+            <button class="btn-primary" onclick="window.ADMIN_UI.switchTab('products'); document.getElementById('btnAddNewProduct')?.click();">
+              <i class="bi bi-plus-lg"></i> Add New Product
+            </button>
+            <button class="btn-secondary" onclick="window.ADMIN_UI.switchTab('hero'); document.getElementById('btnAddNewHeroSlide')?.click();">
+              <i class="bi bi-plus-lg"></i> Add Hero Slide
+            </button>
+          </div>
+        </div>
+
+        <!-- Recent Products Summary Table -->
+        <div class="table-card">
+          <div class="table-toolbar">
+            <h3 style="font-size: 1rem; font-weight: 700;">Recently Updated Products</h3>
+            <button class="btn-secondary" onclick="window.ADMIN_UI.switchTab('products')">
+              <span>View All Products</span> <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Product Details</th>
+                  <th>Department</th>
+                  <th>Price in PKR</th>
+                  <th>Stock Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardRecentProductsBody">
+                <!-- Rendered by admin-ui.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           TAB 2: PRODUCTS MANAGEMENT
+           ===================================================================== -->
+      <section class="admin-tab" id="tab-products">
+        <div class="table-card">
+          <!-- Toolbar -->
+          <div class="table-toolbar">
+            <div class="toolbar-filters">
+              <div class="search-input-box">
+                <i class="bi bi-search"></i>
+                <input type="text" class="admin-search-input" id="productSearchInput" placeholder="Search by name, SKU or category...">
+              </div>
+
+              <select class="admin-select" id="productCategoryFilter">
+                <option value="all">All Categories</option>
+              </select>
+
+              <select class="admin-select" id="productStockFilter">
+                <option value="all">All Stock Statuses</option>
+                <option value="in_stock">In Stock</option>
+                <option value="low_stock">Low Stock</option>
+                <option value="out_of_stock">Out of Stock</option>
+              </select>
+
+              <span style="font-size: 0.8125rem; color: var(--text-muted); margin-left: auto;" id="productCountLabel">
+                Showing items...
+              </span>
+            </div>
+
+            <button class="btn-primary" id="btnAddNewProduct">
+              <i class="bi bi-plus-lg"></i> Add Product
+            </button>
+          </div>
+
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Product Details</th>
+                  <th>Category</th>
+                  <th>Price / Sale</th>
+                  <th>Stock Status</th>
+                  <th>Active</th>
+                  <th>Featured</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productsTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           TAB 3: CATEGORIES MANAGEMENT
+           ===================================================================== -->
+      <section class="admin-tab" id="tab-categories">
+        <div class="table-card">
+          <div class="table-toolbar">
+            <div style="flex: 1;">
+              <h3 style="font-size: 1rem; font-weight: 700;">Departments &amp; Circular Showcase Collections</h3>
+              <p style="font-size: 0.8125rem; color: var(--text-muted);">Manage categories displayed on the customer shop and horizontal circular slider.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <button class="btn-primary" id="btnAddNewCategory">
+                <i class="bi bi-plus-lg"></i> Add Category
+              </button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Category Name &amp; ID</th>
+                  <th>Badge</th>
+                  <th>Tagline</th>
+                  <th>Sort Order</th>
+                  <th>Active</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="categoriesTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           TAB 4: HERO SLIDER MANAGEMENT
+           ===================================================================== -->
+      <section class="admin-tab" id="tab-hero">
+        <div class="table-toolbar" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+          <div>
+            <h3 style="font-size: 1rem; font-weight: 700;">Homepage Hero Carousel Slides</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Customize background imagery, headings, highlighted words, and CTA buttons.</p>
+          </div>
+          <button class="btn-primary" id="btnAddNewHeroSlide">
+            <i class="bi bi-plus-lg"></i> Add Hero Slide
+          </button>
+        </div>
+
+        <div class="hero-slides-grid" id="heroSlidesGrid">
+          <!-- Rendered dynamically by admin-ui.js -->
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           TAB 5: HOMEPAGE SECTIONS
+           ===================================================================== -->
+      <section class="admin-tab" id="tab-homepage">
+        <div class="table-card" style="padding: 1.5rem;">
+          <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">Homepage Section Visibility</h3>
+          <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+            Instantly show or hide specific sections on your live homepage.
+          </p>
+
+          <div id="homepageSectionsList">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           TAB 6: WEBSITE SETTINGS
+           ===================================================================== -->
+      <section class="admin-tab" id="tab-settings">
+        <form id="websiteSettingsForm">
+          <div class="settings-grid">
+            <!-- Brand & Contact -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <h3><i class="bi bi-shop" style="color: var(--gold);"></i> Brand &amp; WhatsApp Concierge</h3>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingStoreName">Brand Name</label>
+                <input type="text" id="settingStoreName" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingTagline">Store Tagline</label>
+                <input type="text" id="settingTagline" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingWhatsapp">WhatsApp Hotline (Local Format)</label>
+                <input type="text" id="settingWhatsapp" class="form-control" placeholder="03302241340" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingWhatsappIntl">WhatsApp International Format</label>
+                <input type="text" id="settingWhatsappIntl" class="form-control" placeholder="923302241340" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingAnnouncement">Top Announcement Bar Text</label>
+                <input type="text" id="settingAnnouncement" class="form-control">
+              </div>
+            </div>
+
+            <!-- Social Links & Operation -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <h3><i class="bi bi-clock-history" style="color: var(--gold);"></i> Support &amp; Social Links</h3>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingInstagram">Instagram Profile URL</label>
+                <input type="url" id="settingInstagram" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingFacebook">Facebook Page URL</label>
+                <input type="url" id="settingFacebook" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingEmail">Official Email</label>
+                <input type="email" id="settingEmail" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingPhone">Call Hotline</label>
+                <input type="text" id="settingPhone" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingTimings">Concierge Hours</label>
+                <input type="text" id="settingTimings" class="form-control">
+              </div>
+            </div>
+
+            <!-- Media & Bio -->
+            <div class="settings-card" style="grid-column: 1 / -1;">
+              <div class="settings-card-header">
+                <h3><i class="bi bi-palette" style="color: var(--gold);"></i> Branding Assets &amp; Footer Narrative</h3>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+                <div class="form-group">
+                  <label class="form-label" for="settingLogoUrl">Official Logo Image Path</label>
+                  <input type="text" id="settingLogoUrl" class="form-control" value="assets/images/official-logo.png">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="settingDelivery">Delivery Coverage Note</label>
+                  <input type="text" id="settingDelivery" class="form-control" value="Nationwide Insured Delivery Across Pakistan">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingFooterBio">Footer Narrative / Philosophy</label>
+                <textarea id="settingFooterBio" class="form-control"></textarea>
+              </div>
+
+              <button type="submit" class="btn-primary" style="padding: 0.85rem 2rem;">
+                <i class="bi bi-save"></i> Save Website Settings
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       3. PRODUCT CREATE / EDIT MODAL
+       ========================================================================= -->
+  <div class="admin-modal-overlay" id="productModal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" id="productModalTitle">Add New Product</h3>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <button type="submit" form="productForm" class="btn-primary" id="headerSaveProductBtn" style="padding: 0.45rem 1rem; font-size: 0.8125rem;">
+            <i class="bi bi-check2"></i> Save
+          </button>
+          <button type="button" class="admin-modal-close" id="closeProductModalBtn" title="Close dialog">&times;</button>
+        </div>
+      </div>
+
+      <form id="productForm">
+        <div class="admin-modal-body">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="modalProductId">Product Reference / SKU *</label>
+              <input type="text" id="modalProductId" class="form-control" placeholder="e.g. INC-W106" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="modalProductCategory">Department / Category *</label>
+              <select id="modalProductCategory" class="form-control" required></select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalProductName">Product Full Title *</label>
+            <input type="text" id="modalProductName" class="form-control" placeholder="e.g. Naviforce Military Chronograph Watch" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="modalProductPrice">Price in PKR *</label>
+              <input type="number" id="modalProductPrice" class="form-control" placeholder="8500" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="modalProductSalePrice">Sale Price (Optional)</label>
+              <input type="number" id="modalProductSalePrice" class="form-control" placeholder="Optional">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="modalProductBadge">Badge Tag</label>
+              <input type="text" id="modalProductBadge" class="form-control" placeholder="e.g. Best Seller">
+            </div>
+          </div>
+
+          <!-- Image Upload & Preview -->
+          <div class="form-group">
+            <label class="form-label">Primary Product Image *</label>
+            <div class="upload-drop-zone" id="productImageDropZone">
+              <i class="bi bi-cloud-arrow-up"></i>
+              <div style="font-size: 0.875rem; font-weight: 600;">Click to upload image to Supabase Storage</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">PNG, JPG, or WebP</div>
+              <input type="file" id="productImageFile" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="upload-preview-row">
+              <img src="../assets/images/placeholders/watch-placeholder.svg" id="imagePreviewThumb" class="upload-preview-thumb" alt="Preview" onerror="this.src='../assets/images/placeholders/watch-placeholder.svg'">
+              <input type="text" id="modalProductImageUrl" class="form-control" placeholder="Image URL (filled automatically on upload)" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalProductDesc">Short Description</label>
+            <textarea id="modalProductDesc" class="form-control" placeholder="Brief summary of dial, strap, style and design highlights..."></textarea>
+          </div>
+
+          <!-- Dynamic Specifications -->
+          <div class="form-group">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <label class="form-label" style="margin-bottom: 0;">Specifications &amp; Features</label>
+              <button type="button" class="btn-secondary" id="addSpecBtn" style="padding: 2px 8px; font-size: 0.75rem;">
+                <i class="bi bi-plus"></i> Add Spec Line
+              </button>
+            </div>
+            <div class="specs-list" id="specsContainer"></div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">
+            <div class="form-group">
+              <label class="form-label" for="modalProductStock">Stock Status</label>
+              <select id="modalProductStock" class="form-control">
+                <option value="in_stock">In Stock</option>
+                <option value="low_stock">Low Stock</option>
+                <option value="out_of_stock">Out of Stock</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="modalProductSortOrder">Sort Position</label>
+              <input type="number" id="modalProductSortOrder" class="form-control" value="0">
+            </div>
+
+            <div class="form-group" style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
+              <label class="checkbox-label">
+                <input type="checkbox" id="modalProductFeatured">
+                <span>Featured Product</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="modalProductActive" checked>
+                <span>Active on Store</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-modal-footer">
+          <button type="button" class="btn-secondary" id="cancelProductModalBtn">Cancel</button>
+          <button type="submit" class="btn-primary" id="saveProductBtn" style="min-width: 150px; justify-content: center;">
+            <i class="bi bi-check-lg"></i> Save Product
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       4. HERO SLIDE CREATE / EDIT MODAL
+       ========================================================================= -->
+  <div class="admin-modal-overlay" id="heroSlideModal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" id="heroModalTitle">Edit Hero Slide</h3>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <button type="submit" form="heroSlideForm" class="btn-primary" id="headerSaveHeroBtn" style="padding: 0.45rem 1rem; font-size: 0.8125rem;">
+            <i class="bi bi-check2"></i> Save
+          </button>
+          <button type="button" class="admin-modal-close" id="closeHeroModalBtn" title="Close dialog">&times;</button>
+        </div>
+      </div>
+
+      <form id="heroSlideForm">
+        <div class="admin-modal-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="modalSlideCategory">Category Title *</label>
+              <input type="text" id="modalSlideCategory" class="form-control" placeholder="e.g. WATCHES, HONEY NUTS" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="modalSlideBadge">Badge Text</label>
+              <input type="text" id="modalSlideBadge" class="form-control" placeholder="e.g. Curated Collection • Haute Horlogerie">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalSlideTitle">Slide Main Heading *</label>
+            <input type="text" id="modalSlideTitle" class="form-control" placeholder="e.g. Premium Watches for Every Moment." required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalSlideHighlight">Highlighted Words (Rendered in Gold)</label>
+            <input type="text" id="modalSlideHighlight" class="form-control" placeholder="e.g. Every Moment">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalSlideDesc">Slide Description *</label>
+            <textarea id="modalSlideDesc" class="form-control" placeholder="Subtitle copy for the slide..." required></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="modalSlideBtnText">Button 1 Label</label>
+              <input type="text" id="modalSlideBtnText" class="form-control" value="Explore Collection">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="modalSlideBtnUrl">Button 1 Link / Target</label>
+              <input type="text" id="modalSlideBtnUrl" class="form-control" value="shop.html">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalSlideTargetCat">Target Department Filter (Optional)</label>
+            <input type="text" id="modalSlideTargetCat" class="form-control" placeholder="e.g. watches, gadgets">
+          </div>
+
+          <!-- Hero Slide Background Image -->
+          <div class="form-group">
+            <label class="form-label">Slide Background Image *</label>
+            <div class="upload-drop-zone" id="slideImageDropZone">
+              <i class="bi bi-card-image"></i>
+              <div style="font-size: 0.875rem; font-weight: 600;">Click to upload high-res background to Supabase Storage</div>
+              <input type="file" id="slideImageFile" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="upload-preview-row">
+              <img src="../assets/images/placeholders/watch-placeholder.svg" id="heroSlideThumbPreview" class="upload-preview-thumb" alt="Preview" style="width: 100px; height: 56px; object-fit: cover;" onerror="this.src='../assets/images/placeholders/watch-placeholder.svg'">
+              <input type="text" id="modalSlideBgUrl" class="form-control" placeholder="Image URL (e.g. assets/images/hero/hero-watches.jpg)" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="modalSlideOrder">Display Order</label>
+              <input type="number" id="modalSlideOrder" class="form-control" value="1">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="modalSlideIndex">Slide Index</label>
+              <input type="number" id="modalSlideIndex" class="form-control" value="0">
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: center; margin-top: 1.5rem;">
+              <label class="checkbox-label">
+                <input type="checkbox" id="modalSlideActive" checked>
+                <span>Active on Homepage</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-modal-footer">
+          <button type="button" class="btn-secondary" id="cancelHeroModalBtn">Cancel</button>
+          <button type="submit" class="btn-primary" id="saveHeroBtn" style="min-width: 160px; justify-content: center;">
+            <i class="bi bi-check-lg"></i> Save Hero Slide
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       5. CATEGORY CREATE / EDIT MODAL
+       ========================================================================= -->
+  <div class="admin-modal-overlay" id="categoryModal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" id="categoryModalTitle">Add New Category</h3>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <button type="submit" form="categoryForm" class="btn-primary" id="headerSaveCategoryBtn" style="padding: 0.45rem 1rem; font-size: 0.8125rem;">
+            <i class="bi bi-check2"></i> Save
+          </button>
+          <button type="button" class="admin-modal-close" id="closeCategoryModalBtn" title="Close dialog">&times;</button>
+        </div>
+      </div>
+
+      <form id="categoryForm">
+        <div class="admin-modal-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="modalCategoryId">Category Identifier / Slug *</label>
+              <input type="text" id="modalCategoryId" class="form-control" placeholder="e.g. luxury-watches" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="modalCategoryName">Display Name *</label>
+              <input type="text" id="modalCategoryName" class="form-control" placeholder="e.g. Luxury Watches" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="modalCategoryDept">Store Department *</label>
+              <select id="modalCategoryDept" class="form-control" required>
+                <option value="watches|Watches">Watches Department</option>
+                <option value="honey-nuts|Honey Nuts">Honey Nuts Department</option>
+                <option value="gadgets|Gadgets">Gadgets &amp; Tech</option>
+                <option value="gifts|Gift Items">Gift Items &amp; Calligraphy</option>
+                <option value="all|All Collections">All Collections</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="modalCategoryBadge">Badge Tag (Optional)</label>
+              <input type="text" id="modalCategoryBadge" class="form-control" placeholder="e.g. Signature Collection, Best Seller">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalCategoryTagline">Tagline / Short Subtitle</label>
+            <input type="text" id="modalCategoryTagline" class="form-control" placeholder="e.g. Authentic Branded Timepieces for Every Moment">
+          </div>
+
+          <!-- Category Circular Image Upload & Preview -->
+          <div class="form-group">
+            <label class="form-label">Circular Category Image</label>
+            <div class="upload-drop-zone" id="categoryImageDropZone">
+              <i class="bi bi-image"></i>
+              <div style="font-size: 0.875rem; font-weight: 600;">Click to upload category photo to Supabase Storage</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">PNG, JPG, SVG or WebP</div>
+              <input type="file" id="categoryImageFile" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="upload-preview-row">
+              <img src="../assets/images/placeholders/watch-placeholder.svg" id="categoryImagePreviewThumb" class="upload-preview-thumb" alt="Preview" style="border-radius: 50%; width: 64px; height: 64px; object-fit: cover;" onerror="this.src='../assets/images/placeholders/watch-placeholder.svg'">
+              <input type="text" id="modalCategoryImageUrl" class="form-control" placeholder="Image URL (e.g. assets/images/watches/... or uploaded URL)">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="modalCategoryFilterCat">Target Shop Category Filter</label>
+              <input type="text" id="modalCategoryFilterCat" class="form-control" placeholder="e.g. watches, honey-nuts, gadgets">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="modalCategoryFilterQuery">Search Query Keyword (Optional)</label>
+              <input type="text" id="modalCategoryFilterQuery" class="form-control" placeholder="e.g. chronograph, casio, honey">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; align-items: center; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">
+            <div class="form-group">
+              <label class="form-label" for="modalCategorySortOrder">Sort Position</label>
+              <input type="number" id="modalCategorySortOrder" class="form-control" value="10">
+            </div>
+
+            <div class="form-group" style="margin-top: 1rem;">
+              <label class="checkbox-label">
+                <input type="checkbox" id="modalCategoryPrimary">
+                <span>Primary Highlight <i class="bi bi-star-fill" style="color: var(--gold); font-size: 0.75rem;"></i></span>
+              </label>
+            </div>
+
+            <div class="form-group" style="margin-top: 1rem;">
+              <label class="checkbox-label">
+                <input type="checkbox" id="modalCategoryActive" checked>
+                <span>Active on Store</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-modal-footer">
+          <button type="button" class="btn-secondary" id="cancelCategoryModalBtn">Cancel</button>
+          <button type="submit" class="btn-primary" id="saveCategoryBtn" style="min-width: 160px; justify-content: center;">
+            <i class="bi bi-check-lg"></i> Save Category
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       5. MOBILE BOTTOM NAVIGATION
+       ========================================================================= -->
+  <nav class="mobile-bottom-nav">
+    <div class="mobile-bottom-item active" data-tab="dashboard">
+      <i class="bi bi-grid-1x2"></i>
+      <span>Dashboard</span>
+    </div>
+    <div class="mobile-bottom-item" data-tab="products">
+      <i class="bi bi-watch"></i>
+      <span>Products</span>
+    </div>
+    <div class="mobile-bottom-item" data-tab="hero">
+      <i class="bi bi-images"></i>
+      <span>Hero</span>
+    </div>
+    <div class="mobile-bottom-item" data-tab="settings">
+      <i class="bi bi-gear"></i>
+      <span>Settings</span>
+    </div>
+  </nav>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/config.env.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/products.js"></script>
+  <script src="js/admin-auth.js"></script>
+  <script src="js/admin-api.js"></script>
+  <script src="js/admin-ui.js"></script>
+</body>
+</html>
