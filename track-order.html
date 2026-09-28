@@ -498,25 +498,34 @@
 </head>
 <body>
 
-  <!-- Announcement Bar -->
-  <div class="announcement-bar" role="region" aria-label="Announcement">
-    <div class="site-container announcement-container">
-      <div class="announcement-text">
-        <i class="bi bi-shield-check"></i>
+  <!-- =========================================================================
+       1. TOP CONCIERGE ANNOUNCEMENT BAR
+       ========================================================================= -->
+  <aside class="top-concierge-bar" aria-label="Concierge Announcement">
+    <div class="container top-concierge-inner">
+      <div class="top-concierge-notice">
+        <span class="top-concierge-dot"></span>
         <span>Nationwide Insured Delivery Across Pakistan &bull; Cash on Delivery Available</span>
       </div>
-      <div class="announcement-links">
-        <a href="track-order.html" class="announcement-link"><i class="bi bi-geo-alt"></i> Track Order</a>
-        <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="announcement-link"><i class="bi bi-whatsapp"></i> WhatsApp: 0330-2241340</a>
+
+      <div class="top-concierge-actions">
+        <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="top-concierge-link wa-accent" title="Chat on WhatsApp">
+          <i class="bi bi-whatsapp"></i> WhatsApp: 0330-2241340
+        </a>
+        <a href="track-order.html" class="top-concierge-link" title="Track Order">
+          <i class="bi bi-geo-alt"></i> Track Order
+        </a>
       </div>
     </div>
-  </div>
+  </aside>
 
-  <!-- Site Header -->
+  <!-- =========================================================================
+       2. CLEAN LUXURY NAVIGATION HEADER
+       ========================================================================= -->
   <header class="site-header" id="siteHeader">
-    <div class="site-container header-container">
-      <a href="index.html" class="brand-logo">
-        <img src="assets/images/official-logo.png" alt="Ibn e Naimat Collection Logo" class="brand-logo-img">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="Ibn e Naimat Collection Home">
+        <img src="assets/images/official-logo.png" alt="Ibn e Naimat Collection Logo">
       </a>
       <nav aria-label="Primary Navigation">
         <ul class="nav-menu">
@@ -527,10 +536,13 @@
           <li class="nav-item"><a href="gifts.html" class="nav-link">Gift Items</a></li>
           <li class="nav-item"><a href="calligraphy.html" class="nav-link">Calligraphy</a></li>
           <li class="nav-item"><a href="shop.html" class="nav-link">Shop All</a></li>
-          <li class="nav-item"><a href="track-order.html" class="nav-link active">Track Order</a></li>
+          <li class="nav-item"><a href="track-order.html" class="nav-link active" title="Track Your Order"><i class="bi bi-geo-alt"></i> Track Order</a></li>
         </ul>
       </nav>
       <div class="nav-actions">
+        <a href="shop.html" class="header-search-trigger" id="headerSearchTrigger" aria-label="Search Catalog" title="Search Timepieces &amp; Catalog">
+          <i class="bi bi-search"></i>
+        </a>
         <button class="header-cart-trigger" id="headerCartTrigger" aria-label="View Shopping Cart">
           <i class="bi bi-bag"></i>
           <span class="cart-badge" id="headerCartBadge">0</span>

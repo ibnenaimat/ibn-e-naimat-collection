@@ -717,12 +717,348 @@ document.addEventListener('DOMContentLoaded', () => {
     startHeroAutoplay();
   }
 
+  // --- 11B. LUXURY FEATURED & FUTURE PRODUCTS SLIDER ---
+  function initFeaturedProductsSlider() {
+    const track = document.getElementById('featSliderTrack');
+    const viewport = document.getElementById('featSliderViewport');
+    const prevBtn = document.getElementById('featPrevBtn');
+    const nextBtn = document.getElementById('featNextBtn');
+    const dotsContainer = document.getElementById('featPaginationDots');
+    const indicatorIndex = document.getElementById('featIndicatorIndex');
+    const indicatorTotal = document.getElementById('featIndicatorTotal');
+    const indicatorLabel = document.getElementById('featIndicatorLabel');
+    const tabsContainer = document.getElementById('featSliderTabs');
+
+    if (!track || !window.PRODUCTS) return;
+
+    let activeDept = 'all';
+    let currentIndex = 0;
+    let autoplayTimer = null;
+    const slideDuration = 4500; // 4.5s autoplay
+
+    function getFilteredProducts() {
+      if (activeDept === 'all') {
+        return window.PRODUCTS.filter(p => p.featured);
+      }
+      let filtered = window.PRODUCTS.filter(p => p.category === activeDept && p.featured);
+      if (filtered.length === 0) {
+        filtered = window.PRODUCTS.filter(p => p.category === activeDept);
+      }
+      return filtered;
+    }
+
+    function getVisibleCount() {
+      if (window.innerWidth < 768) return 1;
+      if (window.innerWidth < 1024) return 2;
+      return 3;
+    }
+
+    function getMaxIndex(items) {
+      const visible = getVisibleCount();
+      return Math.max(0, items.length - visible);
+    }
+
+    function renderCards() {
+      const items = getFilteredProducts();
+      if (!items.length) {
+        track.innerHTML = `
+          <div style="padding: 3rem 1.5rem; text-align: center; width: 100%;">
+            <p style="color: var(--text-secondary); font-size: 1rem;">No featured items found in this category.</p>
+          </div>
+        `;
+        return;
+      }
+
+      track.innerHTML = items.map((product) => `
+        <div class="editorial-card featured-slider-card" data-id="${product.id}">
+          <div class="editorial-card-media">
+            ${product.badge ? `<span class="editorial-card-badge">${product.badge}</span>` : ''}
+            <img src="${product.image}" alt="${product.name}" loading="lazy">
+            <div class="editorial-quick-view-overlay">
+              <button type="button" class="editorial-quick-btn feat-quick-view-btn" data-id="${product.id}">
+                <i class="bi bi-eye"></i> Quick View
+              </button>
+            </div>
+          </div>
+
+          <div class="editorial-card-body">
+            <span class="editorial-card-tag">${product.categoryName}</span>
+            <h3 class="editorial-card-title">${product.name}</h3>
+            <div class="editorial-card-code">Reference: ${product.id}</div>
+            <p class="editorial-card-desc">${product.shortDesc}</p>
+
+            <div class="editorial-card-footer">
+              <div class="editorial-price-row">
+                <div class="editorial-price-box">
+                  <span class="editorial-price-label">Price in Pakistan</span>
+                  <span class="editorial-price">${window.CONFIG.currency.format(product.price)}</span>
+                </div>
+              </div>
+
+              <div class="editorial-card-btn-group">
+                <button type="button" class="btn btn-card-add-cart feat-add-cart-action" data-id="${product.id}" title="Add to Cart">
+                  <i class="bi bi-cart-plus"></i>
+                  <span>Add to Cart</span>
+                </button>
+                <button type="button" class="btn editorial-order-btn feat-order-wa-action" data-id="${product.id}" title="Order on WhatsApp">
+                  <i class="bi bi-whatsapp"></i> <span>WhatsApp</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Wire card action buttons
+      track.querySelectorAll('.feat-add-cart-action').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const pid = btn.getAttribute('data-id');
+          const p = (window.PRODUCTS || []).find(item => item.id === pid);
+          if (p && window.Cart) {
+            window.Cart.addItem(p, 1);
+          }
+        });
+      });
+
+      track.querySelectorAll('.feat-order-wa-action').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          orderOnWhatsApp(btn.getAttribute('data-id'));
+        });
+      });
+
+      track.querySelectorAll('.feat-quick-view-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openQuickView(btn.getAttribute('data-id'));
+        });
+      });
+
+      track.querySelectorAll('.featured-slider-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('.feat-order-wa-action') || e.target.closest('.feat-add-cart-action')) return;
+          openQuickView(card.getAttribute('data-id'));
+        });
+      });
+
+      renderDots(items);
+      updateSlider(0, true);
+    }
+
+    function renderDots(items) {
+      if (!dotsContainer) return;
+      const maxIdx = getMaxIndex(items);
+      const dotCount = maxIdx + 1;
+
+      if (dotCount <= 1) {
+        dotsContainer.innerHTML = '';
+        if (indicatorTotal) indicatorTotal.textContent = '01';
+        return;
+      }
+
+      dotsContainer.innerHTML = Array.from({ length: dotCount }).map((_, idx) => `
+        <button type="button" class="feat-dot ${idx === currentIndex ? 'active' : ''}" data-index="${idx}" aria-label="Slide to view ${idx + 1}">
+          <span class="dot-progress"></span>
+        </button>
+      `).join('');
+
+      dotsContainer.querySelectorAll('.feat-dot').forEach((dot, idx) => {
+        dot.addEventListener('click', () => {
+          goToSlide(idx);
+          resetAutoplay();
+        });
+      });
+
+      if (indicatorTotal) {
+        indicatorTotal.textContent = String(dotCount).padStart(2, '0');
+      }
+    }
+
+    function updateSlider(index, force = false) {
+      const items = getFilteredProducts();
+      const maxIdx = getMaxIndex(items);
+
+      if (maxIdx <= 0) {
+        currentIndex = 0;
+        track.style.transform = 'translateX(0px)';
+        if (indicatorIndex) indicatorIndex.textContent = '01';
+        if (indicatorTotal) indicatorTotal.textContent = '01';
+        if (indicatorLabel) indicatorLabel.textContent = (items[0]?.categoryName || 'FEATURED').toUpperCase();
+        return;
+      }
+
+      // Loop smoothly around boundaries
+      if (index > maxIdx) {
+        currentIndex = 0;
+      } else if (index < 0) {
+        currentIndex = maxIdx;
+      } else {
+        currentIndex = index;
+      }
+
+      // Apply transition and translation offset
+      if (force) {
+        track.style.transition = 'none';
+      } else {
+        track.style.transition = 'transform 0.55s cubic-bezier(0.25, 1, 0.5, 1)';
+      }
+
+      const firstCard = track.querySelector('.featured-slider-card');
+      if (firstCard) {
+        const cardWidth = firstCard.offsetWidth;
+        const gap = 24; // 1.5rem
+        const offset = currentIndex * (cardWidth + gap);
+        track.style.transform = `translateX(-${offset}px)`;
+      }
+
+      if (force) {
+        // Force reflow and re-enable transition
+        void track.offsetWidth;
+        track.style.transition = 'transform 0.55s cubic-bezier(0.25, 1, 0.5, 1)';
+      }
+
+      // Update dots active classes
+      if (dotsContainer) {
+        dotsContainer.querySelectorAll('.feat-dot').forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === currentIndex);
+        });
+      }
+
+      // Update indicator counter and category title
+      if (indicatorIndex) {
+        indicatorIndex.textContent = String(currentIndex + 1).padStart(2, '0');
+      }
+      if (indicatorLabel) {
+        const currentItem = items[currentIndex];
+        indicatorLabel.textContent = currentItem ? currentItem.categoryName.toUpperCase() : 'FLAGSHIP';
+      }
+    }
+
+    function goToSlide(index) {
+      updateSlider(index);
+    }
+
+    function startAutoplay() {
+      stopAutoplay();
+      autoplayTimer = setInterval(() => {
+        const items = getFilteredProducts();
+        const maxIdx = getMaxIndex(items);
+        if (maxIdx > 0) {
+          updateSlider(currentIndex + 1);
+        }
+      }, slideDuration);
+    }
+
+    function stopAutoplay() {
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    }
+
+    function resetAutoplay() {
+      startAutoplay();
+    }
+
+    // Previous and Next button listeners
+    prevBtn?.addEventListener('click', () => {
+      goToSlide(currentIndex - 1);
+      resetAutoplay();
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      goToSlide(currentIndex + 1);
+      resetAutoplay();
+    });
+
+    // Mobile Arrow Navigation Buttons
+    const mobilePrevBtn = document.getElementById('featMobilePrevBtn');
+    const mobileNextBtn = document.getElementById('featMobileNextBtn');
+    mobilePrevBtn?.addEventListener('click', () => {
+      goToSlide(currentIndex - 1);
+      resetAutoplay();
+    });
+    mobileNextBtn?.addEventListener('click', () => {
+      goToSlide(currentIndex + 1);
+      resetAutoplay();
+    });
+
+    // Category / Department tabs
+    if (tabsContainer) {
+      tabsContainer.querySelectorAll('.feat-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabsContainer.querySelectorAll('.feat-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          activeDept = tab.getAttribute('data-dept') || 'all';
+          currentIndex = 0;
+          renderCards();
+          resetAutoplay();
+        });
+      });
+    }
+
+    // Pause on hover
+    if (viewport) {
+      viewport.addEventListener('mouseenter', stopAutoplay);
+      viewport.addEventListener('mouseleave', startAutoplay);
+
+      // Touch / swipe support
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      viewport.addEventListener('touchstart', (e) => {
+        if (!e.touches || e.touches.length === 0) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+
+      viewport.addEventListener('touchend', (e) => {
+        if (!e.changedTouches || e.changedTouches.length === 0) return;
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+
+        if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+          if (diffX < 0) {
+            goToSlide(currentIndex + 1);
+          } else {
+            goToSlide(currentIndex - 1);
+          }
+          resetAutoplay();
+        }
+      }, { passive: true });
+    }
+
+    // Pause when browser tab is inactive
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stopAutoplay();
+      } else {
+        startAutoplay();
+      }
+    });
+
+    // Recalculate on window resize
+    window.addEventListener('resize', () => {
+      const items = getFilteredProducts();
+      renderDots(items);
+      updateSlider(currentIndex, true);
+    });
+
+    // Initial render
+    renderCards();
+    startAutoplay();
+  }
+
   // --- 12. INITIALIZATION ---
   renderCategoryShowcase('all');
   renderCategoryPills();
   renderCatalog();
   initScrollReveal();
   initHeroSlider();
+  initFeaturedProductsSlider();
 
   // Async dynamic enhancement from database
   if (window.STORE_CLIENT) {
