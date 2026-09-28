@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Checkout — Ibn e Naimat Collection</title>
+  <meta name="description" content="Complete your purchase with Ibn e Naimat Collection. Authentic branded watches, pure honey nuts, tech gadgets, and luxury gifts with nationwide cash on delivery across Pakistan.">
+  <link rel="icon" type="image/png" href="assets/images/official-logo.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    .checkout-page-section {
+      padding: 3.5rem 0 6rem 0;
+      background: var(--bg-primary);
+      min-height: 80vh;
+    }
+
+    .checkout-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .checkout-breadcrumb a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .checkout-breadcrumb a:hover {
+      color: var(--gold-champagne);
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      gap: 2.5rem;
+      align-items: flex-start;
+    }
+
+    .checkout-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2.25rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .checkout-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .checkout-card-header h2 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .checkout-step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gold-champagne);
+      color: #1a1918;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.35rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.45rem;
+      letter-spacing: 0.02em;
+    }
+
+    .form-label .req {
+      color: #dc2626;
+      margin-left: 0.2rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-size: 0.9375rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.25s ease;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    .form-control:focus {
+      border-color: var(--gold-champagne);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+    }
+
+    .form-hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Payment Box */
+    .payment-option-card {
+      border: 1.5px solid var(--gold-champagne);
+      background: var(--bg-cream);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
+
+    .payment-option-radio {
+      margin-top: 0.25rem;
+      accent-color: var(--gold-dark);
+      transform: scale(1.2);
+    }
+
+    .payment-option-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.9375rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .payment-option-desc {
+      font-size: 0.78125rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Summary items list */
+    .summary-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-height: 320px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-item-row {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-item-img {
+      width: 58px;
+      height: 58px;
+      border-radius: var(--radius-xs);
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      padding: 4px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .summary-item-img img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .summary-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .summary-item-name {
+      font-size: 0.84375rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 0.2rem 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .summary-item-qty {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .summary-item-price {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .summary-totals-table {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-totals-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .summary-totals-row.grand-total {
+      border-top: 2px dashed var(--border);
+      padding-top: 0.85rem;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .summary-totals-row.grand-total .summary-val {
+      color: var(--gold-champagne);
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+    }
+
+    .btn-place-order {
+      width: 100%;
+      background: linear-gradient(135deg, #242321 0%, #151413 100%);
+      color: #ffffff !important;
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 1.05rem 1.5rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      letter-spacing: 0.03em;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-place-order:hover:not(:disabled) {
+      background: #000000;
+      border-color: var(--gold-champagne);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-place-order:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .checkout-assurance-card {
+      margin-top: 1.5rem;
+      padding: 1.15rem;
+      background: var(--bg-primary);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .checkout-assurance-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      font-size: 0.78125rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      margin-bottom: 0.75rem;
+    }
+
+    .checkout-assurance-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .checkout-assurance-item i {
+      color: var(--gold-champagne);
+      font-size: 1rem;
+      margin-top: 0.1rem;
+    }
+
+    @media (max-width: 900px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .checkout-card {
+        padding: 1.5rem;
+      }
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       ANNOUNCEMENT BAR
+       ========================================================================= -->
+  <div class="announcement-bar" role="region" aria-label="Announcement">
+    <div class="site-container announcement-container">
+      <div class="announcement-text">
+        <i class="bi bi-shield-check"></i>
+        <span>Nationwide Insured Delivery Across Pakistan &bull; Cash on Delivery Available</span>
+      </div>
+      <div class="announcement-links">
+        <a href="track-order.html" class="announcement-link"><i class="bi bi-geo-alt"></i> Track Order</a>
+        <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="announcement-link"><i class="bi bi-whatsapp"></i> WhatsApp: 0330-2241340</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       SITE HEADER
+       ========================================================================= -->
+  <header class="site-header" id="siteHeader">
+    <div class="site-container header-container">
+      <a href="index.html" class="brand-logo" aria-label="Ibn e Naimat Collection Home">
+        <img src="assets/images/official-logo.png" alt="Ibn e Naimat Collection Logo" class="brand-logo-img">
+      </a>
+
+      <!-- Navigation Menu -->
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="watches.html" class="nav-link">Watches</a></li>
+          <li class="nav-item"><a href="honey-nuts.html" class="nav-link">Honey Nuts</a></li>
+          <li class="nav-item"><a href="gadgets.html" class="nav-link">Gadgets</a></li>
+          <li class="nav-item"><a href="gifts.html" class="nav-link">Gift Items</a></li>
+          <li class="nav-item"><a href="calligraphy.html" class="nav-link">Calligraphy</a></li>
+          <li class="nav-item"><a href="shop.html" class="nav-link">Shop All</a></li>
+          <li class="nav-item"><a href="track-order.html" class="nav-link">Track Order</a></li>
+        </ul>
+      </nav>
+
+      <!-- Utility Actions -->
+      <div class="nav-actions">
+        <a href="shop.html" class="header-search-trigger" aria-label="Search Catalog" title="Search Timepieces &amp; Catalog">
+          <i class="bi bi-search"></i>
+        </a>
+
+        <button class="header-cart-trigger" id="headerCartTrigger" aria-label="View Shopping Cart" title="Shopping Cart">
+          <i class="bi bi-bag"></i>
+          <span class="cart-badge" id="headerCartBadge">0</span>
+        </button>
+
+        <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-charcoal header-wa-btn" title="Direct WhatsApp Support">
+          <i class="bi bi-whatsapp" style="color: var(--wa-green);"></i>
+          <span>Order: 03302241340</span>
+        </a>
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Open Mobile Menu">
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer-overlay" id="drawerOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-header">
+      <img src="assets/images/official-logo.png" alt="Ibn e Naimat Collection" class="drawer-brand-logo">
+      <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <ul class="drawer-menu">
+      <li><a href="index.html" class="drawer-link">Home <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="watches.html" class="drawer-link">Original Watches <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="honey-nuts.html" class="drawer-link">Pure Honey Nuts <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="gadgets.html" class="drawer-link">Tech Gadgets <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="gifts.html" class="drawer-link">Prestige Gift Boxes <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="calligraphy.html" class="drawer-link">Islamic Calligraphy <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="shop.html" class="drawer-link">Shop All Collections <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="track-order.html" class="drawer-link">Track Your Order <i class="bi bi-chevron-right"></i></a></li>
+    </ul>
+  </div>
+
+  <!-- =========================================================================
+       CHECKOUT MAIN VIEW
+       ========================================================================= -->
+  <main class="checkout-page-section">
+    <div class="site-container">
+      <nav class="checkout-breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <i class="bi bi-chevron-right" style="font-size: 0.65rem;"></i>
+        <a href="shop.html">Shop</a>
+        <i class="bi bi-chevron-right" style="font-size: 0.65rem;"></i>
+        <span style="color: var(--text-primary); font-weight: 600;">Secure Checkout</span>
+      </nav>
+
+      <div class="checkout-grid" id="checkoutGrid">
+        <!-- 1. Customer & Shipping Form -->
+        <section class="checkout-card">
+          <div class="checkout-card-header">
+            <div class="checkout-step-num">1</div>
+            <div>
+              <h2>Delivery &amp; Customer Information</h2>
+              <p style="font-size: 0.78125rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                Please provide your accurate delivery details for nationwide insured dispatch.
+              </p>
+            </div>
+          </div>
+
+          <form id="checkoutForm" novalidate>
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label" for="custName">Customer Full Name <span class="req">*</span></label>
+                <input type="text" id="custName" class="form-control" placeholder="e.g. Muhammad Usman" required autocomplete="name">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="custPhone">WhatsApp / Mobile Number <span class="req">*</span></label>
+                <input type="tel" id="custPhone" class="form-control" placeholder="0330 2241340" required autocomplete="tel">
+                <div class="form-hint">Our concierge will share pre-dispatch video inspection here.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="custEmail">Email Address <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400;">(Optional)</span></label>
+              <input type="email" id="custEmail" class="form-control" placeholder="your.name@example.com" autocomplete="email">
+              <div class="form-hint">Used for receiving official PDF invoice and tracking updates.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="custAddress">Complete Street Delivery Address <span class="req">*</span></label>
+              <textarea id="custAddress" class="form-control" rows="3" placeholder="House/Apartment #, Street, Block/Sector, Landmark" required autocomplete="street-address"></textarea>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label" for="custCity">Destination City <span class="req">*</span></label>
+                <select id="custCity" class="form-control" required>
+                  <option value="" disabled selected>Select Delivery City...</option>
+                  <option value="Karachi">Karachi</option>
+                  <option value="Lahore">Lahore</option>
+                  <option value="Islamabad">Islamabad</option>
+                  <option value="Rawalpindi">Rawalpindi</option>
+                  <option value="Faisalabad">Faisalabad</option>
+                  <option value="Multan">Multan</option>
+                  <option value="Peshawar">Peshawar</option>
+                  <option value="Quetta">Quetta</option>
+                  <option value="Sialkot">Sialkot</option>
+                  <option value="Gujranwala">Gujranwala</option>
+                  <option value="Hyderabad">Hyderabad</option>
+                  <option value="Abbottabad">Abbottabad</option>
+                  <option value="Bahawalpur">Bahawalpur</option>
+                  <option value="Sargodha">Sargodha</option>
+                  <option value="Sukkur">Sukkur</option>
+                  <option value="Other">Other City in Pakistan</option>
+                </select>
+              </div>
+
+              <div class="form-group" id="otherCityGroup" style="display: none;">
+                <label class="form-label" for="custOtherCity">Specify City Name <span class="req">*</span></label>
+                <input type="text" id="custOtherCity" class="form-control" placeholder="Enter your city">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="custNotes">Special Delivery Instructions <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400;">(Optional)</span></label>
+              <textarea id="custNotes" class="form-control" rows="2" placeholder="e.g. Call before delivery, gift wrap, deliver after 2 PM"></textarea>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="payment-option-card">
+              <input type="radio" id="payMethodCOD" name="payment_method" value="cod" class="payment-option-radio" checked>
+              <div style="flex: 1;">
+                <div class="payment-option-title">
+                  <i class="bi bi-cash-coin" style="color: var(--gold-dark); margin-right: 0.35rem;"></i>
+                  Cash on Delivery (COD)
+                </div>
+                <p class="payment-option-desc">
+                  Pay cash to the courier representative upon delivery. Includes pre-dispatch WhatsApp video inspection of your items.
+                </p>
+              </div>
+            </div>
+
+            <div id="checkoutErrorMsg" style="display: none; margin-top: 1.25rem; padding: 0.85rem 1rem; border-radius: var(--radius-xs); background: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; font-size: 0.85rem;">
+            </div>
+          </form>
+        </section>
+
+        <!-- 2. Order Review Card -->
+        <section class="checkout-card" id="orderReviewCard">
+          <div class="checkout-card-header">
+            <div class="checkout-step-num">2</div>
+            <div>
+              <h2>Order Summary</h2>
+              <p style="font-size: 0.78125rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                Review your items before confirming your order.
+              </p>
+            </div>
+          </div>
+
+          <div class="summary-items-list" id="checkoutItemsList">
+            <!-- Rendered by checkout.js -->
+          </div>
+
+          <div class="summary-totals-table">
+            <div class="summary-totals-row">
+              <span>Items Subtotal</span>
+              <span class="summary-val" id="checkoutSubtotal">PKR 0</span>
+            </div>
+            <div class="summary-totals-row">
+              <span>Nationwide Delivery Fee</span>
+              <span class="summary-val" id="checkoutDeliveryFee">PKR 250</span>
+            </div>
+            <div class="summary-totals-row grand-total">
+              <span>Grand Total</span>
+              <span class="summary-val" id="checkoutGrandTotal">PKR 0</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn-place-order" id="btnPlaceOrder">
+            <i class="bi bi-shield-lock-fill" style="color: var(--gold-champagne);"></i>
+            <span>Confirm &amp; Place Order</span>
+          </button>
+
+          <p style="font-size: 0.72rem; color: var(--text-muted); text-align: center; margin-top: 0.85rem;">
+            By placing your order, you agree to receive verification on WhatsApp.
+          </p>
+
+          <div class="checkout-assurance-card">
+            <div class="checkout-assurance-item">
+              <i class="bi bi-patch-check"></i>
+              <div><strong>100% Genuine Authenticity:</strong> Every piece is verified and inspected in Pakistan.</div>
+            </div>
+            <div class="checkout-assurance-item">
+              <i class="bi bi-camera-video"></i>
+              <div><strong>WhatsApp Video Inspection:</strong> See your actual item packed before dispatch.</div>
+            </div>
+            <div class="checkout-assurance-item">
+              <i class="bi bi-truck"></i>
+              <div><strong>Tracked Insured Courier:</strong> Real-time tracking with unique Order ID.</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Empty Cart Message (if cart empty) -->
+      <div id="checkoutEmptyCartState" style="display: none; text-align: center; padding: 5rem 1rem; background: var(--bg-white); border-radius: var(--radius-md); border: 1px solid var(--border);">
+        <i class="bi bi-bag-x" style="font-size: 3rem; color: var(--gold-champagne); margin-bottom: 1rem; display: inline-block;"></i>
+        <h2 style="font-family: var(--font-serif); font-size: 1.75rem; color: var(--text-primary); margin-bottom: 0.5rem;">Your Cart is Currently Empty</h2>
+        <p style="color: var(--text-secondary); max-width: 440px; margin: 0 auto 1.75rem auto; font-size: 0.9375rem;">
+          You need at least one product in your cart to proceed with checkout. Explore our curated collections to get started.
+        </p>
+        <a href="shop.html" class="btn btn-luxury-checkout" style="display: inline-flex; width: auto; padding: 0.85rem 2rem;">
+          <span>Explore Catalog</span>
+          <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       FOOTER
+       ========================================================================= -->
+  <footer class="site-footer">
+    <div class="site-container">
+      <div class="footer-bottom">
+        <p>&copy; <span id="currentYear">2026</span> <strong>Ibn e Naimat Collection</strong>. All Rights Reserved. Nationwide Insured Delivery Across Pakistan.</p>
+        <div class="footer-legal-links">
+          <a href="track-order.html">Track Order</a> &bull;
+          <a href="shop.html">Catalog</a> &bull;
+          <a href="https://wa.me/923302241340">WhatsApp Concierge</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.env.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/checkout.js"></script>
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    // Mobile menu toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const drawerClose = document.getElementById('drawerClose');
+    function toggleDrawer(open) {
+      if (open) {
+        mobileDrawer?.classList.add('active');
+        drawerOverlay?.classList.add('active');
+      } else {
+        mobileDrawer?.classList.remove('active');
+        drawerOverlay?.classList.remove('active');
+      }
+    }
+    mobileToggle?.addEventListener('click', () => toggleDrawer(true));
+    drawerClose?.addEventListener('click', () => toggleDrawer(false));
+    drawerOverlay?.addEventListener('click', () => toggleDrawer(false));
+  </script>
+</body>
+</html>

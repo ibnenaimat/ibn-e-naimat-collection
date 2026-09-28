@@ -69,11 +69,18 @@
           <li class="nav-item"><a href="gifts.html" class="nav-link">Gift Items</a></li>
           <li class="nav-item"><a href="calligraphy.html" class="nav-link">Calligraphy</a></li>
           <li class="nav-item"><a href="shop.html" class="nav-link active" style="color: var(--gold-primary);">Shop All</a></li>
+          <li class="nav-item"><a href="track-order.html" class="nav-link" title="Track Your Order"><i class="bi bi-geo-alt"></i> Track Order</a></li>
         </ul>
       </nav>
 
       <!-- Utility Actions -->
       <div class="nav-actions">
+        <!-- Cart Trigger Button -->
+        <button class="header-cart-trigger" id="headerCartTrigger" aria-label="View Shopping Cart" title="View Shopping Cart">
+          <i class="bi bi-bag"></i>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+
         <!-- WhatsApp Concierge Button -->
         <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-wa-luxury header-wa-btn" title="Direct WhatsApp Support">
           <i class="bi bi-whatsapp"></i>
@@ -108,6 +115,7 @@
       <li><a href="gifts.html" class="drawer-link">Luxury Gifts <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="calligraphy.html" class="drawer-link">Islamic Calligraphy <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="shop.html" class="drawer-link active" style="color: var(--gold-primary); font-weight: 700;">Shop All Collections <i class="bi bi-chevron-right"></i></a></li>
+      <li><a href="track-order.html" class="drawer-link"><i class="bi bi-geo-alt" style="color: var(--gold);"></i> Track Your Order <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="index.html#why-us" class="drawer-link">Why Choose Us <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="index.html#reviews" class="drawer-link">Customer Reviews <i class="bi bi-chevron-right"></i></a></li>
       <li><a href="index.html#contact" class="drawer-link">Contact Concierge <i class="bi bi-chevron-right"></i></a></li>
@@ -327,6 +335,7 @@
   <script src="js/config.js"></script>
   <script src="js/products.js"></script>
   <script src="js/supabase-client.js"></script>
+  <script src="js/cart.js"></script>
   <script src="js/shop.js"></script>
   <script>
     document.getElementById('currentYear').textContent = new Date().getFullYear();

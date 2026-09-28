@@ -172,20 +172,39 @@ document.addEventListener('DOMContentLoaded', () => {
           <p class="editorial-card-desc">${product.shortDesc}</p>
 
           <div class="editorial-card-footer">
-            <div class="editorial-price-box">
-              <span class="editorial-price-label">Price</span>
-              <span class="editorial-price">${window.CONFIG.currency.format(product.price)}</span>
+            <div class="editorial-price-row">
+              <div class="editorial-price-box">
+                <span class="editorial-price-label">Price in Pakistan</span>
+                <span class="editorial-price">${window.CONFIG.currency.format(product.price)}</span>
+              </div>
             </div>
 
-            <button class="btn editorial-order-btn order-wa-action" data-id="${product.id}">
-              <i class="bi bi-whatsapp"></i> Order on WhatsApp
-            </button>
+            <div class="editorial-card-btn-group">
+              <button type="button" class="btn btn-card-add-cart add-cart-action" data-id="${product.id}" title="Add to Cart">
+                <i class="bi bi-cart-plus"></i>
+                <span>Add to Cart</span>
+              </button>
+              <button type="button" class="btn editorial-order-btn order-wa-action" data-id="${product.id}" title="Order on WhatsApp">
+                <i class="bi bi-whatsapp"></i> <span>WhatsApp</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     `).join('');
 
     // Attach card event listeners
+    shopProductsGrid.querySelectorAll('.add-cart-action').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const pid = btn.getAttribute('data-id');
+        const p = window.PRODUCTS.find(item => item.id === pid);
+        if (p && window.Cart) {
+          window.Cart.addItem(p, 1);
+        }
+      });
+    });
+
     shopProductsGrid.querySelectorAll('.order-wa-action').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -202,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     shopProductsGrid.querySelectorAll('.editorial-card').forEach(card => {
       card.addEventListener('click', (e) => {
-        if (e.target.closest('.order-wa-action')) return;
+        if (e.target.closest('.order-wa-action') || e.target.closest('.add-cart-action')) return;
         openQuickView(card.getAttribute('data-id'));
       });
     });
@@ -303,11 +322,18 @@ document.addEventListener('DOMContentLoaded', () => {
           ${specsListHtml}
 
           <div class="modal-actions-box">
-            <button class="btn btn-wa-luxury modal-order-btn" style="width: 100%; font-size: 0.9375rem;" data-id="${product.id}">
-              <i class="bi bi-whatsapp"></i> Order on WhatsApp (03302241340)
-            </button>
-            <p style="font-size: 0.75rem; color: #71717a; text-align: center; margin-top: 0.85rem;">
-              <i class="bi bi-shield-check"></i> 100% Inspected Genuine Item • Advance Payment Confirmation • Tracked Courier
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+              <button type="button" class="btn modal-add-cart-btn" data-id="${product.id}" title="Add to Cart">
+                <i class="bi bi-cart-plus"></i>
+                <span>Add to Cart</span>
+              </button>
+              <button class="btn modal-order-btn order-wa-action" data-id="${product.id}" style="justify-content: center;">
+                <i class="bi bi-whatsapp"></i>
+                <span>Order on WhatsApp</span>
+              </button>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem;">
+              <i class="bi bi-shield-check" style="color: var(--gold-champagne);"></i> 100% Inspected Genuine Item &bull; Video Inspection via WhatsApp &bull; Tracked Courier
             </p>
           </div>
         </div>
@@ -315,6 +341,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       ${relatedHtml}
     `;
+
+    // Add to Cart action inside modal
+    modalScrollArea.querySelector('.modal-add-cart-btn')?.addEventListener('click', () => {
+      if (window.Cart) {
+        window.Cart.addItem(product, 1);
+        closeQuickView();
+      }
+    });
 
     // Order action inside modal
     modalScrollArea.querySelector('.modal-order-btn')?.addEventListener('click', () => {
@@ -329,13 +363,15 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    quickViewModal.classList.add('active');
+    quickViewModal.classList.add('active', 'show');
+    quickViewModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
 
   function closeQuickView() {
     if (!quickViewModal) return;
-    quickViewModal.classList.remove('active');
+    quickViewModal.classList.remove('active', 'show');
+    quickViewModal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
 
@@ -348,7 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && quickViewModal?.classList.contains('active')) {
+    if (e.key === 'Escape' && (quickViewModal?.classList.contains('active') || quickViewModal?.classList.contains('show'))) {
       closeQuickView();
     }
   });

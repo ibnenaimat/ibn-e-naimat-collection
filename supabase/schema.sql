@@ -122,7 +122,60 @@ CREATE TABLE IF NOT EXISTS public.homepage_sections (
 );
 
 -- ============================================================================
--- 7. TABLE: orders_inquiries
+-- 7. TABLE: orders
+-- Stores customer checkout orders with unique Order ID and full delivery data
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS public.orders (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    order_id TEXT UNIQUE NOT NULL,                          -- e.g. 'INC-20260927-0042'
+    customer_name TEXT NOT NULL,
+    phone TEXT NOT NULL,                                   -- WhatsApp/Mobile number
+    email TEXT,
+    address TEXT NOT NULL,                                 -- Complete delivery address
+    city TEXT NOT NULL,                                    -- Destination city
+    notes TEXT,                                            -- Customer delivery notes
+    subtotal NUMERIC(10, 2) NOT NULL,
+    delivery_fee NUMERIC(10, 2) NOT NULL DEFAULT 0,
+    total NUMERIC(10, 2) NOT NULL,
+    status TEXT NOT NULL DEFAULT 'Pending' CHECK (status IN (
+        'Pending', 
+        'Confirmed', 
+        'Processing', 
+        'Dispatched', 
+        'Out for Delivery', 
+        'Delivered', 
+        'Cancelled'
+    )),
+    admin_notes TEXT,                                      -- Internal administrator notes
+    payment_method TEXT DEFAULT 'cod',                     -- Default: Cash on Delivery
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ============================================================================
+-- 8. TABLE: order_items
+-- Stores line items per order preserving historical price and product title
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS public.order_items (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    order_id TEXT NOT NULL REFERENCES public.orders(order_id) ON DELETE CASCADE,
+    product_id TEXT NOT NULL,                              -- Product SKU (e.g. 'INC-W101')
+    product_name TEXT NOT NULL,                            -- Preserved product title at time of order
+    quantity INT NOT NULL DEFAULT 1 CHECK (quantity > 0),
+    price NUMERIC(10, 2) NOT NULL,                         -- Preserved unit price at time of order
+    subtotal NUMERIC(10, 2) NOT NULL,                      -- quantity * price
+    image_url TEXT,                                        -- Thumbnail image URL
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_orders_order_id ON public.orders(order_id);
+CREATE INDEX IF NOT EXISTS idx_orders_phone ON public.orders(phone);
+CREATE INDEX IF NOT EXISTS idx_orders_status ON public.orders(status);
+CREATE INDEX IF NOT EXISTS idx_orders_created_at ON public.orders(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON public.order_items(order_id);
+
+-- ============================================================================
+-- 9. TABLE: orders_inquiries
 -- Optional logging for WhatsApp order inquiries and contact requests
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS public.orders_inquiries (
@@ -137,12 +190,48 @@ CREATE TABLE IF NOT EXISTS public.orders_inquiries (
 );
 
 -- ============================================================================
--- 8. ROW LEVEL SECURITY (RLS) POLICIES
+-- 10. ROW LEVEL SECURITY (RLS) POLICIES
 -- Strict Security: Public read on active records, authenticated-only write
 -- ============================================================================
 
 -- Enable RLS on all tables
 ALTER TABLE public.website_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.hero_slides ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.homepage_sections ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.orders_inquiries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.order_items ENABLE ROW LEVEL SECURITY;
+
+-- Orders & Order Items Policies
+CREATE POLICY "Public can insert orders"
+    ON public.orders FOR INSERT
+    WITH CHECK (true);
+
+CREATE POLICY "Public can insert order items"
+    ON public.order_items FOR INSERT
+    WITH CHECK (true);
+
+CREATE POLICY "Admins have full access to orders"
+    ON public.orders FOR ALL
+    TO authenticated
+    USING (true)
+    WITH CHECK (true);
+
+CREATE POLICY "Admins have full access to order items"
+    ON public.order_items FOR ALL
+    TO authenticated
+    USING (true)
+    WITH CHECK (true);
+
+CREATE POLICY "Public can view verified order"
+    ON public.orders FOR SELECT
+    USING (true);
+
+CREATE POLICY "Public can view order items"
+    ON public.order_items FOR SELECT
+    USING (true);
 ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.hero_slides ENABLE ROW LEVEL SECURITY;

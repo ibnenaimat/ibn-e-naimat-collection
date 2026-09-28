@@ -279,60 +279,69 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Render Product Cards
-    productsGridEl.innerHTML = items.map(p => {
-      const badgeHtml = p.badge 
-        ? `<span class="product-badge" style="background: var(--bg-dark); color: var(--gold-champagne);">${p.badge}</span>` 
-        : '';
-
+    productsGridEl.innerHTML = items.map((p, idx) => {
       const isOutOfStock = p.stock_status === 'out_of_stock';
       const stockBadge = isOutOfStock
-        ? `<span class="stock-indicator out-of-stock"><i class="bi bi-x-circle"></i> Out of Stock</span>`
-        : `<span class="stock-indicator in-stock"><i class="bi bi-check2"></i> In Stock</span>`;
+        ? `<span class="stock-indicator out-of-stock" style="font-size:0.75rem; color:#dc2626;"><i class="bi bi-x-circle"></i> Out of Stock</span>`
+        : `<span class="stock-indicator in-stock" style="font-size:0.75rem; color:var(--wa-green-dark);"><i class="bi bi-check2-circle"></i> In Stock</span>`;
 
       return `
-        <article class="product-editorial-card reveal-on-scroll is-visible" data-product-id="${p.id}">
-          <div class="product-visual-container">
-            ${badgeHtml}
+        <article class="editorial-card card-entry-anim reveal-on-scroll is-visible" style="animation-delay: ${(idx % 9) * 0.045}s;" data-id="${p.id}" data-product-id="${p.id}">
+          <div class="editorial-card-media">
+            ${p.badge ? `<span class="editorial-card-badge">${p.badge}</span>` : ''}
             <img src="${resolveImg(p.image)}" 
                  alt="${p.name}" 
-                 class="product-primary-img" 
                  loading="lazy" 
                  onerror="this.src='assets/images/placeholders/watch-placeholder.svg'">
-            <div class="visual-hover-actions">
-              <button class="btn-action-view" data-product-id="${p.id}" title="Quick View &amp; Specifications">
+            <div class="editorial-quick-view-overlay">
+              <button class="editorial-quick-btn view-detail-action" data-id="${p.id}" title="Select product to view full details">
                 <i class="bi bi-eye"></i> Quick View
               </button>
             </div>
           </div>
 
-          <div class="product-card-body">
-            <div class="product-card-top">
-              <span class="product-sku-tag">SKU: ${p.id}</span>
+          <div class="editorial-card-body">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.45rem;">
+              <span class="editorial-card-tag">${activeConfig.name}</span>
               ${stockBadge}
             </div>
 
-            <h3 class="product-card-title" title="${p.name}">
+            <h3 class="editorial-card-title" title="${p.name}">
               ${p.name}
             </h3>
 
-            <p class="product-card-excerpt">
+            <div class="editorial-card-code">Reference: ${p.id}</div>
+
+            <p class="editorial-card-desc">
               ${p.shortDesc || p.description || ''}
             </p>
 
-            <div class="product-pricing-row">
-              <div class="price-box">
-                <span class="price-currency">${formatPKR(p.price)}</span>
-                ${p.originalPrice ? `<span class="price-compare">${formatPKR(p.originalPrice)}</span>` : ''}
+            <div class="editorial-card-footer">
+              <div class="editorial-price-row">
+                <div class="editorial-price-box">
+                  <span class="editorial-price-label">Price in Pakistan</span>
+                  <span class="editorial-price">${formatPKR(p.price)}</span>
+                </div>
+                ${p.originalPrice ? `<span class="editorial-price-original">${formatPKR(p.originalPrice)}</span>` : ''}
               </div>
-            </div>
 
-            <div class="product-card-actions">
-              <button class="btn-buy-wa ${isOutOfStock ? 'disabled' : ''}" 
-                      data-product-id="${p.id}" 
-                      ${isOutOfStock ? 'disabled' : ''}>
-                <i class="bi bi-whatsapp"></i> 
-                <span>${isOutOfStock ? 'Sold Out' : 'Order on WhatsApp'}</span>
-              </button>
+              <div class="editorial-card-btn-group">
+                <button type="button" class="btn btn-card-add-cart add-cart-action ${isOutOfStock ? 'disabled' : ''}" 
+                        data-id="${p.id}" 
+                        title="${isOutOfStock ? 'Out of Stock' : 'Add to Cart'}"
+                        ${isOutOfStock ? 'disabled' : ''}>
+                  <i class="bi bi-cart-plus"></i>
+                  <span>${isOutOfStock ? 'Out of Stock' : 'Add to Cart'}</span>
+                </button>
+                <button type="button" class="btn editorial-order-btn order-wa-action ${isOutOfStock ? 'disabled' : ''}" 
+                        data-id="${p.id}" 
+                        data-product-id="${p.id}"
+                        title="Order instantly on WhatsApp"
+                        ${isOutOfStock ? 'disabled' : ''}>
+                  <i class="bi bi-whatsapp"></i> 
+                  <span>${isOutOfStock ? 'Sold Out' : 'WhatsApp'}</span>
+                </button>
+              </div>
             </div>
           </div>
         </article>
@@ -340,25 +349,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }).join('');
 
     // Attach card event listeners
-    productsGridEl.querySelectorAll('.btn-buy-wa').forEach(btn => {
+    productsGridEl.querySelectorAll('.add-cart-action').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const pid = btn.getAttribute('data-product-id');
+        const pid = btn.getAttribute('data-id');
+        const p = (window.PRODUCTS || []).find(item => item.id === pid);
+        if (p && window.Cart) {
+          window.Cart.addItem(p, 1);
+        }
+      });
+    });
+
+    productsGridEl.querySelectorAll('.order-wa-action').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const pid = btn.getAttribute('data-id') || btn.getAttribute('data-product-id');
         orderOnWhatsApp(pid);
       });
     });
 
-    productsGridEl.querySelectorAll('.btn-action-view').forEach(btn => {
+    productsGridEl.querySelectorAll('.view-detail-action').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const pid = btn.getAttribute('data-product-id');
+        const pid = btn.getAttribute('data-id') || btn.getAttribute('data-product-id');
         openQuickView(pid);
       });
     });
 
-    productsGridEl.querySelectorAll('.product-editorial-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const pid = card.getAttribute('data-product-id');
+    // Selecting anywhere on the product card pops up the product modal
+    productsGridEl.querySelectorAll('.editorial-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.order-wa-action') || e.target.closest('.add-cart-action')) return;
+        const pid = card.getAttribute('data-id') || card.getAttribute('data-product-id');
         openQuickView(pid);
       });
     });
@@ -379,45 +401,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const product = (window.PRODUCTS || []).find(p => p.id === productId);
     if (!product || !quickViewModal || !modalScrollArea) return;
 
-    const specsHtml = (product.specs && product.specs.length > 0)
-      ? `<div class="modal-specs-list">
-          ${product.specs.map(s => `
-            <div class="spec-row">
-              <span class="spec-label">${s.label}</span>
-              <span class="spec-value">${s.value}</span>
+    // Find 3 other related items
+    const related = (window.PRODUCTS || [])
+      .filter(p => p.id !== product.id && (p.category === product.category || (typeof activeConfig.categoryFilter === 'function' && activeConfig.categoryFilter(p))))
+      .slice(0, 3);
+
+    const specsList = (product.specs && product.specs.length > 0)
+      ? product.specs.map(s => {
+          if (typeof s === 'string') return `<li>${s}</li>`;
+          return `<li><strong>${s.label}:</strong> ${s.value}</li>`;
+        }).join('')
+      : '<li>100% Original Brand Verification Guaranteed</li><li>Official Packaging &amp; Inspection Included</li>';
+
+    const relatedHtml = related.length > 0 ? `
+      <div class="modal-related-area">
+        <h3 class="modal-related-title">More in ${activeConfig.name}</h3>
+        <div class="modal-related-grid">
+          ${related.map(r => `
+            <div class="related-product-card" data-id="${r.id}">
+              <div class="related-img-box">
+                <img src="${resolveImg(r.image)}" alt="${r.name}" loading="lazy" onerror="this.src='assets/images/placeholders/watch-placeholder.svg'">
+              </div>
+              <div class="related-title">${r.name}</div>
+              <div class="related-price">${formatPKR(r.price)}</div>
             </div>
           `).join('')}
-         </div>`
-      : `<p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">Verified original specification guaranteed.</p>`;
+        </div>
+      </div>
+    ` : '';
 
     const isOutOfStock = product.stock_status === 'out_of_stock';
 
     modalScrollArea.innerHTML = `
-      <div class="modal-product-grid">
-        <div class="modal-gallery">
-          <div class="modal-main-image-wrap">
-            <img src="${resolveImg(product.image)}" alt="${product.name}" class="modal-main-img" onerror="this.src='assets/images/placeholders/watch-placeholder.svg'">
-          </div>
+      <div class="modal-top-grid">
+        <div class="modal-img-col">
+          <img src="${resolveImg(product.image)}" alt="${product.name}" onerror="this.src='assets/images/placeholders/watch-placeholder.svg'">
         </div>
 
-        <div class="modal-product-info">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <span class="modal-cat-tag">${activeConfig.name}</span>
-            <span class="product-sku-tag">SKU: ${product.id}</span>
+        <div class="modal-info-col">
+          <div class="modal-brand-badge">
+            <img src="assets/images/official-logo.png" alt="Ibn e Naimat Collection">
           </div>
-
-          <h2 class="modal-product-title">${product.name}</h2>
+          ${product.badge ? `<span class="modal-badge-tag">${product.badge}</span>` : ''}
+          <h2 class="modal-title">${product.name}</h2>
+          
+          <div class="modal-meta-row">
+            Reference: <strong>${product.id}</strong> &bull; Collection: <strong>${activeConfig.name}</strong>
+          </div>
 
           <div class="modal-price-box">
-            <span class="modal-current-price">${formatPKR(product.price)}</span>
-            ${product.originalPrice ? `<span class="modal-compare-price">${formatPKR(product.originalPrice)}</span>` : ''}
+            <span class="modal-price">${formatPKR(product.price)}</span>
+            <span class="modal-stock-badge">
+              <i class="bi bi-check-circle-fill"></i> 
+              ${isOutOfStock ? 'Currently Out of Stock' : 'In Stock • Inspected in Pakistan'}
+            </span>
           </div>
 
-          <p class="modal-product-desc">${product.description || product.shortDesc || ''}</p>
+          <p class="modal-desc">${product.description || product.shortDesc || ''}</p>
 
-          <div class="modal-specs-section">
-            <h4 class="specs-heading"><i class="bi bi-card-checklist" style="color: var(--gold-champagne);"></i> Specifications &amp; Features</h4>
-            ${specsHtml}
+          <div class="modal-specs-block">
+            <h4>Technical Specifications &amp; Features</h4>
+            <ul class="modal-specs-list">
+              ${specsList}
+            </ul>
           </div>
 
           <div class="modal-assurance-box" style="margin: 1.25rem 0; padding: 1rem; background: var(--bg-primary); border-radius: var(--radius-sm); border: 1px solid var(--border);">
@@ -429,28 +475,56 @@ document.addEventListener('DOMContentLoaded', () => {
             </p>
           </div>
 
-          <div class="modal-actions-row">
-            <button class="btn btn-wa-modal" id="modalBuyBtn" style="width: 100%; justify-content: center;" ${isOutOfStock ? 'disabled' : ''}>
-              <i class="bi bi-whatsapp"></i>
-              <span>${isOutOfStock ? 'Currently Out of Stock' : 'Order This on WhatsApp (0330 2241340)'}</span>
-            </button>
+          <div class="modal-actions-box">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+              <button type="button" class="btn modal-add-cart-btn" data-id="${product.id}" title="Add to Cart" ${isOutOfStock ? 'disabled' : ''}>
+                <i class="bi bi-cart-plus"></i>
+                <span>${isOutOfStock ? 'Sold Out' : 'Add to Cart'}</span>
+              </button>
+              <button class="btn modal-order-btn order-wa-action" data-id="${product.id}" style="justify-content: center;" ${isOutOfStock ? 'disabled' : ''}>
+                <i class="bi bi-whatsapp"></i>
+                <span>${isOutOfStock ? 'Out of Stock' : 'Order on WhatsApp'}</span>
+              </button>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem;">
+              <i class="bi bi-shield-check" style="color: var(--gold-champagne);"></i> 100% Inspected Genuine Item &bull; Video Inspection via WhatsApp &bull; Tracked Courier
+            </p>
           </div>
         </div>
       </div>
+
+      ${relatedHtml}
     `;
 
-    document.getElementById('modalBuyBtn')?.addEventListener('click', () => {
+    // Add to Cart action inside modal
+    modalScrollArea.querySelector('.modal-add-cart-btn')?.addEventListener('click', () => {
+      if (window.Cart) {
+        window.Cart.addItem(product, 1);
+        closeQuickView();
+      }
+    });
+
+    // Order action inside modal
+    modalScrollArea.querySelector('.modal-order-btn')?.addEventListener('click', () => {
       orderOnWhatsApp(product.id);
     });
 
-    quickViewModal.classList.add('show');
+    // Related items clicks inside modal
+    modalScrollArea.querySelectorAll('.related-product-card').forEach(rcard => {
+      rcard.addEventListener('click', () => {
+        const rid = rcard.getAttribute('data-id');
+        openQuickView(rid);
+      });
+    });
+
+    quickViewModal.classList.add('active', 'show');
     quickViewModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
 
   function closeQuickView() {
     if (!quickViewModal) return;
-    quickViewModal.classList.remove('show');
+    quickViewModal.classList.remove('active', 'show');
     quickViewModal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
@@ -460,7 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === quickViewModal) closeQuickView();
   });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && quickViewModal?.classList.contains('show')) {
+    if (e.key === 'Escape' && (quickViewModal?.classList.contains('active') || quickViewModal?.classList.contains('show'))) {
       closeQuickView();
     }
   });

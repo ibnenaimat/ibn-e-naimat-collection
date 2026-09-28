@@ -45,6 +45,11 @@
         <i class="bi bi-tags"></i>
         <span>Categories</span>
       </a>
+      <a class="nav-item" data-tab="orders">
+        <i class="bi bi-bag-check"></i>
+        <span>Orders</span>
+        <span class="nav-badge" id="badgeOrderCount" style="background: var(--gold); color: #161514; font-weight: 800;">0</span>
+      </a>
 
       <div class="nav-section-title">Storefront Display</div>
       <a class="nav-item" data-tab="hero">
@@ -158,6 +163,37 @@
             </div>
             <div class="metric-icon icon-gold">
               <i class="bi bi-card-image"></i>
+            </div>
+          </div>
+
+          <!-- Orders KPIs -->
+          <div class="metric-card">
+            <div class="metric-info">
+              <h3>Total Orders</h3>
+              <div class="metric-value" id="metricTotalOrders">0</div>
+            </div>
+            <div class="metric-icon icon-blue">
+              <i class="bi bi-bag-check"></i>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-info">
+              <h3>Pending Orders</h3>
+              <div class="metric-value" id="metricPendingOrders" style="color: #d97706;">0</div>
+            </div>
+            <div class="metric-icon icon-gold">
+              <i class="bi bi-clock-history"></i>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-info">
+              <h3>Total Revenue</h3>
+              <div class="metric-value" id="metricTotalRevenue" style="color: var(--success); font-size: 1.35rem;">PKR 0</div>
+            </div>
+            <div class="metric-icon icon-green">
+              <i class="bi bi-cash-stack"></i>
             </div>
           </div>
         </div>
@@ -298,7 +334,62 @@
       </section>
 
       <!-- =====================================================================
-           TAB 4: HERO SLIDER MANAGEMENT
+           TAB 4: CUSTOMER ORDERS MANAGEMENT
+           ===================================================================== -->
+      <section class="admin-tab" id="tab-orders">
+        <div class="table-card">
+          <!-- Toolbar -->
+          <div class="table-toolbar" style="flex-wrap: wrap; gap: 1rem;">
+            <div class="search-input-wrap" style="max-width: 320px; min-width: 220px;">
+              <i class="bi bi-search"></i>
+              <input type="text" id="orderSearchInput" class="search-input" placeholder="Search Order ID, name, phone, city...">
+            </div>
+
+            <!-- Status Filter Chips -->
+            <div class="category-filters" id="orderStatusFilters" style="flex: 1; overflow-x: auto; display: flex; gap: 0.5rem;">
+              <button class="filter-chip active" data-status="all">All Orders</button>
+              <button class="filter-chip" data-status="Pending">Pending</button>
+              <button class="filter-chip" data-status="Confirmed">Confirmed</button>
+              <button class="filter-chip" data-status="Processing">Processing</button>
+              <button class="filter-chip" data-status="Dispatched">Dispatched</button>
+              <button class="filter-chip" data-status="Out for Delivery">Out for Delivery</button>
+              <button class="filter-chip" data-status="Delivered">Delivered</button>
+              <button class="filter-chip" data-status="Cancelled">Cancelled</button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <button class="btn-refresh" id="btnRefreshOrders" title="Refresh Orders List" style="padding: 0.5rem 0.85rem; border-radius: var(--radius-xs); border: 1px solid var(--border-color); background: var(--bg-card); cursor: pointer;">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+              </button>
+            </div>
+          </div>
+
+          <!-- Orders Table -->
+          <div class="table-responsive">
+            <table class="data-table" id="ordersTable">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date &amp; Time</th>
+                  <th>Customer Name</th>
+                  <th>Phone / WhatsApp</th>
+                  <th>City</th>
+                  <th>Items</th>
+                  <th>Total Amount</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody">
+                <!-- Rendered dynamically by admin-ui.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           TAB 5: HERO SLIDER MANAGEMENT
            ===================================================================== -->
       <section class="admin-tab" id="tab-hero">
         <div class="table-toolbar" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 1.5rem;">
@@ -418,16 +509,64 @@
                   <label class="form-label" for="settingDelivery">Delivery Coverage Note</label>
                   <input type="text" id="settingDelivery" class="form-control" value="Nationwide Insured Delivery Across Pakistan">
                 </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="settingDefaultDeliveryFee">Standard Delivery Fee (PKR)</label>
+                  <input type="number" id="settingDefaultDeliveryFee" class="form-control" value="250" min="0" step="10">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="settingFreeDeliveryThreshold">Free Delivery Order Threshold (PKR)</label>
+                  <input type="number" id="settingFreeDeliveryThreshold" class="form-control" value="10000" min="0" step="500">
+                </div>
               </div>
 
               <div class="form-group">
                 <label class="form-label" for="settingFooterBio">Footer Narrative / Philosophy</label>
                 <textarea id="settingFooterBio" class="form-control"></textarea>
               </div>
+            </div>
 
-              <button type="submit" class="btn-primary" style="padding: 0.85rem 2rem;">
-                <i class="bi bi-save"></i> Save Website Settings
-              </button>
+            <!-- Automated Customer Notifications (Email & WhatsApp) -->
+            <div class="settings-card" style="grid-column: 1 / -1;">
+              <div class="settings-card-header">
+                <h3><i class="bi bi-bell-fill" style="color: var(--gold);"></i> Automated Customer Notifications (Email &amp; WhatsApp)</h3>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+                <div class="form-group">
+                  <label class="form-label" for="settingEmailJsServiceId">EmailJS Service ID (Optional)</label>
+                  <input type="text" id="settingEmailJsServiceId" class="form-control" placeholder="e.g. service_xxxxxxx">
+                  <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem;">For automatic background customer confirmation emails.</div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="settingEmailJsTemplateId">EmailJS Template ID (Optional)</label>
+                  <input type="text" id="settingEmailJsTemplateId" class="form-control" placeholder="e.g. template_xxxxxxx">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="settingEmailJsPublicKey">EmailJS Public Key (Optional)</label>
+                  <input type="text" id="settingEmailJsPublicKey" class="form-control" placeholder="e.g. user_xxxxxxx">
+                </div>
+              </div>
+
+              <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); display: flex; gap: 2rem; flex-wrap: wrap;">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="settingAutoPromptWa" checked>
+                  <span>Prompt WhatsApp confirmation message when order status is set to "Confirmed"</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="settingAutoSendEmail" checked>
+                  <span>Send confirmation email automatically when order is confirmed</span>
+                </label>
+              </div>
+
+              <div style="margin-top: 1.5rem;">
+                <button type="submit" class="btn-primary" style="padding: 0.85rem 2rem;">
+                  <i class="bi bi-save"></i> Save Website Settings
+                </button>
+              </div>
             </div>
           </div>
         </form>
@@ -776,6 +915,231 @@
   </div>
 
   <!-- =========================================================================
+       ORDER DETAILS & STATUS MANAGEMENT MODAL
+       ========================================================================= -->
+  <div class="admin-modal-overlay" id="orderDetailModal">
+    <div class="admin-modal" style="max-width: 860px;">
+      <div class="admin-modal-header">
+        <div>
+          <h3 class="admin-modal-title" id="orderModalTitle">Order Details</h3>
+          <p style="font-size: 0.78125rem; color: var(--text-muted); margin: 0.2rem 0 0 0;" id="orderModalSubtitle">
+            Registered order information &amp; real-time fulfillment management
+          </p>
+        </div>
+        <button type="button" class="btn-modal-close" id="closeOrderModalBtn" aria-label="Close Modal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="admin-modal-body" style="padding: 1.75rem 2rem;">
+        <!-- Top Status & Actions Card -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Order Status</div>
+            <div style="margin-top: 0.35rem; display: flex; align-items: center; gap: 0.65rem;">
+              <select id="modalOrderStatusSelect" class="form-control" style="width: auto; font-weight: 700; padding: 0.45rem 1rem;">
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Processing">Processing</option>
+                <option value="Dispatched">Dispatched</option>
+                <option value="Out for Delivery">Out for Delivery</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+              <button type="button" class="btn-primary" id="btnUpdateOrderStatus" style="padding: 0.45rem 1rem; font-size: 0.8125rem;">
+                <i class="bi bi-check-circle"></i> Update Status
+              </button>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+            <button type="button" class="btn-primary" id="modalSendWaConfirmBtn" style="background: linear-gradient(135deg, #0e6b3c 0%, #198754 42%, #25D366 100%); color: #fff; border: 1px solid rgba(255,255,255,0.3); font-size: 0.8125rem; font-weight: 700; padding: 0.45rem 0.95rem;">
+              <i class="bi bi-whatsapp"></i> Send WhatsApp Confirmation
+            </button>
+            <button type="button" class="btn-secondary" id="modalSendEmailConfirmBtn" style="font-size: 0.8125rem; padding: 0.45rem 0.85rem;">
+              <i class="bi bi-envelope-check"></i> Send Email
+            </button>
+            <a href="#" id="modalWaChatBtn" target="_blank" rel="noopener" class="btn-secondary" style="color: #16a34a; border-color: rgba(22, 163, 74, 0.4); text-decoration: none; font-size: 0.8125rem; padding: 0.45rem 0.85rem;" title="General Chat on WhatsApp">
+              <i class="bi bi-chat-dots"></i> Chat
+            </a>
+            <button type="button" class="btn-secondary" id="modalPrintSlipBtn" style="font-size: 0.8125rem; padding: 0.45rem 0.85rem;">
+              <i class="bi bi-printer"></i> Slip
+            </button>
+            <button type="button" class="btn-danger" id="modalCancelOrderBtn" style="padding: 0.45rem 0.85rem; font-size: 0.8125rem;">
+              <i class="bi bi-x-circle"></i> Cancel
+            </button>
+          </div>
+        </div>
+
+        <!-- 2-Column Info Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.25rem;">
+            <h4 style="font-size: 0.875rem; font-weight: 700; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem;">
+              <i class="bi bi-person-circle"></i> Customer Information
+            </h4>
+            <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.84375rem;">
+              <div><strong>Name:</strong> <span id="modalCustName">-</span></div>
+              <div><strong>Phone:</strong> <span id="modalCustPhone">-</span></div>
+              <div><strong>Email:</strong> <span id="modalCustEmail">-</span></div>
+              <div><strong>Order Date:</strong> <span id="modalOrderDate">-</span></div>
+            </div>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.25rem;">
+            <h4 style="font-size: 0.875rem; font-weight: 700; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem;">
+              <i class="bi bi-geo-alt"></i> Shipping &amp; Delivery
+            </h4>
+            <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.84375rem;">
+              <div><strong>City:</strong> <span id="modalCustCity">-</span></div>
+              <div><strong>Address:</strong> <span id="modalCustAddress">-</span></div>
+              <div><strong>Customer Notes:</strong> <span id="modalCustNotes">None</span></div>
+              <div><strong>Payment Method:</strong> Cash on Delivery (COD)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Internal Admin Notes -->
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label" for="modalInternalAdminNotes">
+            <i class="bi bi-journal-text" style="color: var(--gold);"></i> Internal Administrator Notes
+          </label>
+          <textarea id="modalInternalAdminNotes" class="form-control" rows="2" placeholder="e.g. Verified via WhatsApp call. Customer requested blue dial. Dispatch via TCS Tracking #..."></textarea>
+          <div style="display: flex; justify-content: flex-end; margin-top: 0.45rem;">
+            <button type="button" class="btn-secondary" id="btnSaveAdminNotes" style="font-size: 0.78125rem; padding: 0.35rem 0.85rem;">
+              <i class="bi bi-save"></i> Save Notes Only
+            </button>
+          </div>
+        </div>
+
+        <!-- Products Table -->
+        <h4 style="font-size: 0.9375rem; font-weight: 700; margin-bottom: 0.75rem;">
+          Ordered Items &amp; Line Breakdown
+        </h4>
+        <div class="table-responsive" style="margin-bottom: 1.25rem;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th style="text-align: center;">Qty</th>
+                <th style="text-align: right;">Unit Price</th>
+                <th style="text-align: right;">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody id="modalOrderItemsBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Financial Breakdown -->
+        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color);">
+          <div style="display: flex; justify-content: space-between; width: 240px; font-size: 0.84375rem; color: var(--text-muted);">
+            <span>Subtotal:</span>
+            <span id="modalSubtotalVal">PKR 0</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; width: 240px; font-size: 0.84375rem; color: var(--text-muted);">
+            <span>Delivery Fee:</span>
+            <span id="modalDeliveryVal">PKR 0</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; width: 240px; font-size: 1.1rem; font-weight: 800; color: var(--text-primary); border-top: 2px dashed var(--border-color); padding-top: 0.45rem; margin-top: 0.25rem;">
+            <span>Grand Total:</span>
+            <span id="modalGrandTotalVal" style="color: var(--gold);">PKR 0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-modal-footer">
+        <button type="button" class="btn-secondary" id="closeOrderModalBottomBtn">Close Window</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       ORDER NOTIFICATION MODAL (WHATSAPP & EMAIL CONFIRMATION DISPATCHER)
+       ========================================================================= -->
+  <div class="admin-modal-overlay" id="orderNotifyModal">
+    <div class="admin-modal" style="max-width: 650px;">
+      <div class="admin-modal-header">
+        <div>
+          <h3 class="admin-modal-title" id="notifyModalTitle">Send Order Notification</h3>
+          <p style="font-size: 0.78125rem; color: var(--text-muted); margin: 0.2rem 0 0 0;" id="notifyModalSubtitle">
+            Notify customer via WhatsApp or Email
+          </p>
+        </div>
+        <button type="button" class="btn-modal-close" id="closeNotifyModalBtn" aria-label="Close Modal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="admin-modal-body" style="padding: 1.5rem;">
+        <!-- Recipient Bar -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Customer</div>
+            <div style="font-weight: 700; font-size: 0.9375rem;" id="notifyCustomerName">-</div>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">WhatsApp / Phone</div>
+            <div style="font-weight: 600; font-size: 0.875rem; color: #16a34a;" id="notifyCustomerPhone">-</div>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Email</div>
+            <div style="font-weight: 600; font-size: 0.875rem;" id="notifyCustomerEmail">-</div>
+          </div>
+        </div>
+
+        <!-- Template Selector -->
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label class="form-label" for="notifyTemplateSelect">Notification Template</label>
+          <select id="notifyTemplateSelect" class="form-control" style="font-weight: 600;">
+            <option value="confirmed" selected>Order Confirmed (Fulfillment &amp; Preparation Notice)</option>
+            <option value="dispatched">Order Dispatched (Courier Handover &amp; Tracking)</option>
+            <option value="custom">Custom Notification Message</option>
+          </select>
+        </div>
+
+        <!-- Courier Extra Fields (Shown only if dispatched) -->
+        <div id="notifyDispatchFields" style="display: none; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+          <div class="form-group">
+            <label class="form-label" for="notifyCourierName">Courier Service</label>
+            <input type="text" id="notifyCourierName" class="form-control" value="TCS / Leopards Courier">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="notifyTrackingCode">Courier Tracking #</label>
+            <input type="text" id="notifyTrackingCode" class="form-control" placeholder="e.g. 772183921">
+          </div>
+        </div>
+
+        <!-- Message Preview Textarea -->
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label class="form-label" for="notifyMessageText">
+            <span>Message Content Preview</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400; float: right;">You can edit this message before sending</span>
+          </label>
+          <textarea id="notifyMessageText" class="form-control" rows="8" style="font-family: monospace; font-size: 0.8125rem; line-height: 1.45;"></textarea>
+        </div>
+
+        <!-- Dispatch Channels Card -->
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button type="button" class="btn-primary" id="btnDispatchWaNotify" style="background: linear-gradient(135deg, #0e6b3c 0%, #198754 42%, #25D366 100%); color: #fff; border: 1px solid rgba(255,255,255,0.3); flex: 1; justify-content: center; padding: 0.75rem;">
+            <i class="bi bi-whatsapp"></i> Send on WhatsApp
+          </button>
+          <button type="button" class="btn-secondary" id="btnDispatchEmailNotify" style="flex: 1; justify-content: center; padding: 0.75rem;">
+            <i class="bi bi-envelope-at"></i> Send Email
+          </button>
+          <button type="button" class="btn-secondary" id="btnCopyNotifyMessage" title="Copy Message Text" style="padding: 0.75rem 1rem;">
+            <i class="bi bi-clipboard"></i> Copy Text
+          </button>
+        </div>
+      </div>
+
+      <div class="admin-modal-footer">
+        <button type="button" class="btn-secondary" id="closeNotifyModalBottomBtn">Close Window</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
        5. MOBILE BOTTOM NAVIGATION
        ========================================================================= -->
   <nav class="mobile-bottom-nav">
@@ -787,9 +1151,9 @@
       <i class="bi bi-watch"></i>
       <span>Products</span>
     </div>
-    <div class="mobile-bottom-item" data-tab="hero">
-      <i class="bi bi-images"></i>
-      <span>Hero</span>
+    <div class="mobile-bottom-item" data-tab="orders">
+      <i class="bi bi-bag-check"></i>
+      <span>Orders</span>
     </div>
     <div class="mobile-bottom-item" data-tab="settings">
       <i class="bi bi-gear"></i>
@@ -802,9 +1166,12 @@
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="../js/config.env.js"></script>
   <script src="../js/config.js"></script>
   <script src="../js/products.js"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/order-notification.js"></script>
   <script src="js/admin-auth.js"></script>
   <script src="js/admin-api.js"></script>
   <script src="js/admin-ui.js"></script>

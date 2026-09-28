@@ -12,10 +12,14 @@
   let allCategories = [];
   let allHeroSlides = [];
   let allSections = [];
+  let allOrders = [];
   let activeTab = 'dashboard';
   let currentEditingProductId = null;
   let currentEditingSlideId = null;
   let currentEditingCategoryId = null;
+  let currentEditingOrderId = null;
+  let currentOrderFilterStatus = 'all';
+  let currentOrderSearchQuery = '';
 
   // DOM Elements
   const navItems = document.querySelectorAll('.nav-item');
@@ -30,9 +34,22 @@
   function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
+    let iconClass = 'bi-check-circle-fill';
+    let iconColor = 'var(--success)';
+
+    if (type === 'error' || type === 'danger') {
+      iconClass = 'bi-exclamation-triangle-fill';
+      iconColor = 'var(--danger)';
+    } else if (type === 'info') {
+      iconClass = 'bi-info-circle-fill';
+      iconColor = 'var(--gold)';
+    } else if (type === 'warning') {
+      iconClass = 'bi-exclamation-circle-fill';
+      iconColor = '#f59e0b';
+    }
+
     toast.innerHTML = `
-      <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'}" 
-         style="color: ${type === 'success' ? 'var(--success)' : 'var(--danger)'}; font-size: 1.1rem;"></i>
+      <i class="bi ${iconClass}" style="color: ${iconColor}; font-size: 1.1rem;"></i>
       <span>${message}</span>
     `;
 
@@ -65,6 +82,7 @@
       dashboard: { title: 'Dashboard Overview', sub: 'Store performance metrics, stock alerts, and quick actions' },
       products: { title: 'Product Catalog Management', sub: 'Create, edit, manage stock, and organize store products' },
       categories: { title: 'Category & Showcase Management', sub: 'Organize store departments and horizontal circular collections' },
+      orders: { title: 'Customer Orders Management', sub: 'Live customer orders, fulfillment tracking, and status controls' },
       hero: { title: 'Hero Carousel Slider', sub: 'Control homepage hero slides, images, typography, and CTA links' },
       homepage: { title: 'Homepage & Section Controls', sub: 'Configure promotional banners, announcement text, and section visibility' },
       settings: { title: 'Store & Concierge Settings', sub: 'Manage official WhatsApp hotline, brand details, and business policies' },
@@ -83,6 +101,7 @@
     if (tabId === 'dashboard') loadDashboard();
     if (tabId === 'products') loadProductsTable();
     if (tabId === 'categories') loadCategoriesTable();
+    if (tabId === 'orders') loadOrdersTable();
     if (tabId === 'hero') loadHeroSlidesGrid();
     if (tabId === 'homepage') loadHomepageSections();
     if (tabId === 'settings') loadSettingsForm();
@@ -131,12 +150,36 @@
       document.getElementById('metricTotalCategories').textContent = allCategories.length;
       document.getElementById('metricHeroSlides').textContent = `${activeSlides} Active`;
 
+      // Fetch and calculate Orders metrics
+      let dashOrders = [];
+      try {
+        dashOrders = await window.ADMIN_API.getOrders();
+      } catch (e) {
+        console.warn('Dashboard orders fetch error:', e);
+      }
+
+      const totalOrders = dashOrders.length;
+      const pendingOrders = dashOrders.filter(o => o.status === 'Pending').length;
+      const totalRevenue = dashOrders.reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+
+      const metricTotalOrdersEl = document.getElementById('metricTotalOrders');
+      if (metricTotalOrdersEl) metricTotalOrdersEl.textContent = totalOrders;
+
+      const metricPendingOrdersEl = document.getElementById('metricPendingOrders');
+      if (metricPendingOrdersEl) metricPendingOrdersEl.textContent = pendingOrders;
+
+      const metricRevenueEl = document.getElementById('metricTotalRevenue');
+      if (metricRevenueEl) metricRevenueEl.textContent = `PKR ${totalRevenue.toLocaleString('en-PK')}`;
+
       // Update Sidebar Badges
       const prodBadge = document.getElementById('badgeProductCount');
       if (prodBadge) prodBadge.textContent = totalProds;
 
       const slideBadge = document.getElementById('badgeSlideCount');
       if (slideBadge) slideBadge.textContent = activeSlides;
+
+      const orderBadge = document.getElementById('badgeOrderCount');
+      if (orderBadge) orderBadge.textContent = pendingOrders;
 
       // Render Recent Products in Dashboard
       const recentTbody = document.getElementById('dashboardRecentProductsBody');
@@ -805,6 +848,574 @@
     });
   }
 
+  // --- 4. ORDERS MANAGEMENT ---
+  const orderSearchInput = document.getElementById('orderSearchInput');
+  const orderStatusFilters = document.getElementById('orderStatusFilters');
+  const btnRefreshOrders = document.getElementById('btnRefreshOrders');
+  const ordersTableBody = document.getElementById('ordersTableBody');
+  const orderDetailModal = document.getElementById('orderDetailModal');
+  const orderNotifyModal = document.getElementById('orderNotifyModal');
+  const notifyTemplateSelect = document.getElementById('notifyTemplateSelect');
+  const notifyCourierName = document.getElementById('notifyCourierName');
+  const notifyTrackingCode = document.getElementById('notifyTrackingCode');
+  const notifyMessageText = document.getElementById('notifyMessageText');
+  const notifyDispatchFields = document.getElementById('notifyDispatchFields');
+  let currentNotifyOrder = null;
+
+  // Escape HTML helper
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  async function loadOrdersTable() {
+    if (!ordersTableBody) return;
+
+    try {
+      ordersTableBody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+            <i class="bi bi-arrow-repeat spin" style="font-size: 1.5rem; display: inline-block; margin-bottom: 0.5rem;"></i>
+            <div>Loading live customer orders...</div>
+          </td>
+        </tr>
+      `;
+
+      allOrders = await window.ADMIN_API.getOrders({
+        status: currentOrderFilterStatus,
+        search: currentOrderSearchQuery
+      });
+
+      // Update badge in sidebar
+      const pendingCount = allOrders.filter(o => o.status === 'Pending').length;
+      const orderBadge = document.getElementById('badgeOrderCount');
+      if (orderBadge) orderBadge.textContent = pendingCount;
+
+      if (!allOrders || allOrders.length === 0) {
+        ordersTableBody.innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align: center; padding: 3.5rem; color: var(--text-muted);">
+              <i class="bi bi-inbox" style="font-size: 2.5rem; display: block; margin-bottom: 0.75rem; opacity: 0.4;"></i>
+              <div style="font-weight: 600; font-size: 1rem; margin-bottom: 0.25rem;">No customer orders found</div>
+              <div style="font-size: 0.8125rem;">Orders placed by customers will automatically appear here.</div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const statusBadges = {
+        'Pending': { bg: 'rgba(245, 158, 11, 0.15)', text: '#d97706', border: 'rgba(245, 158, 11, 0.3)' },
+        'Confirmed': { bg: 'rgba(59, 130, 246, 0.15)', text: '#2563eb', border: 'rgba(59, 130, 246, 0.3)' },
+        'Processing': { bg: 'rgba(99, 102, 241, 0.15)', text: '#4f46e5', border: 'rgba(99, 102, 241, 0.3)' },
+        'Dispatched': { bg: 'rgba(168, 85, 247, 0.15)', text: '#9333ea', border: 'rgba(168, 85, 247, 0.3)' },
+        'Out for Delivery': { bg: 'rgba(14, 165, 233, 0.15)', text: '#0284c7', border: 'rgba(14, 165, 233, 0.3)' },
+        'Delivered': { bg: 'rgba(34, 197, 94, 0.15)', text: '#16a34a', border: 'rgba(34, 197, 94, 0.3)' },
+        'Cancelled': { bg: 'rgba(239, 68, 68, 0.15)', text: '#dc2626', border: 'rgba(239, 68, 68, 0.3)' }
+      };
+
+      ordersTableBody.innerHTML = allOrders.map(o => {
+        const d = new Date(o.created_at || Date.now());
+        const formattedDate = d.toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric' }) + '<br>' +
+          `<span style="font-size: 0.72rem; color: var(--text-muted);">${d.toLocaleTimeString('en-PK', { hour: '2-digit', minute: '2-digit' })}</span>`;
+
+        const totalFormatted = `PKR ${(Number(o.total) || 0).toLocaleString('en-PK')}`;
+        const itemCount = (o.items && Array.isArray(o.items)) ? o.items.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0) : 0;
+
+        let cleanPhone = (o.customer_phone || '').replace(/\D/g, '');
+        if (cleanPhone.startsWith('0')) cleanPhone = '92' + cleanPhone.slice(1);
+        const waMsg = encodeURIComponent(`Assalam-o-Alaikum ${o.customer_name || 'Customer'}, regarding your order #${o.order_id} at Ibn e Naimat Collection...`);
+        const waLink = `https://wa.me/${cleanPhone}?text=${waMsg}`;
+
+        const badgeCfg = statusBadges[o.status] || { bg: '#f1f5f9', text: '#64748b', border: '#e2e8f0' };
+        const statusPill = `<span style="display: inline-block; padding: 0.25rem 0.65rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; background: ${badgeCfg.bg}; color: ${badgeCfg.text}; border: 1px solid ${badgeCfg.border}; white-space: nowrap;">${o.status || 'Pending'}</span>`;
+
+        return `
+          <tr>
+            <td style="font-family: monospace; font-weight: 700; color: var(--gold); white-space: nowrap;">${o.order_id}</td>
+            <td style="font-size: 0.8125rem; white-space: nowrap;">${formattedDate}</td>
+            <td style="font-weight: 600; color: var(--text-main);">${escapeHtml(o.customer_name || 'Guest')}</td>
+            <td style="font-size: 0.8125rem; white-space: nowrap;">${escapeHtml(o.customer_phone || '-')}</td>
+            <td style="font-size: 0.8125rem;">${escapeHtml(o.customer_city || '-')}</td>
+            <td style="text-align: center;"><span style="background: rgba(0,0,0,0.06); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.78125rem; font-weight: 600;">${itemCount} item${itemCount !== 1 ? 's' : ''}</span></td>
+            <td style="font-weight: 700; color: var(--text-main); white-space: nowrap;">${totalFormatted}</td>
+            <td>${statusPill}</td>
+            <td style="text-align: right; white-space: nowrap;">
+              <button type="button" class="btn-primary" style="padding: 0.35rem 0.75rem; font-size: 0.78125rem; margin-right: 0.35rem;" onclick="window.ADMIN_UI.viewOrder('${o.order_id}')" title="View details &amp; fulfillment">
+                <i class="bi bi-eye"></i> View
+              </button>
+              <button type="button" class="btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.78125rem; color: #16a34a; border-color: rgba(22, 163, 74, 0.4);" onclick="window.ADMIN_UI.notifyCustomer('${o.order_id}', 'confirmed')" title="Send WhatsApp/Email Confirmation to Customer">
+                <i class="bi bi-whatsapp"></i> Notify
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+    } catch (err) {
+      console.error('Error loading orders table:', err);
+      ordersTableBody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align: center; padding: 2rem; color: var(--danger);">
+            <i class="bi bi-exclamation-triangle" style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;"></i>
+            Failed to load orders: ${escapeHtml(err.message)}
+          </td>
+        </tr>
+      `;
+    }
+  }
+
+  // Filter chips click
+  if (orderStatusFilters) {
+    orderStatusFilters.addEventListener('click', (e) => {
+      const chip = e.target.closest('.filter-chip');
+      if (!chip) return;
+
+      orderStatusFilters.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentOrderFilterStatus = chip.getAttribute('data-status') || 'all';
+      loadOrdersTable();
+    });
+  }
+
+  // Search input with debounce
+  if (orderSearchInput) {
+    let searchDebounceTimer = null;
+    orderSearchInput.addEventListener('input', (e) => {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(() => {
+        currentOrderSearchQuery = e.target.value.trim();
+        loadOrdersTable();
+      }, 300);
+    });
+  }
+
+  // Refresh button
+  if (btnRefreshOrders) {
+    btnRefreshOrders.addEventListener('click', () => {
+      loadOrdersTable();
+      showToast('Orders list refreshed', 'info');
+    });
+  }
+
+  // Order Details Modal
+  async function openOrderDetailModal(orderId) {
+    try {
+      const order = await window.ADMIN_API.getOrderById(orderId);
+      if (!order) {
+        showToast(`Order #${orderId} not found.`, 'error');
+        return;
+      }
+
+      currentEditingOrderId = order.order_id;
+
+      // Populate headers
+      document.getElementById('orderModalTitle').textContent = `Order #${order.order_id}`;
+      document.getElementById('orderModalSubtitle').textContent = `Placed on ${new Date(order.created_at || Date.now()).toLocaleString('en-PK')}`;
+
+      // Populate status dropdown
+      const statusSelect = document.getElementById('modalOrderStatusSelect');
+      if (statusSelect) statusSelect.value = order.status || 'Pending';
+
+      // Populate customer info
+      const setText = (id, txt) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = txt || '-';
+      };
+      setText('modalCustName', order.customer_name);
+      setText('modalCustPhone', order.customer_phone);
+      setText('modalCustEmail', order.customer_email || 'Not provided');
+      setText('modalOrderDate', new Date(order.created_at || Date.now()).toLocaleString('en-PK'));
+      setText('modalCustCity', order.customer_city);
+      setText('modalCustAddress', order.customer_address);
+      setText('modalCustNotes', order.notes || 'None');
+
+      // Admin notes textarea
+      const adminNotesInput = document.getElementById('modalInternalAdminNotes');
+      if (adminNotesInput) adminNotesInput.value = order.admin_notes || '';
+
+      // Customer WhatsApp button
+      const modalWaChatBtn = document.getElementById('modalWaChatBtn');
+      if (modalWaChatBtn) {
+        let cleanPhone = (order.customer_phone || '').replace(/\D/g, '');
+        if (cleanPhone.startsWith('0')) cleanPhone = '92' + cleanPhone.slice(1);
+        const waMsg = encodeURIComponent(`Assalam-o-Alaikum ${order.customer_name}, this is Ibn e Naimat Collection regarding your order #${order.order_id}.`);
+        modalWaChatBtn.href = `https://wa.me/${cleanPhone}?text=${waMsg}`;
+      }
+
+      // Populate items table
+      const itemsBody = document.getElementById('modalOrderItemsBody');
+      if (itemsBody) {
+        const items = order.items || [];
+        if (items.length === 0) {
+          itemsBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 1rem;">No item details available.</td></tr>`;
+        } else {
+          itemsBody.innerHTML = items.map(item => `
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 0.85rem;">
+                  <img src="${formatAdminImageUrl(item.product_image)}" alt="${escapeHtml(item.product_name)}" style="width: 44px; height: 44px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border-color);" onerror="this.src='../assets/images/placeholders/watch-placeholder.svg'">
+                  <div>
+                    <div style="font-weight: 600; font-size: 0.875rem;">${escapeHtml(item.product_name)}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">Ref: ${escapeHtml(item.product_id)}</div>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align: center; font-weight: 600;">${item.quantity}</td>
+              <td style="text-align: right;">PKR ${(Number(item.unit_price) || 0).toLocaleString('en-PK')}</td>
+              <td style="text-align: right; font-weight: 700; color: var(--gold);">PKR ${(Number(item.subtotal) || 0).toLocaleString('en-PK')}</td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      // Financials
+      setText('modalSubtotalVal', `PKR ${(Number(order.subtotal) || 0).toLocaleString('en-PK')}`);
+      setText('modalDeliveryVal', (Number(order.delivery_fee) || 0) === 0 ? 'FREE' : `PKR ${(Number(order.delivery_fee) || 0).toLocaleString('en-PK')}`);
+      setText('modalGrandTotalVal', `PKR ${(Number(order.total) || 0).toLocaleString('en-PK')}`);
+
+      if (orderDetailModal) orderDetailModal.classList.add('show');
+
+    } catch (err) {
+      showToast('Error opening order: ' + err.message, 'error');
+    }
+  }
+
+  function closeOrderDetailModal() {
+    if (orderDetailModal) orderDetailModal.classList.remove('show');
+    currentEditingOrderId = null;
+  }
+
+  // Close buttons
+  document.getElementById('closeOrderModalBtn')?.addEventListener('click', closeOrderDetailModal);
+  document.getElementById('closeOrderModalBottomBtn')?.addEventListener('click', closeOrderDetailModal);
+
+  // Update Status Button
+  document.getElementById('btnUpdateOrderStatus')?.addEventListener('click', async () => {
+    if (!currentEditingOrderId) return;
+    const newStatus = document.getElementById('modalOrderStatusSelect')?.value;
+    const adminNotes = document.getElementById('modalInternalAdminNotes')?.value.trim();
+
+    try {
+      await window.ADMIN_API.updateOrderStatus(currentEditingOrderId, newStatus, adminNotes);
+      showToast(`Order #${currentEditingOrderId} status updated to "${newStatus}"!`, 'success');
+      await loadOrdersTable();
+      loadDashboard();
+
+      // Trigger automatic customer notification prompt when status is set to Confirmed or Dispatched
+      const order = await window.ADMIN_API.getOrderById(currentEditingOrderId);
+      if (order) {
+        if (newStatus === 'Confirmed') {
+          const autoPrompt = localStorage.getItem('ibn_setting_auto_prompt_wa') !== 'false';
+          const autoEmail = localStorage.getItem('ibn_setting_auto_send_email') !== 'false';
+
+          if (autoEmail && (order.customer_email || order.email) && window.OrderNotification) {
+            window.OrderNotification.sendEmailToCustomer(order).then(res => {
+              if (res && res.success && res.method === 'emailjs') {
+                showToast(`Automated confirmation email sent to ${order.customer_email || order.email}!`, 'success');
+              }
+            }).catch(console.warn);
+          }
+
+          if (autoPrompt) {
+            openNotifyModal(order, 'confirmed');
+          }
+        } else if (newStatus === 'Dispatched') {
+          openNotifyModal(order, 'dispatched');
+        }
+      }
+    } catch (err) {
+      showToast('Failed to update status: ' + err.message, 'error');
+    }
+  });
+
+  // Save Notes Only Button
+  document.getElementById('btnSaveAdminNotes')?.addEventListener('click', async () => {
+    if (!currentEditingOrderId) return;
+    const currentStatus = document.getElementById('modalOrderStatusSelect')?.value;
+    const adminNotes = document.getElementById('modalInternalAdminNotes')?.value.trim();
+
+    try {
+      await window.ADMIN_API.updateOrderStatus(currentEditingOrderId, currentStatus, adminNotes);
+      showToast('Internal admin notes saved successfully.', 'success');
+      await loadOrdersTable();
+    } catch (err) {
+      showToast('Failed to save notes: ' + err.message, 'error');
+    }
+  });
+
+  // Cancel Order Button
+  document.getElementById('modalCancelOrderBtn')?.addEventListener('click', async () => {
+    if (!currentEditingOrderId) return;
+    if (confirm(`Are you sure you want to mark Order #${currentEditingOrderId} as Cancelled?`)) {
+      try {
+        const adminNotes = document.getElementById('modalInternalAdminNotes')?.value.trim();
+        await window.ADMIN_API.updateOrderStatus(currentEditingOrderId, 'Cancelled', adminNotes);
+        const statusSelect = document.getElementById('modalOrderStatusSelect');
+        if (statusSelect) statusSelect.value = 'Cancelled';
+        showToast(`Order #${currentEditingOrderId} has been cancelled.`, 'warning');
+        await loadOrdersTable();
+        loadDashboard();
+      } catch (err) {
+        showToast('Failed to cancel order: ' + err.message, 'error');
+      }
+    }
+  });
+
+  // Print Packing Slip Button
+  document.getElementById('modalPrintSlipBtn')?.addEventListener('click', async () => {
+    if (!currentEditingOrderId) return;
+    const order = await window.ADMIN_API.getOrderById(currentEditingOrderId);
+    if (!order) return;
+
+    const itemsHtml = (order.items || []).map(item => `
+      <tr>
+        <td style="padding: 8px 12px; border-bottom: 1px solid #ddd;">
+          <strong>${escapeHtml(item.product_name)}</strong><br>
+          <small style="color: #666;">SKU/Ref: ${escapeHtml(item.product_id)}</small>
+        </td>
+        <td style="padding: 8px 12px; text-align: center; border-bottom: 1px solid #ddd;">${item.quantity}</td>
+        <td style="padding: 8px 12px; text-align: right; border-bottom: 1px solid #ddd;">PKR ${(Number(item.unit_price) || 0).toLocaleString('en-PK')}</td>
+        <td style="padding: 8px 12px; text-align: right; border-bottom: 1px solid #ddd; font-weight: bold;">PKR ${(Number(item.subtotal) || 0).toLocaleString('en-PK')}</td>
+      </tr>
+    `).join('');
+
+    const printHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Packing Slip - ${order.order_id}</title>
+        <style>
+          body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 24px; color: #222; font-size: 13px; line-height: 1.5; }
+          .header { display: flex; justify-content: space-between; border-bottom: 2px solid #b8933b; padding-bottom: 16px; margin-bottom: 20px; }
+          .brand { font-size: 22px; font-weight: bold; color: #111; letter-spacing: 1px; }
+          .order-id { font-size: 18px; font-weight: bold; color: #b8933b; font-family: monospace; }
+          .info-grid { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
+          .info-box { flex: 1; background: #fbfbfb; border: 1px solid #eee; padding: 12px 16px; border-radius: 4px; }
+          .info-box h4 { margin: 0 0 8px 0; font-size: 11px; text-transform: uppercase; color: #b8933b; letter-spacing: 0.5px; }
+          table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+          th { background: #f5f5f5; padding: 10px 12px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #ccc; }
+          .totals { margin-left: auto; width: 280px; }
+          .totals tr td { padding: 4px 8px; }
+          .grand-total { font-size: 16px; font-weight: bold; border-top: 2px solid #222; padding-top: 6px; }
+          .footer { text-align: center; margin-top: 40px; padding-top: 16px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
+          @media print { body { padding: 0; } }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div>
+            <div class="brand">IBN E NAIMAT COLLECTION</div>
+            <div style="font-size: 11px; color: #666;">Luxury Watches &amp; Premium Lifestyle &bull; Pakistan</div>
+            <div style="font-size: 11px; color: #666;">WhatsApp Concierge: 0330 2241340</div>
+          </div>
+          <div style="text-align: right;">
+            <div class="order-id">${order.order_id}</div>
+            <div style="font-size: 12px; color: #555;">Date: ${new Date(order.created_at || Date.now()).toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+            <div style="font-size: 12px; font-weight: bold; color: #222; margin-top: 4px;">Payment: Cash on Delivery (COD)</div>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-box">
+            <h4>Customer Information</h4>
+            <div><strong>${escapeHtml(order.customer_name)}</strong></div>
+            <div>Phone: ${escapeHtml(order.customer_phone)}</div>
+            ${order.customer_email ? `<div>Email: ${escapeHtml(order.customer_email)}</div>` : ''}
+          </div>
+          <div class="info-box">
+            <h4>Delivery Address</h4>
+            <div><strong>${escapeHtml(order.customer_city)}</strong></div>
+            <div>${escapeHtml(order.customer_address)}</div>
+            ${order.notes ? `<div style="margin-top: 6px; font-style: italic; color: #555;">Note: ${escapeHtml(order.notes)}</div>` : ''}
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Item Description</th>
+              <th style="text-align: center;">Qty</th>
+              <th style="text-align: right;">Unit Price</th>
+              <th style="text-align: right;">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsHtml}
+          </tbody>
+        </table>
+
+        <div class="totals">
+          <table style="width: 100%; margin: 0;">
+            <tr>
+              <td style="text-align: right;">Subtotal:</td>
+              <td style="text-align: right;">PKR ${(Number(order.subtotal) || 0).toLocaleString('en-PK')}</td>
+            </tr>
+            <tr>
+              <td style="text-align: right;">Delivery:</td>
+              <td style="text-align: right;">${(Number(order.delivery_fee) || 0) === 0 ? 'FREE' : 'PKR ' + (Number(order.delivery_fee) || 0).toLocaleString('en-PK')}</td>
+            </tr>
+            <tr class="grand-total">
+              <td style="text-align: right;">Total Amount:</td>
+              <td style="text-align: right; color: #b8933b;">PKR ${(Number(order.total) || 0).toLocaleString('en-PK')}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="footer">
+          Thank you for choosing Ibn e Naimat Collection. For assistance, contact WhatsApp Concierge at 0330 2241340.
+        </div>
+
+        <script>
+          window.onload = function() { window.print(); }
+        </script>
+      </body>
+      </html>
+    `;
+
+    const printWin = window.open('', '_blank', 'width=800,height=900');
+    if (printWin) {
+      printWin.document.write(printHtml);
+      printWin.document.close();
+    }
+  });
+
+  // --- ORDER NOTIFICATION MODAL & DISPATCH LOGIC ---
+  function updateNotifyMessagePreview() {
+    if (!currentNotifyOrder || !window.OrderNotification) return;
+
+    const template = notifyTemplateSelect ? notifyTemplateSelect.value : 'confirmed';
+    if (template === 'confirmed') {
+      if (notifyDispatchFields) notifyDispatchFields.style.display = 'none';
+      if (notifyMessageText) {
+        notifyMessageText.value = window.OrderNotification.generateWhatsAppConfirmation(currentNotifyOrder);
+      }
+    } else if (template === 'dispatched') {
+      if (notifyDispatchFields) notifyDispatchFields.style.display = 'grid';
+      const courier = notifyCourierName ? notifyCourierName.value.trim() : 'TCS / Leopards Courier';
+      const tracking = notifyTrackingCode ? notifyTrackingCode.value.trim() : '';
+      if (notifyMessageText) {
+        notifyMessageText.value = window.OrderNotification.generateWhatsAppDispatch(currentNotifyOrder, tracking, courier);
+      }
+    } else if (template === 'custom') {
+      if (notifyDispatchFields) notifyDispatchFields.style.display = 'none';
+      if (notifyMessageText && !notifyMessageText.value) {
+        notifyMessageText.value = window.OrderNotification.generateWhatsAppConfirmation(currentNotifyOrder);
+      }
+    }
+  }
+
+  function openNotifyModal(order, defaultTemplate = 'confirmed') {
+    if (!order) return;
+    currentNotifyOrder = order;
+
+    const modalTitle = document.getElementById('notifyModalTitle');
+    const modalSubtitle = document.getElementById('notifyModalSubtitle');
+    const nameEl = document.getElementById('notifyCustomerName');
+    const phoneEl = document.getElementById('notifyCustomerPhone');
+    const emailEl = document.getElementById('notifyCustomerEmail');
+
+    if (modalTitle) modalTitle.textContent = `Send Notification — #${order.order_id}`;
+    if (modalSubtitle) modalSubtitle.textContent = `Directly dispatch updates to ${order.customer_name || 'customer'} via WhatsApp or Email`;
+    if (nameEl) nameEl.textContent = order.customer_name || 'Guest Customer';
+    if (phoneEl) phoneEl.textContent = order.customer_phone || order.phone || 'No phone';
+    if (emailEl) emailEl.textContent = order.customer_email || order.email || 'No email provided';
+
+    if (notifyTemplateSelect) {
+      notifyTemplateSelect.value = defaultTemplate;
+    }
+
+    updateNotifyMessagePreview();
+
+    if (orderNotifyModal) orderNotifyModal.classList.add('show');
+  }
+
+  function closeNotifyModal() {
+    if (orderNotifyModal) orderNotifyModal.classList.remove('show');
+    currentNotifyOrder = null;
+  }
+
+  // Template select and input listeners
+  if (notifyTemplateSelect) {
+    notifyTemplateSelect.addEventListener('change', updateNotifyMessagePreview);
+  }
+  if (notifyCourierName) {
+    notifyCourierName.addEventListener('input', updateNotifyMessagePreview);
+  }
+  if (notifyTrackingCode) {
+    notifyTrackingCode.addEventListener('input', updateNotifyMessagePreview);
+  }
+
+  // Modal close buttons
+  document.getElementById('closeNotifyModalBtn')?.addEventListener('click', closeNotifyModal);
+  document.getElementById('closeNotifyModalBottomBtn')?.addEventListener('click', closeNotifyModal);
+
+  // Dispatch via WhatsApp button
+  document.getElementById('btnDispatchWaNotify')?.addEventListener('click', () => {
+    if (!currentNotifyOrder) return;
+    const msg = notifyMessageText ? notifyMessageText.value : '';
+    const sent = window.OrderNotification?.sendWhatsAppToCustomer(currentNotifyOrder, 'custom', { customMessage: msg });
+    if (sent) {
+      showToast(`Opening WhatsApp chat with ${currentNotifyOrder.customer_name || 'customer'}...`, 'success');
+    }
+  });
+
+  // Dispatch via Email button
+  document.getElementById('btnDispatchEmailNotify')?.addEventListener('click', async () => {
+    if (!currentNotifyOrder) return;
+    const toEmail = currentNotifyOrder.customer_email || currentNotifyOrder.email;
+    if (!toEmail) {
+      showToast('This customer has not registered an email address.', 'warning');
+      return;
+    }
+
+    showToast(`Dispatching confirmation email to ${toEmail}...`, 'info');
+    try {
+      const res = await window.OrderNotification.sendEmailToCustomer(currentNotifyOrder);
+      if (res && res.success) {
+        if (res.method === 'emailjs') {
+          showToast(`Confirmation email successfully sent via EmailJS to ${toEmail}!`, 'success');
+        } else {
+          showToast(`Opened email client with pre-formatted receipt for ${toEmail}.`, 'success');
+        }
+      } else {
+        showToast(`Email dispatch warning: ${res?.message || 'Could not send'}`, 'warning');
+      }
+    } catch (err) {
+      showToast(`Failed to send email: ${err.message}`, 'error');
+    }
+  });
+
+  // Copy notification text button
+  document.getElementById('btnCopyNotifyMessage')?.addEventListener('click', () => {
+    const text = notifyMessageText ? notifyMessageText.value : '';
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Notification message copied to clipboard!', 'info');
+    }).catch(() => {
+      showToast('Unable to copy text to clipboard.', 'warning');
+    });
+  });
+
+  // Order Details Modal: WhatsApp & Email Buttons
+  document.getElementById('modalSendWaConfirmBtn')?.addEventListener('click', async () => {
+    if (!currentEditingOrderId) return;
+    const order = await window.ADMIN_API.getOrderById(currentEditingOrderId);
+    if (order) openNotifyModal(order, 'confirmed');
+  });
+
+  document.getElementById('modalSendEmailConfirmBtn')?.addEventListener('click', async () => {
+    if (!currentEditingOrderId) return;
+    const order = await window.ADMIN_API.getOrderById(currentEditingOrderId);
+    if (order) openNotifyModal(order, 'confirmed');
+  });
+
   // --- 5. HOMEPAGE SECTIONS ---
   async function loadHomepageSections() {
     try {
@@ -853,6 +1464,32 @@
       document.getElementById('settingDelivery').value = settings.delivery_note || '';
       document.getElementById('settingFooterBio').value = settings.footer_bio || '';
 
+      const defaultFeeEl = document.getElementById('settingDefaultDeliveryFee');
+      if (defaultFeeEl) defaultFeeEl.value = settings.default_delivery_fee ?? 250;
+      const freeThresholdEl = document.getElementById('settingFreeDeliveryThreshold');
+      if (freeThresholdEl) freeThresholdEl.value = settings.free_delivery_threshold ?? 10000;
+
+      // Notification & EmailJS settings
+      if (window.OrderNotification) {
+        const emailCfg = window.OrderNotification.getEmailJsConfig();
+        const servInput = document.getElementById('settingEmailJsServiceId');
+        const tempInput = document.getElementById('settingEmailJsTemplateId');
+        const pubInput = document.getElementById('settingEmailJsPublicKey');
+        if (servInput) servInput.value = emailCfg.serviceId || '';
+        if (tempInput) tempInput.value = emailCfg.templateId || '';
+        if (pubInput) pubInput.value = emailCfg.publicKey || '';
+      }
+      const autoPromptWa = localStorage.getItem('ibn_setting_auto_prompt_wa');
+      const autoPromptEl = document.getElementById('settingAutoPromptWa');
+      if (autoPromptEl && autoPromptWa !== null) {
+        autoPromptEl.checked = autoPromptWa === 'true';
+      }
+      const autoSendEmail = localStorage.getItem('ibn_setting_auto_send_email');
+      const autoSendEl = document.getElementById('settingAutoSendEmail');
+      if (autoSendEl && autoSendEmail !== null) {
+        autoSendEl.checked = autoSendEmail === 'true';
+      }
+
     } catch (err) {
       console.warn('Could not load settings:', err);
     }
@@ -877,8 +1514,22 @@
         phone: document.getElementById('settingPhone').value.trim(),
         timings: document.getElementById('settingTimings').value.trim(),
         delivery_note: document.getElementById('settingDelivery').value.trim(),
+        default_delivery_fee: Number(document.getElementById('settingDefaultDeliveryFee')?.value) || 250,
+        free_delivery_threshold: Number(document.getElementById('settingFreeDeliveryThreshold')?.value) || 10000,
         footer_bio: document.getElementById('settingFooterBio').value.trim()
       };
+
+      // Save EmailJS & Customer Notification settings
+      const serviceId = document.getElementById('settingEmailJsServiceId')?.value || '';
+      const templateId = document.getElementById('settingEmailJsTemplateId')?.value || '';
+      const publicKey = document.getElementById('settingEmailJsPublicKey')?.value || '';
+      if (window.OrderNotification) {
+        window.OrderNotification.saveEmailJsConfig(serviceId, templateId, publicKey);
+      }
+      const autoPromptCheck = document.getElementById('settingAutoPromptWa')?.checked ? 'true' : 'false';
+      const autoSendEmailCheck = document.getElementById('settingAutoSendEmail')?.checked ? 'true' : 'false';
+      localStorage.setItem('ibn_setting_auto_prompt_wa', autoPromptCheck);
+      localStorage.setItem('ibn_setting_auto_send_email', autoSendEmailCheck);
 
       try {
         await window.ADMIN_API.saveWebsiteSettings(payload);
@@ -1085,6 +1736,28 @@
       } catch (err) {
         showToast('Failed to update section: ' + err.message, 'error');
       }
+    },
+
+    // Order actions
+    viewOrder: (id) => {
+      openOrderDetailModal(id);
+    },
+
+    notifyCustomer: async (id, template = 'confirmed') => {
+      try {
+        const order = await window.ADMIN_API.getOrderById(id);
+        if (order) {
+          openNotifyModal(order, template);
+        } else {
+          showToast(`Order #${id} not found.`, 'error');
+        }
+      } catch (err) {
+        showToast(`Error opening notification: ${err.message}`, 'error');
+      }
+    },
+
+    loadOrdersTable: () => {
+      return loadOrdersTable();
     }
   };
 
@@ -1097,7 +1770,7 @@
     if (hash.includes('&')) hash = hash.substring(0, hash.indexOf('&'));
 
     const tabParam = urlParams.get('tab') || hashParams.get('tab');
-    const validTabs = ['dashboard', 'products', 'categories', 'hero', 'homepage', 'settings'];
+    const validTabs = ['dashboard', 'products', 'categories', 'orders', 'hero', 'homepage', 'settings'];
     const targetTab = (tabParam && validTabs.includes(tabParam)) ? tabParam : ((hash && validTabs.includes(hash)) ? hash : 'dashboard');
     switchTab(targetTab);
 
@@ -1119,6 +1792,26 @@
           window.ADMIN_UI.editCategory(autoEditCatId);
         }
       }, 400);
+    }
+
+    // Auto-open order detail modal if ?order=ORDER_ID is in URL or hash
+    const autoOrderId = urlParams.get('order') || hashParams.get('order');
+    if (autoOrderId) {
+      setTimeout(() => {
+        if (window.ADMIN_UI && typeof window.ADMIN_UI.viewOrder === 'function') {
+          window.ADMIN_UI.viewOrder(autoOrderId);
+        }
+      }, 450);
+    }
+
+    // Auto-open order notification modal if ?notify=ORDER_ID or ?open_notify=ORDER_ID is in URL or hash
+    const autoNotifyId = urlParams.get('notify') || urlParams.get('open_notify') || hashParams.get('notify');
+    if (autoNotifyId) {
+      setTimeout(() => {
+        if (window.ADMIN_UI && typeof window.ADMIN_UI.notifyCustomer === 'function') {
+          window.ADMIN_UI.notifyCustomer(autoNotifyId, 'confirmed');
+        }
+      }, 500);
     }
   }
 

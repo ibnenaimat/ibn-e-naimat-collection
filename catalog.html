@@ -74,6 +74,12 @@
 
       <!-- Utility Actions -->
       <div class="nav-actions">
+        <!-- Header Cart Trigger -->
+        <button class="header-cart-trigger" id="headerCartBtn" aria-label="Open Shopping Cart">
+          <i class="bi bi-bag"></i>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+
         <!-- WhatsApp Concierge Button -->
         <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-wa-luxury header-wa-btn" title="Direct WhatsApp Support">
           <i class="bi bi-whatsapp"></i>
@@ -324,6 +330,7 @@
        ========================================================================= -->
   <script src="js/config.js"></script>
   <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
   <script src="js/shop.js"></script>
   <script>
     document.getElementById('currentYear').textContent = new Date().getFullYear();

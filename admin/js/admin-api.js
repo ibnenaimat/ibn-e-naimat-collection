@@ -502,6 +502,135 @@
     return true;
   }
 
+  // --- ORDERS CRUD & MANAGEMENT ---
+  async function getOrders(filters = {}) {
+    const client = getClient();
+    let orders = [];
+
+    if (client) {
+      try {
+        let query = client
+          .from('orders')
+          .select('*, order_items(*)')
+          .order('created_at', { ascending: false });
+
+        if (filters.status && filters.status !== 'all') {
+          query = query.eq('status', filters.status);
+        }
+
+        const { data, error } = await query;
+        if (!error && Array.isArray(data)) {
+          orders = data.map(o => ({
+            ...o,
+            items: o.order_items || []
+          }));
+        }
+      } catch (err) {
+        console.warn('[AdminAPI] Supabase orders fetch error, falling back:', err);
+      }
+    }
+
+    // Merge with local orders store
+    if (window.STORE_CLIENT && typeof window.STORE_CLIENT.getAllOrders === 'function') {
+      const merged = await window.STORE_CLIENT.getAllOrders(filters);
+      if (merged && merged.length > orders.length) {
+        orders = merged;
+      }
+    }
+
+    if (filters.status && filters.status !== 'all') {
+      orders = orders.filter(o => o.status === filters.status);
+    }
+
+    if (filters.search) {
+      const q = filters.search.toLowerCase().trim();
+      orders = orders.filter(o => 
+        (o.order_id || '').toLowerCase().includes(q) ||
+        (o.customer_name || '').toLowerCase().includes(q) ||
+        (o.customer_phone || o.phone || '').toLowerCase().includes(q) ||
+        (o.customer_city || o.city || '').toLowerCase().includes(q)
+      );
+    }
+
+    orders.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+    return orders;
+  }
+
+  async function getOrderById(orderId) {
+    const client = getClient();
+    if (client) {
+      try {
+        const { data: order, error } = await client
+          .from('orders')
+          .select('*, order_items(*)')
+          .eq('order_id', orderId)
+          .single();
+
+        if (!error && order) {
+          return { ...order, items: order.order_items || [] };
+        }
+      } catch (err) {
+        console.warn('[AdminAPI] Supabase getOrderById error:', err);
+      }
+    }
+
+    // Fallback to local store
+    if (window.STORE_CLIENT) {
+      const locals = window.STORE_CLIENT.getLocalOrders();
+      return locals.find(o => o.order_id === orderId) || null;
+    }
+    return null;
+  }
+
+  async function updateOrderStatus(orderId, newStatus, adminNotes) {
+    const client = getClient();
+    const timestamp = new Date().toISOString();
+    const payload = {
+      status: newStatus,
+      updated_at: timestamp
+    };
+    if (adminNotes !== undefined) {
+      payload.admin_notes = adminNotes;
+    }
+
+    if (client) {
+      try {
+        const { error } = await client
+          .from('orders')
+          .update(payload)
+          .eq('order_id', orderId);
+        if (error) console.warn('[AdminAPI] Supabase status update error:', error);
+      } catch (err) {
+        console.warn('[AdminAPI] Supabase status update exception:', err);
+      }
+    }
+
+    // Always update local cache
+    if (window.STORE_CLIENT) {
+      await window.STORE_CLIENT.updateOrderStatus(orderId, newStatus, adminNotes);
+    }
+
+    return true;
+  }
+
+  async function deleteOrder(orderId) {
+    const client = getClient();
+    if (client) {
+      try {
+        await client.from('order_items').delete().eq('order_id', orderId);
+        await client.from('orders').delete().eq('order_id', orderId);
+      } catch (err) {
+        console.warn('[AdminAPI] Supabase order delete error:', err);
+      }
+    }
+
+    if (window.STORE_CLIENT) {
+      const locals = window.STORE_CLIENT.getLocalOrders().filter(o => o.order_id !== orderId);
+      localStorage.setItem('ibn_collection_orders', JSON.stringify(locals));
+    }
+    return true;
+  }
+
   // Export
   window.ADMIN_API = {
     uploadImage,
@@ -520,7 +649,12 @@
     getWebsiteSettings,
     saveWebsiteSettings,
     getHomepageSections,
-    toggleSectionVisibility
+    toggleSectionVisibility,
+    // Orders API
+    getOrders,
+    getOrderById,
+    updateOrderStatus,
+    deleteOrder
   };
 
 })();

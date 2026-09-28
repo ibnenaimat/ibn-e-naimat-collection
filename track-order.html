@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Order Tracking — Ibn e Naimat Collection</title>
+  <meta name="description" content="Track your Ibn e Naimat Collection order in real-time. Verified tracking timeline for watches, honey nuts, gadgets, and luxury gifts across Pakistan.">
+  <link rel="icon" type="image/png" href="assets/images/official-logo.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    .track-page-section {
+      padding: 4rem 0 6rem 0;
+      background: var(--bg-primary);
+      min-height: 85vh;
+    }
+
+    .track-container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .track-search-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.04);
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .track-search-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold-champagne), var(--gold-dark));
+    }
+
+    .track-title {
+      font-family: var(--font-serif);
+      font-size: 1.85rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .track-subtitle {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.75rem;
+      line-height: 1.6;
+    }
+
+    .track-form-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr auto;
+      gap: 1rem;
+      align-items: flex-end;
+    }
+
+    .track-label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.45rem;
+    }
+
+    .track-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-size: 0.9375rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.25s ease;
+      font-family: inherit;
+    }
+
+    .track-input:focus {
+      border-color: var(--gold-champagne);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+    }
+
+    .btn-track-submit {
+      background: linear-gradient(135deg, #242321 0%, #151413 100%);
+      color: #ffffff !important;
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      padding: 0.85rem 1.75rem;
+      border-radius: var(--radius-xs);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-track-submit:hover {
+      background: #000000;
+      border-color: var(--gold-champagne);
+      transform: translateY(-1px);
+    }
+
+    .track-security-hint {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    /* Error Message */
+    .track-error-card {
+      background: #fee2e2;
+      border: 1px solid #ef4444;
+      color: #b91c1c;
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 2rem;
+      display: none;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+    }
+
+    /* Verified Result Card */
+    .track-result-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2.75rem 2.5rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .track-result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      padding-bottom: 1.75rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2.25rem;
+    }
+
+    .track-order-meta h2 {
+      font-family: var(--font-serif);
+      font-size: 1.65rem;
+      color: var(--text-primary);
+      margin: 0 0 0.35rem 0;
+      letter-spacing: 0.02em;
+    }
+
+    .track-order-date {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 1.15rem;
+      border-radius: var(--radius-full);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .status-badge.status-pending { background: #fef3c7; color: #92400e; }
+    .status-badge.status-confirmed { background: #e0f2fe; color: #075985; }
+    .status-badge.status-processing { background: #fef08a; color: #854d0e; }
+    .status-badge.status-dispatched { background: #ede9fe; color: #5b21b6; }
+    .status-badge.status-out-for-delivery { background: #fce7f3; color: #9d174d; }
+    .status-badge.status-delivered { background: #dcfce7; color: #166534; }
+    .status-badge.status-cancelled { background: #fee2e2; color: #991b1b; }
+
+    /* Visual Timeline Stepper */
+    .track-timeline-box {
+      margin-bottom: 3rem;
+    }
+
+    .timeline-title {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .track-stepper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 2rem 0;
+    }
+
+    .track-stepper::before {
+      content: '';
+      position: absolute;
+      top: 22px;
+      left: 30px;
+      right: 30px;
+      height: 3px;
+      background: #e2e0dc;
+      z-index: 1;
+    }
+
+    .stepper-progress-fill {
+      position: absolute;
+      top: 22px;
+      left: 30px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--wa-green), var(--gold-champagne));
+      z-index: 2;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .step-node {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .step-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--bg-white);
+      border: 2.5px solid #d1cec7;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .step-node.completed .step-circle {
+      background: var(--wa-green-dark);
+      border-color: var(--wa-green-dark);
+      color: #ffffff;
+    }
+
+    .step-node.active .step-circle {
+      background: #ffffff;
+      border-color: var(--gold-champagne);
+      color: var(--gold-champagne);
+      box-shadow: 0 0 0 5px rgba(212, 175, 55, 0.22);
+      animation: pulseActive 2s infinite;
+    }
+
+    @keyframes pulseActive {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .step-label {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+
+    .step-node.completed .step-label,
+    .step-node.active .step-label {
+      color: var(--text-primary);
+    }
+
+    .step-subtext {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* Cancelled Banner */
+    .cancelled-alert-banner {
+      background: #fef2f2;
+      border: 1.5px solid #f87171;
+      border-radius: var(--radius-sm);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: #991b1b;
+    }
+
+    /* Info Grids */
+    .track-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .track-info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .track-info-list strong {
+      color: var(--text-primary);
+    }
+
+    /* Items table */
+    .track-items-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .track-items-table th {
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      padding: 0.75rem 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .track-items-table td {
+      padding: 0.95rem 0.5rem;
+      font-size: 0.875rem;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .track-prod-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .track-prod-img {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-xs);
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      padding: 3px;
+      flex-shrink: 0;
+    }
+
+    .track-prod-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .track-totals-box {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.45rem;
+    }
+
+    .track-total-row {
+      display: flex;
+      justify-content: space-between;
+      width: 280px;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .track-total-row.grand {
+      border-top: 2px dashed var(--border);
+      padding-top: 0.65rem;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .track-total-row.grand .val {
+      color: var(--gold-champagne);
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+    }
+
+    .btn-track-wa-support {
+      background: linear-gradient(135deg, #0e6b3c 0%, #198754 42%, #25D366 100%);
+      color: #ffffff !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      padding: 0.95rem 1.5rem;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
+      text-decoration: none;
+      cursor: pointer;
+      margin-top: 2rem;
+      transition: all 0.25s ease;
+    }
+
+    .btn-track-wa-support:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.06);
+    }
+
+    @media (max-width: 768px) {
+      .track-form-grid {
+        grid-template-columns: 1fr;
+      }
+      .btn-track-submit {
+        width: 100%;
+        justify-content: center;
+      }
+      .track-search-card,
+      .track-result-card {
+        padding: 1.75rem 1.25rem;
+      }
+      .track-stepper {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .track-stepper::before {
+        display: none;
+      }
+      .stepper-progress-fill {
+        display: none;
+      }
+      .step-node {
+        flex-direction: row;
+        text-align: left;
+        gap: 1rem;
+      }
+      .step-circle {
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+      .track-details-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .track-total-row {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar" role="region" aria-label="Announcement">
+    <div class="site-container announcement-container">
+      <div class="announcement-text">
+        <i class="bi bi-shield-check"></i>
+        <span>Nationwide Insured Delivery Across Pakistan &bull; Cash on Delivery Available</span>
+      </div>
+      <div class="announcement-links">
+        <a href="track-order.html" class="announcement-link"><i class="bi bi-geo-alt"></i> Track Order</a>
+        <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="announcement-link"><i class="bi bi-whatsapp"></i> WhatsApp: 0330-2241340</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Header -->
+  <header class="site-header" id="siteHeader">
+    <div class="site-container header-container">
+      <a href="index.html" class="brand-logo">
+        <img src="assets/images/official-logo.png" alt="Ibn e Naimat Collection Logo" class="brand-logo-img">
+      </a>
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="watches.html" class="nav-link">Watches</a></li>
+          <li class="nav-item"><a href="honey-nuts.html" class="nav-link">Honey Nuts</a></li>
+          <li class="nav-item"><a href="gadgets.html" class="nav-link">Gadgets</a></li>
+          <li class="nav-item"><a href="gifts.html" class="nav-link">Gift Items</a></li>
+          <li class="nav-item"><a href="calligraphy.html" class="nav-link">Calligraphy</a></li>
+          <li class="nav-item"><a href="shop.html" class="nav-link">Shop All</a></li>
+          <li class="nav-item"><a href="track-order.html" class="nav-link active">Track Order</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <button class="header-cart-trigger" id="headerCartTrigger" aria-label="View Shopping Cart">
+          <i class="bi bi-bag"></i>
+          <span class="cart-badge" id="headerCartBadge">0</span>
+        </button>
+        <a href="https://wa.me/923302241340" target="_blank" rel="noopener" class="btn btn-charcoal header-wa-btn">
+          <i class="bi bi-whatsapp" style="color: var(--wa-green);"></i>
+          <span>Order: 03302241340</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Track Order View -->
+  <main class="track-page-section">
+    <div class="site-container track-container">
+      <!-- Search Form Card -->
+      <section class="track-search-card">
+        <h1 class="track-title">Track Your Order Status</h1>
+        <p class="track-subtitle">
+          Enter your unique Order ID and the phone number provided at checkout. Both credentials are required to safeguard customer privacy.
+        </p>
+
+        <form id="trackOrderForm" novalidate>
+          <div class="track-form-grid">
+            <div>
+              <label class="track-label" for="trackOrderId">Order ID</label>
+              <input type="text" id="trackOrderId" class="track-input" placeholder="e.g. INC-20260927-0042" required autocomplete="off" style="text-transform: uppercase;">
+            </div>
+
+            <div>
+              <label class="track-label" for="trackPhone">Customer Phone Number</label>
+              <input type="tel" id="trackPhone" class="track-input" placeholder="e.g. 0330 2241340" required autocomplete="tel">
+            </div>
+
+            <div>
+              <button type="submit" class="btn-track-submit" id="btnTrackSubmit">
+                <i class="bi bi-search"></i>
+                <span>Track Order</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="track-security-hint">
+            <i class="bi bi-shield-check" style="color: var(--gold-champagne);"></i>
+            <span>Encrypted verification: You can only view order details matching both your Order ID &amp; Phone Number.</span>
+          </div>
+        </form>
+      </section>
+
+      <!-- Error Card -->
+      <div class="track-error-card" id="trackErrorCard">
+        <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+          <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.25rem;"></i>
+          <div>
+            <strong>Order Verification Failed</strong>
+            <p id="trackErrorMsg" style="margin: 0.35rem 0 0 0;">
+              No order found matching this Order ID and Phone Number. Please check your credentials or contact customer support on WhatsApp.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verified Result Card -->
+      <section class="track-result-card" id="trackResultCard">
+        <div class="track-result-header">
+          <div class="track-order-meta">
+            <h2 id="resOrderId">INC-20260927-0042</h2>
+            <div class="track-order-date">
+              Order Placed: <span id="resOrderDate">-</span> &bull; Last Updated: <span id="resOrderUpdated">-</span>
+            </div>
+          </div>
+          <div>
+            <span class="status-badge status-pending" id="resStatusBadge">
+              <i class="bi bi-clock-history"></i> Pending
+            </span>
+          </div>
+        </div>
+
+        <!-- Cancelled Alert Banner (only shown if status === Cancelled) -->
+        <div class="cancelled-alert-banner" id="resCancelledBanner" style="display: none;">
+          <i class="bi bi-x-octagon-fill" style="font-size: 1.5rem;"></i>
+          <div>
+            <strong>This Order Has Been Cancelled</strong>
+            <p style="margin: 0.25rem 0 0 0; font-size: 0.8125rem;" id="resCancelledReason">
+              This order was cancelled by administrator request. If you have questions, please reach out via WhatsApp.
+            </p>
+          </div>
+        </div>
+
+        <!-- Visual Timeline Stepper -->
+        <div class="track-timeline-box" id="resTimelineBox">
+          <div class="timeline-title">
+            <i class="bi bi-truck" style="color: var(--gold-champagne);"></i>
+            <span>Order Progress &amp; Fulfillment Timeline</span>
+          </div>
+
+          <div class="track-stepper">
+            <div class="stepper-progress-fill" id="resStepperFill" style="width: 0%;"></div>
+
+            <!-- Step 1: Order Placed -->
+            <div class="step-node completed" id="stepNode1">
+              <div class="step-circle"><i class="bi bi-check2"></i></div>
+              <div class="step-label">Order Placed</div>
+              <div class="step-subtext">Received in system</div>
+            </div>
+
+            <!-- Step 2: Order Confirmed -->
+            <div class="step-node" id="stepNode2">
+              <div class="step-circle">2</div>
+              <div class="step-label">Confirmed</div>
+              <div class="step-subtext">Verified on WhatsApp</div>
+            </div>
+
+            <!-- Step 3: Processing -->
+            <div class="step-node" id="stepNode3">
+              <div class="step-circle">3</div>
+              <div class="step-label">Processing</div>
+              <div class="step-subtext">Video inspection</div>
+            </div>
+
+            <!-- Step 4: Dispatched -->
+            <div class="step-node" id="stepNode4">
+              <div class="step-circle">4</div>
+              <div class="step-label">Dispatched</div>
+              <div class="step-subtext">With insured courier</div>
+            </div>
+
+            <!-- Step 5: Out for Delivery -->
+            <div class="step-node" id="stepNode5">
+              <div class="step-circle">5</div>
+              <div class="step-label">Out for Delivery</div>
+              <div class="step-subtext">Arrival today</div>
+            </div>
+
+            <!-- Step 6: Delivered -->
+            <div class="step-node" id="stepNode6">
+              <div class="step-circle">6</div>
+              <div class="step-label">Delivered</div>
+              <div class="step-subtext">Completed &amp; paid</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Details Grid -->
+        <div class="track-details-grid">
+          <div>
+            <h3 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.85rem;">
+              <i class="bi bi-geo-alt" style="color: var(--gold-champagne);"></i> Destination &amp; Customer
+            </h3>
+            <ul class="track-info-list">
+              <li><strong>Customer Name:</strong> <span id="resCustName">-</span></li>
+              <li><strong>Destination City:</strong> <span id="resCustCity">-</span></li>
+              <li><strong>Delivery Address:</strong> <span id="resCustAddress">-</span></li>
+              <li><strong>Verified Phone:</strong> <span id="resCustPhone">-</span></li>
+              <li><strong>Payment Method:</strong> Cash on Delivery (COD)</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.85rem;">
+              <i class="bi bi-box-seam" style="color: var(--gold-champagne);"></i> Order Financials
+            </h3>
+            <div class="track-totals-box" style="align-items: stretch;">
+              <div class="track-total-row" style="width: 100%;">
+                <span>Subtotal:</span>
+                <span id="resSubtotal">-</span>
+              </div>
+              <div class="track-total-row" style="width: 100%;">
+                <span>Delivery Charges:</span>
+                <span id="resDeliveryFee">-</span>
+              </div>
+              <div class="track-total-row grand" style="width: 100%;">
+                <span>Total Amount:</span>
+                <span class="val" id="resGrandTotal">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Items Table -->
+        <h3 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.5rem;">
+          Verified Ordered Products
+        </h3>
+        <table class="track-items-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th style="text-align: center;">Qty</th>
+              <th style="text-align: right;">Unit Price</th>
+              <th style="text-align: right;">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody id="trackItemsTableBody">
+            <!-- Dynamic rows -->
+          </tbody>
+        </table>
+
+        <!-- WhatsApp Support Link -->
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="#" class="btn-track-wa-support" id="resWaSupportBtn" target="_blank" rel="noopener">
+            <i class="bi bi-whatsapp"></i>
+            <span>Need Help with this Order? Chat on WhatsApp</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="site-container">
+      <div class="footer-bottom">
+        <p>&copy; <span id="currentYear">2026</span> <strong>Ibn e Naimat Collection</strong>. All Rights Reserved.</p>
+        <div class="footer-legal-links">
+          <a href="track-order.html">Track Order</a> &bull;
+          <a href="shop.html">Catalog</a> &bull;
+          <a href="https://wa.me/923302241340">WhatsApp Concierge</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.env.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/track-order.js"></script>
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
