@@ -1,0 +1,79 @@
+# ==============================================================================
+# IBN E NAIMAT COLLECTION — PRODUCTION APACHE / CPANEL CONFIGURATION
+# Production-ready performance, security headers, compression & routing
+# ==============================================================================
+
+# 1. PREVENT DIRECTORY BROWSING
+Options -Indexes
+
+# 2. DEFAULT CHARACTER SET
+AddDefaultCharset UTF-8
+
+# 3. MIME TYPES
+<IfModule mod_mime.c>
+    AddType image/svg+xml           .svg .svgz
+    AddType image/webp              .webp
+    AddType font/woff2              .woff2
+    AddType application/javascript  .js
+    AddType text/css                .css
+</IfModule>
+
+# 4. GZIP COMPRESSION (mod_deflate)
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# 5. BROWSER CACHING (mod_expires)
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+
+    # HTML
+    ExpiresByType text/html "access plus 0 seconds"
+
+    # Data
+    ExpiresByType text/xml "access plus 0 seconds"
+    ExpiresByType application/xml "access plus 0 seconds"
+    ExpiresByType application/json "access plus 0 seconds"
+
+    # CSS & JavaScript
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+
+    # Media & Images
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+
+    # Fonts
+    ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+# 6. SECURITY HEADERS
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# 7. ROUTING & CLEAN ADMIN ACCESS
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Redirect /admin to /admin/
+    RewriteRule ^admin$ admin/ [R=301,L]
+</IfModule>
